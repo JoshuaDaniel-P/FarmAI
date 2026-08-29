@@ -1,0 +1,175 @@
+import { DiseaseInfo } from '../types/farm';
+
+export const DISEASE_DATABASE: DiseaseInfo[] = [
+  // Paddy
+  {
+    id: 'paddy-brown-spot',
+    crop: 'Paddy',
+    diseaseName: 'Paddy Brown Spot',
+    riskLevel: 'Moderate',
+    riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
+    symptoms: [
+      'Oval brown spots on leaves with yellow halo',
+      'Dark spots on grains reducing kernel weight',
+    ],
+    primaryCause: 'Fungal infection (Bipolaris oryzae)',
+    favorableConditions: 'High humidity (>85%), 25°C-30°C temperature, low nitrogen soil',
+    precautions: [
+      'Use certified seeds',
+      'Apply balanced N-P-K fertilizer',
+      'Drain excess water from field',
+    ],
+    treatment: 'Spray Mancozeb @ 2.5g/L or Carbendazim @ 1g/L of water.',
+    currentRiskPrediction: 'Moderate Risk (64% likelihood based on 61% humidity).',
+    icon: 'coronavirus',
+    comesWhen: 'Warm humid weather (>85% humidity) during tillering stage',
+    shortPrecaution: 'Use certified seeds & avoid excessive nitrogen late in season',
+    shortCure: 'Spray Mancozeb @ 2.5g per liter of water',
+  },
+  {
+    id: 'paddy-blast',
+    crop: 'Paddy',
+    diseaseName: 'Paddy Blast',
+    riskLevel: 'High',
+    riskBadgeColor: 'bg-error-container border-error text-error',
+    symptoms: [
+      'Spindle-shaped spots with grey centers',
+      'Neck rot causing lodging of mature panicles',
+    ],
+    primaryCause: 'Fungal infection (Pyricularia oryzae)',
+    favorableConditions: 'Cool nights (<20°C), heavy morning dew, high humidity (>90%)',
+    precautions: [
+      'Seed treatment with Tricyclazole @ 2g/kg seed',
+      'Avoid high plant crowding for air flow',
+    ],
+    treatment: 'Spray Tricyclazole 75% WP @ 0.6g/L or Isoprothiolane @ 1.5ml/L.',
+    currentRiskPrediction: 'High Risk if night temperature drops below 22°C with dew.',
+    icon: 'warning',
+    comesWhen: 'Cool night temperatures (<20°C) with morning dew drops',
+    shortPrecaution: 'Treat seeds before sowing & maintain plant spacing',
+    shortCure: 'Spray Tricyclazole 75% WP @ 0.6g per liter of water',
+  },
+  // Cotton
+  {
+    id: 'cotton-leaf-spot',
+    crop: 'Cotton',
+    diseaseName: 'Cotton Alternaria Leaf Spot',
+    riskLevel: 'Moderate',
+    riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
+    symptoms: [
+      'Brownish spots with concentric rings',
+      'Early leaf drop',
+    ],
+    primaryCause: 'Fungal pathogen (Alternaria macrospora)',
+    favorableConditions: 'Intermittent rainfall with warm temperature (26-32°C)',
+    precautions: [
+      'Clean field residue after harvest',
+      'Maintain 90x60 cm plant spacing',
+    ],
+    treatment: 'Spray Copper Oxychloride @ 3g/L or Propiconazole @ 1ml/L.',
+    currentRiskPrediction: 'Moderate risk due to high day temperature (34°C).',
+    icon: 'eco',
+    comesWhen: 'Warm weather with sudden light rains (26-32°C)',
+    shortPrecaution: 'Remove old leaves & maintain plant spacing',
+    shortCure: 'Spray Copper Oxychloride @ 3g per liter of water',
+  },
+  {
+    id: 'cotton-bollworm',
+    crop: 'Cotton',
+    diseaseName: 'Cotton Pink Bollworm',
+    riskLevel: 'High',
+    riskBadgeColor: 'bg-error-container border-error text-error',
+    symptoms: [
+      'Rosetted flowers failing to open',
+      'Bore holes in developing bolls',
+    ],
+    primaryCause: 'Insect Pest (Pectinophora gossypiella)',
+    favorableConditions: 'Warm dry spells with high boll density',
+    precautions: [
+      'Set Pheromone traps @ 5 traps/acre',
+      'Avoid extending crop beyond December',
+    ],
+    treatment: 'Spray Chlorantraniliprole 18.5 SC @ 0.3ml/L.',
+    currentRiskPrediction: 'High risk during flowering and boll formation.',
+    icon: 'bug_report',
+    comesWhen: 'Warm dry weather during flowering and boll formation',
+    shortPrecaution: 'Hang 5 Pheromone traps per acre',
+    shortCure: 'Spray Chlorantraniliprole 18.5 SC @ 0.3ml per liter',
+  },
+  // Chilli
+  {
+    id: 'chilli-leaf-curl',
+    crop: 'Chilli',
+    diseaseName: 'Chilli Leaf Curl Virus',
+    riskLevel: 'Critical',
+    riskBadgeColor: 'bg-error-container border-error text-error',
+    symptoms: [
+      'Upward leaf curling and puckering',
+      'Stunted plant growth',
+    ],
+    primaryCause: 'Viral infection spread by Whiteflies',
+    favorableConditions: 'Hot dry weather favoring whiteflies',
+    precautions: [
+      'Set Yellow Sticky Traps @ 15 traps/acre',
+      'Plant border crops like Maize',
+    ],
+    treatment: 'Spray Imidacloprid 17.8 SL @ 0.3ml/L.',
+    currentRiskPrediction: 'Critical risk in dry zones if whiteflies increase.',
+    icon: 'coronavirus',
+    comesWhen: 'Hot dry weather when whiteflies multiply quickly',
+    shortPrecaution: 'Put Yellow Sticky Traps @ 15 per acre',
+    shortCure: 'Spray Imidacloprid 17.8 SL @ 0.3ml per liter to stop whiteflies',
+  },
+  // Maize
+  {
+    id: 'maize-armyworm',
+    crop: 'Maize',
+    diseaseName: 'Maize Fall Armyworm',
+    riskLevel: 'High',
+    riskBadgeColor: 'bg-error-container border-error text-error',
+    symptoms: [
+      'Window pane holes in young leaves',
+      'Ragged feeding marks in whorls',
+    ],
+    primaryCause: 'Insect Pest (Spodoptera frugiperda)',
+    favorableConditions: 'Warm weather (28-35°C)',
+    precautions: [
+      'Deep summer plowing',
+      'Apply neem cake in whorls @ 20kg/acre',
+    ],
+    treatment: 'Apply Emamectin Benzoate 5% SG @ 0.4g/L in whorls.',
+    currentRiskPrediction: 'High Risk during 15-45 days after sowing.',
+    icon: 'bug_report',
+    comesWhen: 'Warm weather between 15 and 45 days after sowing',
+    shortPrecaution: 'Deep summer plowing & apply neem cake in whorls',
+    shortCure: 'Apply Emamectin Benzoate 5% SG @ 0.4g/L inside plant whorls',
+  },
+  // Groundnut
+  {
+    id: 'groundnut-tikka',
+    crop: 'Groundnut',
+    diseaseName: 'Groundnut Tikka Leaf Spot',
+    riskLevel: 'Moderate',
+    riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
+    symptoms: [
+      'Dark brown spots on upper leaves',
+      'Premature leaf shedding',
+    ],
+    primaryCause: 'Fungal infection (Cercospora)',
+    favorableConditions: 'High humidity (>80%), rain showers, 25-30°C',
+    precautions: [
+      'Rotate crops with Jowar or Bajra',
+      'Seed treatment with Thiram @ 3g/kg seed',
+    ],
+    treatment: 'Spray Tebuconazole @ 1ml/L of water.',
+    currentRiskPrediction: 'Moderate Risk in red soil zones.',
+    icon: 'grass',
+    comesWhen: 'High humidity (>80%) with frequent rain showers',
+    shortPrecaution: 'Rotate crops with Jowar/Bajra & treat seeds',
+    shortCure: 'Spray Tebuconazole @ 1ml per liter of water',
+  },
+];
+
+export function getDiseasesByCrop(crop: string): DiseaseInfo[] {
+  return DISEASE_DATABASE.filter((d) => d.crop.toLowerCase() === crop.toLowerCase());
+}

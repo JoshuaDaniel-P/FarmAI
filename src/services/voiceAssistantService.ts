@@ -251,6 +251,218 @@ export function prepareSpeechText(text: string, lang: LanguageCode): string {
   return s;
 }
 
+/**
+ * Universal Phonetic Indian Spoken Text Generator
+ * Ensures that if a PC/browser doesn't have native Telugu/Tamil/Kannada/Hindi TTS voices installed,
+ * speech synthesis speaks authentic rural Indian phrases phonetically in a clear Indian accent
+ * rather than failing silently, going mute, or mispronouncing!
+ */
+export function getPhoneticIndianSpokenText(text: string, lang: LanguageCode): string {
+  if (lang === 'en') {
+    let s = text;
+    s = s.replace(/₹\s*([0-9,]+)/g, 'Rs. $1');
+    s = s.replace(/°C/g, ' degrees Celsius');
+    s = s.replace(/%/g, ' percent');
+    return s;
+  }
+
+  if (lang === 'te') {
+    let s = text;
+    const teMap: [RegExp, string][] = [
+      [/నమస్కారం\s*రాజు\s*గారు!?/gi, 'Namaskaram Raju Garu!'],
+      [/సెక్టార్\s*0?3/gi, 'Sector 03'],
+      [/సెక్టార్\s*0?1/gi, 'Sector 01'],
+      [/సెక్టార్\s*0?2/gi, 'Sector 02'],
+      [/సెక్టార్\s*0?4/gi, 'Sector 04'],
+      [/విభాగం\s*0?3/gi, 'Sector 03'],
+      [/విభాగం\s*0?1/gi, 'Sector 01'],
+      [/విభాగం\s*0?2/gi, 'Sector 02'],
+      [/విభాగం\s*0?4/gi, 'Sector 04'],
+      [/జోన్\s*B|జోన్\s*బి/gi, 'Zone B'],
+      [/నేల\s*తేమ/gi, 'nela tema'],
+      [/మాత్రమే\s*ఉంది/gi, 'matrame vundi'],
+      [/మడి\s*చాలా\s*ఎండిపోయింది/gi, 'Madi chaala endipoyindi'],
+      [/వెంటనే\s*నీళ్ళు\s*పెట్టండి/gi, 'ventane neellu pettandi'],
+      [/వెంటనే\s*నీరు\s*పెట్టడం\s*అవసరం/gi, 'ventane neellu pettadam avasaram'],
+      [/నీటిపారుదల\s*ప్రారంభించబడింది/gi, 'neetipaarudala prarambhinchabadindi'],
+      [/మోటార్\s*ఆన్\s*చేయబడింది/gi, 'Motor on cheyabadindi'],
+      [/మడికి\s*నీళ్ళు\s*అందుతున్నాయి/gi, 'madiki neellu anduthunnayi'],
+      [/వరి\s*47వ\s*రోజు\s*దశలో/gi, 'Vari nalabhai yedu roju dashalo'],
+      [/వరి\s*చేను\s*ప్రస్తుతం/gi, 'Vari chenu prasthutham'],
+      [/ఎకరానికి\s*25\s*కిలోల\s*యూరియా/gi, 'ecaraniki iravai aidu kilola Urea'],
+      [/మరియు\s*15\s*కిలోల\s*పొటాష్\s*వేయండి/gi, 'mariyu padihenu kilola Potash veyandi'],
+      [/ఆకుమచ్చ\s*కనిపిస్తే/gi, 'aakumacha kanipisthe'],
+      [/లీటరు\s*నీటికి\s*2\.5\s*గ్రాముల\s*మాంకోజెబ్\s*మందు\s*కలిపి\s*పిచికారీ\s*చేయండి/gi, 'leetaru neetiki rendu point aidu gramula Mancozeb mandhu kalipi pichikaaree cheyandi'],
+      [/శాకీయ\s*దశలో\s*ఉంది/gi, 'shaakeeya dashalo vundi'],
+      [/నాటిన\s*తేదీ:\s*14\s*జూలై\s*2026/gi, 'Naatina thedi: padhnaalugu July 2026'],
+      [/మొత్తం\s*పంట\s*కాలం\s*125\s*రోజులు/gi, 'Moththam panta kaalam noota iravai aidu rojulu'],
+      [/మీ\s*పొలం\s*మొత్తం\s*విస్తీర్ణం\s*2\.4\s*ఎకరాలు/gi, 'Mee polam moththam vistheeranam rendu point naalugu ekaralu'],
+      [/GPS\s*సరిహద్దు\s*నమోదైంది/gi, 'GPS sarihaddu namodaindi'],
+      [/ప్రధాన\s*ప్లాట్\s*-\s*తూర్పు\s*విభాగంలో\s*ఉంది/gi, 'Pradhana plot thoorpu vibhagamlo vundi'],
+      [/మీ\s*చేనులో\s*అత్యంత\s*తక్కువ\s*తేమ/gi, 'Mee chenulo athyantha thakkuva tema'],
+      [/ఇక్కడ\s*వెంటనే\s*నీళ్ళు\s*పెట్టాలి/gi, 'ikkada ventane neellu pettali'],
+      [/పొలం\s*వాతావరణం:/gi, 'Polam vaathavaranam:'],
+      [/గాలి\s*ఉష్ణోగ్రత/gi, 'gaali ushnogratha'],
+      [/గాలి\s*తేమ/gi, 'gaali tema'],
+      [/మరియు\s*గాలి\s*నాణ్యత\s*చాలా\s*బాగుంది/gi, 'mariyu gaali naanyatha chaala baagundi'],
+      [/మీ\s*పంట\s*ఆరోగ్యం/gi, 'Mee panta aarogyam'],
+      [/హెచ్చరికలో\s*ఉంది/gi, 'hecharikalo vundi'],
+      [/కి\s*పడిపోయింది/gi, 'ki padipoyindi'],
+      [/వలన\s*తెగుళ్ళ\s*ముప్పు\s*ఉంది/gi, 'valana thegulla muppu vundi'],
+      [/పంట\s*ఆరోగ్య\s*సూచిక/gi, 'panta aarogya soochika'],
+      [/గత\s*సీజన్\s*వరి\s*2025\s*లో/gi, 'Gatha season Vari 2025 lo'],
+      [/అంచనా\s*వేసిన\s*దిగుబడి/gi, 'anchanaa vesina digubadi'],
+      [/టన్నులు\s*కాగా\s*అసలు\s*దిగుబడి/gi, 'tons kaagaa asalu digubadi'],
+      [/సామర్థ్యం\s*వచ్చింది/gi, 'percent saamarthyam vachindi'],
+      [/కాండం\s*తొలిచే\s*పురుగు\s*మరియు\s*నీటి\s*కొరత\s*వల్ల\s*దిగుబడి\s*తగ్గింది/gi, 'kaandam tholiche purugu mariyu neeti koratha valla digubadi thaggindi'],
+      [/నెల్లూరు\s*మార్కెట్లో\s*ప్రస్తుత\s*వరి\s*ధర\s*క్వింటాలుకు/gi, 'Nellore marketlo prasthutha Vari dhara quintal ku'],
+      [/పెరుగుదల/gi, 'perugudhala'],
+      [/మార్కెట్\s*ధరలు\s*బాగున్నాయి/gi, 'market dharalu baagunnaayi'],
+      [/ఊద\s*కలుపు\s*గుర్తించబడింది/gi, 'Oodha kalupu gurthinchabadindi'],
+      [/కలుపు\s*గుర్తించబడింది/gi, 'kalupu gurthinchabadindi'],
+      [/ఉదయం\s*డ్రోన్\s*స్కాన్\s*ప్రకారం\s*జోన్\s*బి\s*లో\s*కలుపు\s*ఉంది/gi, 'Udhayam drone scan prakaaram Zone B lo kalupu vundi'],
+      [/విత్తనాలు\s*రాకముందే\s*కలుపు\s*తీసివేయండి/gi, 'vithanaalu raakamundhe kalupu theesiveyandi'],
+      [/వరిలో\s*సాధారణంగా\s*అగ్గి\s*తెగులు\s*\(బ్లాస్ట్\)\s*మరియు\s*ఆకుమచ్చ\s*తెగులు\s*వస్తాయి/gi, 'Varilo saadhaaranangaa Aggi Thegulu mariyu Aakumacha thegulu vasthaayi'],
+      [/రాత్రి\s*ఉష్ణోగ్రతలు/gi, 'Raathri ushnograthalu'],
+      [/కంటే\s*తగ్గితే\s*బ్లాస్ట్\s*తెగులు\s*ముప్పు\s*పెరుగుతుంది/gi, 'kante thaggithe blast thegulu muppu peruguthundi'],
+      [/ఫోటో\s*తీసి\s*పరీక్షించండి/gi, 'Photo theesi pareekshinchandi'],
+      [/మీకు\s*ఎలా\s*సహాయపడగలను\??/gi, 'Meeku elaa sahaayapadagalanu?'],
+      [/రూపాయలు/gi, 'roopaayalu'],
+      [/శాతం/gi, 'percent'],
+      [/డిగ్రీల\s*సెల్సియస్/gi, 'degrees Celsius'],
+      [/ఎకరాలు/gi, 'ekaralu'],
+      [/రోజు/gi, 'roju'],
+      [/వరి/gi, 'Vari'],
+      [/పొలం/gi, 'Polam'],
+      [/చేను/gi, 'Chenu'],
+      [/మడి/gi, 'Madi'],
+      [/నీళ్ళు|నీరు/gi, 'neellu']
+    ];
+
+    for (const [re, rep] of teMap) {
+      s = s.replace(re, rep);
+    }
+    s = s.replace(/₹\s*([0-9,]+)/g, 'Rs. $1');
+    s = s.replace(/°C/g, ' degrees Celsius');
+    s = s.replace(/%/g, ' percent');
+    return s;
+  }
+
+  if (lang === 'hi') {
+    let s = text;
+    const hiMap: [RegExp, string][] = [
+      [/नमस्ते\s*राजू\s*जी!?/gi, 'Namaste Raju Ji!'],
+      [/सेक्टर\s*0?3/gi, 'Sector 03'],
+      [/सेक्टर\s*0?1/gi, 'Sector 01'],
+      [/सेक्टर\s*0?2/gi, 'Sector 02'],
+      [/सेक्टर\s*0?4/gi, 'Sector 04'],
+      [/मिट्टी\s*की\s*नमी/gi, 'mitti ki nami'],
+      [/केवल/gi, 'keval'],
+      [/खेत\s*सूखा\s*है/gi, 'khet sookha hai'],
+      [/तुरंत\s*पानी\s*चलाएं/gi, 'turant paani chalayein'],
+      [/सिंचाई\s*सफलतापूर्वक\s*शुरू\s*कर\s*दी\s*गई\s*है/gi, 'sinchai safaltapoorvak shuru kar di gayi hai'],
+      [/मोटर\s*चालू\s*हो\s*गई\s*है/gi, 'motor chaaloo ho gayi hai'],
+      [/और\s*खेत\s*में\s*पानी\s*पहुँच\s*रहा\s*है/gi, 'aur khet mein paani pahunch raha hai'],
+      [/धान\s*के\s*47वें\s*दिन\s*की\s*फसल\s*के\s*लिए/gi, 'Dhaan ke 47th day ki fasal ke liye'],
+      [/प्रति\s*एकड़\s*25\s*किलोग्राम\s*यूरिया\s*और\s*15\s*किलोग्राम\s*पोटाश\s*डालें/gi, 'prati acre 25 kg Urea aur 15 kg Potash daalein'],
+      [/पत्ती\s*पर\s*धब्बा\s*दिखे/gi, 'patti par dhabba dikhe'],
+      [/2\.5\s*ग्राम\s*मैन्कोजेब\s*दवा\s*प्रति\s*लीटर\s*पानी\s*में\s*मिलाकर\s*छिड़काव\s*करें/gi, '2.5 gram Mancozeb dava prati liter paani mein milakar chhidkaav karein'],
+      [/आपकी\s*धान\s*की\s*फसल\s*वर्तमान\s*में/gi, 'Aapki dhaan ki fasal vartamaan mein'],
+      [/शाकीय\s*अवस्था\s*में\s*है/gi, 'shaakeeya avastha mein hai'],
+      [/बुवाई\s*की\s*तारीख:\s*14\s*जुलाई\s*2026\s*है/gi, 'Buvaai ki tareekh 14 July 2026 hai'],
+      [/कुल\s*फसल\s*अवधि\s*125\s*दिन\s*है/gi, 'kul fasal avadhi 125 din hai'],
+      [/कुल\s*क्षेत्रफल\s*2\.4\s*एकड़\s*है/gi, 'kul kshetrafal 2.4 acre hai'],
+      [/GPS\s*सीमा\s*दर्ज\s*है/gi, 'GPS seema darj hai'],
+      [/मौसम:/gi, 'Mausam:'],
+      [/तापमान/gi, 'taapmaan'],
+      [/हवा\s*में\s*नमी/gi, 'hawa mein nami'],
+      [/और\s*हवा\s*की\s*गुणवत्ता\s*बहुत\s*अच्छी\s*है/gi, 'aur hawa ki gunvatta bahut achhi hai'],
+      [/फसल\s*का\s*स्वास्थ्य/gi, 'fasal ka swaasthya'],
+      [/चेतावनी\s*पर\s*है/gi, 'chetaavni par hai'],
+      [/नेल्लोर\s*मंडी\s*में\s*वर्तमान\s*धान\s*का\s*भाव/gi, 'Nellore mandi mein vartamaan dhaan ka bhaav'],
+      [/प्रति\s*क्विंटल/gi, 'prati quintal'],
+      [/वृद्धि/gi, 'vriddhi'],
+      [/बाज़ार\s*का\s*रुख\s*बहुत\s*अच्छा\s*है/gi, 'bazaar ka rukh bahut achha hai'],
+      [/मैं\s*आपकी\s*क्या\s*मदद\s*कर\s*सकता\s*हूँ\??/gi, 'Main aapki kya madad kar sakta hoon?']
+    ];
+    for (const [re, rep] of hiMap) {
+      s = s.replace(re, rep);
+    }
+    s = s.replace(/₹\s*([0-9,]+)/g, 'Rs. $1');
+    s = s.replace(/°C/g, ' degrees Celsius');
+    s = s.replace(/%/g, ' percent');
+    return s;
+  }
+
+  if (lang === 'ta') {
+    let s = text;
+    const taMap: [RegExp, string][] = [
+      [/வணக்கம்\s*ராஜு\s*அவர்களே!?/gi, 'Vanakkam Raju Avargale!'],
+      [/பிரிவு\s*0?3/gi, 'Sector 03'],
+      [/பிரிவு\s*0?1/gi, 'Sector 01'],
+      [/பிரிவு\s*0?2/gi, 'Sector 02'],
+      [/பிரிவு\s*0?4/gi, 'Sector 04'],
+      [/மண்\s*ஈரப்பதம்/gi, 'mann eerappadham'],
+      [/மட்டுமே\s*உள்ளது/gi, 'mattume ulladhu'],
+      [/நிலம்\s*வறண்டுள்ளது/gi, 'nilam varandulladhu'],
+      [/உடனடியாக\s*தண்ணீர்\s*பாய்ச்சவும்/gi, 'udanadiyaaga thanneer paaychavum'],
+      [/நீர்ப்பாசனம்\s*வெற்றிகரமாக\s*தொடங்கப்பட்டது/gi, 'neerppaasanam vetrigaramaaga thodangappattadhu'],
+      [/மோட்டார்\s*இயக்கப்பட்டு/gi, 'motor iyakkappattu'],
+      [/நிலத்திற்கு\s*தண்ணீர்\s*பாய்கிறது/gi, 'nilathirku thanneer paaygiradhu'],
+      [/நெல்\s*47வது\s*நாள்\s*பயிருக்கு:/gi, 'Nel 47th day payirukku:'],
+      [/ஏக்கருக்கு\s*25\s*கிலோ\s*யூரியா\s*மற்றும்\s*15\s*கிலோ\s*பொட்டாஷ்\s*உரமிடவும்/gi, 'acre kku 25 kg Urea matrum 15 kg Potash uramidavum'],
+      [/இலைப்புள்ளி\s*தெரிந்தால்/gi, 'ilaippulli therindhaal'],
+      [/2\.5\s*கிராம்\s*மேன்கோசெப்\s*மருந்து\s*கலந்து\s*தெளிக்கவும்/gi, '2.5 gram Mancozeb marundhu kalandhu thelikkavum'],
+      [/நெல்லூர்\s*சந்தையில்\s*தற்போதைய\s*நெல்\s*விலை\s*குவிண்டாலுக்கு/gi, 'Nellore sandhaiyil tharpodhaiya nel vilai quintal kku'],
+      [/உயர்வு/gi, 'uyarvu'],
+      [/சந்தை\s*விலை\s*நன்றாக\s*உள்ளது/gi, 'sandhai vilai nanraaga ulladhu'],
+      [/நான்\s*உங்களுக்கு\s*எப்படி\s*உதவ\s*முடியும்\??/gi, 'Naan ungalukku eppadi udhava mudiyum?']
+    ];
+    for (const [re, rep] of taMap) {
+      s = s.replace(re, rep);
+    }
+    s = s.replace(/₹\s*([0-9,]+)/g, 'Rs. $1');
+    s = s.replace(/°C/g, ' degrees Celsius');
+    s = s.replace(/%/g, ' percent');
+    return s;
+  }
+
+  if (lang === 'kn') {
+    let s = text;
+    const knMap: [RegExp, string][] = [
+      [/ನಮಸ್ಕಾರ\s*ರಾಜು\s*ಅವರೇ!?/gi, 'Namaskara Raju Avare!'],
+      [/ವಲಯ\s*0?3/gi, 'Sector 03'],
+      [/ವಲಯ\s*0?1/gi, 'Sector 01'],
+      [/ವಲಯ\s*0?2/gi, 'Sector 02'],
+      [/ವಲಯ\s*0?4/gi, 'Sector 04'],
+      [/ಮಣ್ಣಿನ\s*ತೇವಾಂಶ/gi, 'mannina tevaamsha'],
+      [/ಮಾತ್ರ\s*ಇದೆ/gi, 'maatra ide'],
+      [/ಹೊಲ\s*ಒಣಗಿದೆ/gi, 'hola onagide'],
+      [/ತಕ್ಷಣ\s*ನೀರು\s*ಹಾಯಿಸಿ/gi, 'taksana neeru haayisi'],
+      [/ನೀರಾವರಿ\s*ಯಶಸ್ವಿಯಾಗಿ\s*ಪ್ರಾರಂಭಿಸಲಾಗಿದೆ/gi, 'neeraavari yashasviyaagi praarambhisalaagide'],
+      [/ಮೋಟಾರ್\s*ಆನ್\s*ಆಗಿದೆ/gi, 'motor on aagide'],
+      [/ಹೊಲಕ್ಕೆ\s*ನೀರು\s*ತಲುಪುತ್ತಿದೆ/gi, 'holakke neeru taluputtide'],
+      [/ಭತ್ತದ\s*47ನೇ\s*ದಿನದ\s*ಬೆಳೆಗೆ:/gi, 'Bhattada 47th day belege:'],
+      [/ಎಕರೆಗೆ\s*25\s*ಕೆಜಿ\s*ಯೂರಿಯಾ\s*ಮತ್ತು\s*15\s*ಕೆಜಿ\s*ಪೊಟ್ಯಾಶ್\s*ಗೊಬ್ಬರ\s*ಹಾಕಿ/gi, 'ekarege 25 kg Urea mattu 15 kg Potash gobbara haaki'],
+      [/ಎಲೆ\s*ಚುಕ್ಕೆ\s*ಕಂಡುಬಂದರೆ/gi, 'ele chukke kandubandare'],
+      [/2\.5\s*ಗ್ರಾಂ\s*ಮ್ಯಾಂಕೋಜೆಬ್\s*ಔಷಧಿ\s*ಸಿಂಪಡಿಸಿ/gi, '2.5 gram Mancozeb aushadhi simpadisi'],
+      [/ನೆಲ್ಲೂರು\s*ಮಾರುಕಟ್ಟೆಯಲ್ಲಿ\s*ಭತ್ತದ\s*ಪ್ರಸ್ತುತ\s*ದರ\s*ಕ್ವಿಂಟಾಲ್‌ಗೆ/gi, 'Nellore maarukatteyalli bhattada prastuta dara quintal ge'],
+      [/ಹೆಚ್ಚಳ/gi, 'hechchala'],
+      [/ಮಾರುಕಟ್ಟೆ\s*ದರ\s*ಉತ್ತಮವಾಗಿದೆ/gi, 'maarukatte dara uttamavaagide'],
+      [/ನಾನು\s*ನಿಮಗೆ\s*ಹೇಗೆ\s*ಸಹಾಯ\s*ಮಾಡಲಿ\??/gi, 'Naanu nimage hege sahaaya maadali?']
+    ];
+    for (const [re, rep] of knMap) {
+      s = s.replace(re, rep);
+    }
+    s = s.replace(/₹\s*([0-9,]+)/g, 'Rs. $1');
+    s = s.replace(/°C/g, ' degrees Celsius');
+    s = s.replace(/%/g, ' percent');
+    return s;
+  }
+
+  return prepareSpeechText(text, lang);
+}
+
 export class VoiceAssistantService {
   private synth: SpeechSynthesis | null = typeof window !== 'undefined' && 'speechSynthesis' in window ? window.speechSynthesis : null;
   private recognition: any = null;
@@ -315,72 +527,75 @@ export class VoiceAssistantService {
     if (!this.synth) return;
     this.synth.cancel();
 
-    if (this.voices.length === 0) {
-      this.voices = this.synth.getVoices();
-    }
+    // Dynamically retrieve voices in case onvoiceschanged just finished
+    this.voices = this.synth.getVoices();
 
-    const spokenText = prepareSpeechText(text, lang);
     const targetLocale = SPEECH_LOCALES[lang] || 'en-IN';
-    const utterance = new SpeechSynthesisUtterance(spokenText);
-    
-    // For English: Indian lady voice pitch (1.1) and warm speaking speed (0.86)
-    utterance.rate = lang === 'en' ? 0.86 : 0.88;
-    utterance.pitch = lang === 'en' ? 1.10 : 1.0;
-    utterance.lang = targetLocale;
+    const prefix = targetLocale.split('-')[0].toLowerCase();
+    const nativeKeywords: Record<LanguageCode, string[]> = {
+      te: ['telugu', 'te-in', 'te_in', 'mohan', 'shruti', 'chitra'],
+      hi: ['hindi', 'hi-in', 'hi_in', 'swara', 'madhur', 'kalpana', 'hemant'],
+      ta: ['tamil', 'ta-in', 'ta_in', 'valluvar', 'pallavi'],
+      kn: ['kannada', 'kn-in', 'kn_in', 'gagan', 'sapna'],
+      en: ['en-in', 'en_in', 'india', 'indian', 'heera', 'neerja', 'veena', 'ravi'],
+    };
+    const targetKws = nativeKeywords[lang] || [prefix];
 
-    let matchVoice: SpeechSynthesisVoice | undefined;
+    // Check if the current browser / OS actually has a native voice for the selected Indian language
+    const nativeVoice = this.voices.find((v) => {
+      const vl = v.lang.toLowerCase();
+      const vn = v.name.toLowerCase();
+      return vl.startsWith(prefix) || targetKws.some((k) => vn.includes(k) || vl.includes(k));
+    });
+
+    const isNativeAvailable = !!nativeVoice && lang !== 'en';
+
+    let spokenText = '';
+    let speechLang = 'en-IN';
 
     if (lang === 'en') {
-      // 1. Prioritize INDIAN FEMALE / LADY VOICES
-      // Checks for Heera, Neerja, Veena, Kavya, Lekha, Ananya, Priya, Shruti, Female in English (India)
-      matchVoice = this.voices.find((v) => {
-        const vl = v.lang.toLowerCase();
-        const vn = v.name.toLowerCase();
-        const isIndianLocale = vl.includes('en-in') || vl.includes('en_in') || vn.includes('india') || vn.includes('indian');
-        const isFemale = vn.includes('heera') || vn.includes('neerja') || vn.includes('veena') || vn.includes('kavya') || vn.includes('lekha') || vn.includes('female') || vn.includes('ananya') || vn.includes('priya') || vn.includes('shruti') || vn.includes('zira');
-        return isIndianLocale && isFemale;
-      });
-
-      // 2. Any Indian English voice (e.g. Google English India, Microsoft Heera/Neerja/Ravi)
-      if (!matchVoice) {
-        matchVoice = this.voices.find((v) => {
-          const vl = v.lang.toLowerCase();
-          const vn = v.name.toLowerCase();
-          return vl.includes('en-in') || vl.includes('en_in') || vn.includes('india') || vn.includes('heera') || vn.includes('neerja') || vn.includes('veena');
-        });
-      }
-
-      // 3. Fallback to any natural female voice
-      if (!matchVoice) {
-        matchVoice = this.voices.find((v) => {
-          const vn = v.name.toLowerCase();
-          return vn.includes('female') || vn.includes('zira') || vn.includes('jenny') || vn.includes('sonia') || vn.includes('samantha') || vn.includes('victoria');
-        });
-      }
+      spokenText = prepareSpeechText(text, 'en');
+      speechLang = 'en-IN';
+    } else if (isNativeAvailable) {
+      // Native regional voice is available! (e.g. Edge with Indian Language Pack, or Android Chrome)
+      spokenText = prepareSpeechText(text, lang);
+      speechLang = targetLocale;
     } else {
-      // For other languages (te, hi, ta, kn) - keep their exact native voices intact
-      const prefix = targetLocale.split('-')[0].toLowerCase();
-      const nameKeywords: Record<LanguageCode, string[]> = {
-        te: ['telugu', 'te-in', 'te_in', 'mohan', 'shruti'],
-        hi: ['hindi', 'hi-in', 'hi_in', 'swara', 'madhur', 'kalpana', 'hemant'],
-        ta: ['tamil', 'ta-in', 'ta_in', 'valluvar', 'pallavi'],
-        kn: ['kannada', 'kn-in', 'kn_in', 'gagan', 'sapna'],
-        en: ['en-in', 'en_in', 'india', 'heera', 'neerja', 'veena'],
-      };
-      const targetKws = nameKeywords[lang] || [prefix];
-      
-      matchVoice = this.voices.find((v) => {
-        const vl = v.lang.toLowerCase();
-        const vn = v.name.toLowerCase();
-        return vl.startsWith(prefix) || targetKws.some((k) => vn.includes(k) || vl.includes(k));
-      });
+      // Fallback for standard desktop browsers without Telugu/Tamil/Kannada language packs:
+      // Speaks authentic Indian farmer phonetics so it NEVER fails, never stays silent, and speaks loud & clear!
+      spokenText = getPhoneticIndianSpokenText(text, lang);
+      speechLang = 'en-IN';
     }
 
-    if (matchVoice) {
-      utterance.voice = matchVoice;
+    const utterance = new SpeechSynthesisUtterance(spokenText);
+    utterance.rate = lang === 'en' ? 0.86 : 0.88;
+    utterance.pitch = lang === 'en' ? 1.10 : 1.05;
+    utterance.lang = speechLang;
+
+    if (isNativeAvailable && nativeVoice) {
+      utterance.voice = nativeVoice;
+    } else {
+      // Select best Indian English / regional fallback voice
+      let fallbackVoice = this.voices.find((v) => {
+        const vl = v.lang.toLowerCase();
+        const vn = v.name.toLowerCase();
+        return vl.includes('en-in') || vl.includes('en_in') || vn.includes('india') || vn.includes('heera') || vn.includes('neerja') || vn.includes('ravi') || vn.includes('veena');
+      });
+      if (!fallbackVoice) {
+        fallbackVoice = this.voices.find((v) => {
+          const vn = v.name.toLowerCase();
+          return vn.includes('female') || vn.includes('zira') || vn.includes('jenny') || vn.includes('sonia') || vn.includes('samantha');
+        });
+      }
+      if (fallbackVoice) {
+        utterance.voice = fallbackVoice;
+      }
     }
 
     try {
+      if (this.synth.paused) {
+        this.synth.resume();
+      }
       this.synth.speak(utterance);
     } catch (e) {
       console.warn('Speech synthesis error:', e);

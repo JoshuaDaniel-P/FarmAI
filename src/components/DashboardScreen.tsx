@@ -100,10 +100,10 @@ export const DashboardScreen: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-center py-sm">
-              <div className="relative w-40 h-40 flex items-center justify-center">
+            <div className="flex items-center justify-center py-md">
+              <div className="relative w-56 h-56 sm:w-60 sm:h-60 md:w-64 md:h-64 flex items-center justify-center">
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" fill="none" r="40" stroke="#3e322f" strokeWidth="8"></circle>
+                  <circle cx="50" cy="50" fill="none" r="40" stroke="#3e322f" strokeWidth="7"></circle>
                   <circle
                     className="gauge-ring"
                     cx="50"
@@ -111,16 +111,17 @@ export const DashboardScreen: React.FC = () => {
                     fill="none"
                     r="40"
                     stroke={sensors.cropHealthPercent >= 80 ? '#90d792' : '#f2cc81'}
+                    strokeDasharray={251.2}
                     strokeDashoffset={251.2 * (1 - sensors.cropHealthPercent / 100)}
                     strokeLinecap="round"
-                    strokeWidth="8"
+                    strokeWidth="7"
                   ></circle>
                 </svg>
-                <div className="absolute flex flex-col items-center">
-                  <span className="font-headline-lg-mobile md:font-headline-lg text-headline-lg text-primary">
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center pointer-events-none">
+                  <span className="font-headline-lg text-[38px] sm:text-[44px] md:text-[48px] leading-none text-primary font-bold tracking-tight">
                     {sensors.cropHealthPercent}%
                   </span>
-                  <span className="font-label-sm text-label-sm text-on-surface-variant tracking-widest uppercase">
+                  <span className="font-label-sm text-[11px] sm:text-[12px] md:text-[13px] text-on-surface-variant tracking-wider uppercase font-semibold mt-1.5 max-w-[150px] sm:max-w-[170px] leading-snug">
                     {sensors.cropHealthStatus === 'GOOD' ? t('good', selectedLanguage) : t('attentionNeeded', selectedLanguage)}
                   </span>
                 </div>

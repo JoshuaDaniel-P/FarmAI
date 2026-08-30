@@ -6,7 +6,7 @@ import { sensorService } from '../services/sensorService';
 import { voiceAssistantService } from '../services/voiceAssistantService';
 import { DiseaseAnalysisResult } from '../services/imageAnalysisService';
 
-export type ScreenType = 'login' | 'field-setup' | 'dashboard' | 'disease-weed' | 'assistant' | 'analytics';
+export type ScreenType = 'login' | 'field-setup' | 'day-wise-track' | 'dashboard' | 'disease-weed' | 'assistant' | 'analytics';
 
 interface FarmContextType {
   isLoggedIn: boolean;

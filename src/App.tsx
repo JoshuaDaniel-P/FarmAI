@@ -4,6 +4,7 @@ import { Navigation } from './components/Navigation';
 import { LoginScreen } from './components/LoginScreen';
 import { FieldSetupScreen } from './components/FieldSetupScreen';
 import { DashboardScreen } from './components/DashboardScreen';
+import { DayWiseTrackScreen } from './components/DayWiseTrackScreen';
 import { DiseaseWeedScreen } from './components/DiseaseWeedScreen';
 import { AIAssistantScreen } from './components/AIAssistantScreen';
 import { AnalyticsMarketScreen } from './components/AnalyticsMarketScreen';
@@ -17,6 +18,8 @@ const MainContainer: React.FC = () => {
         return <LoginScreen />;
       case 'field-setup':
         return <FieldSetupScreen />;
+      case 'day-wise-track':
+        return <DayWiseTrackScreen />;
       case 'dashboard':
         return <DashboardScreen />;
       case 'disease-weed':

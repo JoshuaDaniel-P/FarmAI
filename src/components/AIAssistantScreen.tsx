@@ -115,15 +115,51 @@ export const AIAssistantScreen: React.FC = () => {
     },
     {
       label: selectedLanguage === 'te'
-        ? 'ఈరోజు వాతావరణం మరియు ఉష్ణోగ్రత'
+        ? 'రేపటి వాతావరణం మరియు వర్ష సూచన'
         : selectedLanguage === 'hi'
-        ? 'आज का मौसम और तापमान'
+        ? 'कल का मौसम और बारिश का पूर्वानुमान'
         : selectedLanguage === 'ta'
-        ? 'இன்றைய வானிலை மற்றும் வெப்பநிலை'
+        ? 'நாளை வானிலை மற்றும் மழை முன்னறிவிப்பு'
         : selectedLanguage === 'kn'
-        ? 'ಇಂದಿನ ಹವಾಮಾನ ಮತ್ತು ತಾಪಮಾನ'
-        : 'Today weather and temperature',
-      icon: 'thermostat',
+        ? 'ನಾಳೆಯ ಹವಾಮಾನ ಮತ್ತು ಮಳೆ ಮುನ್ಸೂಚನೆ'
+        : 'What is the weather forecast for tomorrow?',
+      icon: 'thunderstorm',
+    },
+    {
+      label: selectedLanguage === 'te'
+        ? 'నా నేల పరీక్ష వివరాలు చూపించు'
+        : selectedLanguage === 'hi'
+        ? 'मेरी मिट्टी की जांच का विवरण दिखाओ'
+        : selectedLanguage === 'ta'
+        ? 'என் மண் பரிசோதனை விவரங்களைக் காட்டு'
+        : selectedLanguage === 'kn'
+        ? 'ನನ್ನ ಮಣ್ಣಿನ ಪರೀಕ್ಷೆಯ ವಿವರಗಳನ್ನು ತೋರಿಸಿ'
+        : 'Show my soil test details',
+      icon: 'biotech',
+    },
+    {
+      label: selectedLanguage === 'te'
+        ? 'దగ్గరలోని ఎరువుల దుకాణం ఎక్కడ ఉంది?'
+        : selectedLanguage === 'hi'
+        ? 'पास की उर्वरक दुकान कहाँ है?'
+        : selectedLanguage === 'ta'
+        ? 'அருகிலுள்ள உரக்கடை எங்கே உள்ளது?'
+        : selectedLanguage === 'kn'
+        ? 'ಹತ್ತಿರದ ರಸಗೊಬ್ಬರ ಅಂಗಡಿ ಎಲ್ಲಿದೆ?'
+        : 'Where is the nearest fertilizer shop?',
+      icon: 'local_shipping',
+    },
+    {
+      label: selectedLanguage === 'te'
+        ? 'పంటను అమ్మడానికి దగ్గరలోని మార్కెట్ యార్డ్'
+        : selectedLanguage === 'hi'
+        ? 'फसल बेचने के लिए नजदीकी मंडी'
+        : selectedLanguage === 'ta'
+        ? 'பயிர் விற்க அருகிலுள்ள சந்தை'
+        : selectedLanguage === 'kn'
+        ? 'ಬೆಳೆ ಮಾರಾಟ ಮಾಡಲು ಹತ್ತಿರದ ಮಾರುಕಟ್ಟೆ'
+        : 'Where is the nearest mandi to sell my crop?',
+      icon: 'storefront',
     },
   ];
 

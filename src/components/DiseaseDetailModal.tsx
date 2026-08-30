@@ -44,77 +44,98 @@ export const DiseaseDetailModal: React.FC<Props> = ({ disease, onClose }) => {
           </div>
           <div>
             <h3 className="font-headline-sm text-headline-sm text-on-surface">{translateText(disease.diseaseName, selectedLanguage)}</h3>
-            <p className="font-body-md text-body-md text-on-surface-variant">{translateCrop(disease.crop, selectedLanguage)} {t('intelligenceModule', selectedLanguage)}</p>
+            <p className="font-body-md text-body-md text-on-surface-variant">{translateCrop(disease.crop, selectedLanguage)} • {disease.typicalRiskPeriod}</p>
           </div>
         </div>
 
         <div className="space-y-md">
-          {/* Risk Level & Prediction */}
-          <div className="bg-surface-variant p-sm rounded-xl border border-outline-variant/30 flex flex-col gap-xs">
-            <div className="flex justify-between items-center">
-              <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">{t('currentRisk', selectedLanguage)}</span>
-              <span className={`px-sm py-xs rounded-lg font-label-lg text-label-lg ${disease.riskBadgeColor}`}>
-                {translateRisk(disease.riskLevel, selectedLanguage)}
-              </span>
-            </div>
-            <p className="font-body-md text-body-md text-on-surface mt-1">{translateText(disease.currentRiskPrediction, selectedLanguage)}</p>
+          {/* Risk Level Badge */}
+          <div className="bg-surface-variant p-sm rounded-xl border border-outline-variant/30 flex justify-between items-center">
+            <span className="font-label-sm text-xs text-on-surface-variant uppercase tracking-wider">Current Risk Level</span>
+            <span className={`px-3 py-1 rounded-full font-bold text-xs ${disease.riskBadgeColor}`}>
+              {translateRisk(disease.riskLevel, selectedLanguage)} Risk
+            </span>
           </div>
 
-          {/* Symptoms */}
-          <div>
-            <h4 className="font-label-lg text-label-lg text-on-surface mb-2 uppercase tracking-wider">{t('observedSymptoms', selectedLanguage)}</h4>
-            <ul className="space-y-2">
-              {disease.symptoms.map((s, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-on-surface font-body-md">
-                  <span className="material-symbols-outlined text-primary text-lg mt-0.5">check_circle</span>
+          {/* 1. WHAT YOU MAY SEE (Symptoms) */}
+          <div className="bg-surface-variant/50 p-md rounded-xl border border-outline-variant/30">
+            <h4 className="font-bold text-xs text-primary uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-base">visibility</span>
+              <span>What You May See</span>
+            </h4>
+            <ul className="space-y-1.5 text-xs text-on-surface">
+              {(disease.whatYouMaySee || disease.symptoms).map((s, idx) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="material-symbols-outlined text-primary text-base shrink-0 mt-0.5">check_circle</span>
                   <span>{translateText(s, selectedLanguage)}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Cause & Favorable Conditions */}
+          {/* 2. RISK PERIOD & WHY IT HAPPENS */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-sm">
             <div className="bg-surface-variant p-sm rounded-xl border border-outline-variant/30">
-              <h5 className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">{t('primaryCause', selectedLanguage)}</h5>
-              <p className="font-body-md text-on-surface">{translateText(disease.primaryCause, selectedLanguage)}</p>
+              <h5 className="font-bold text-[11px] text-on-surface-variant uppercase tracking-wider mb-1 flex items-center gap-1">
+                <span className="material-symbols-outlined text-sm text-tertiary">calendar_clock</span>
+                <span>Risk Period / Conditions</span>
+              </h5>
+              <p className="text-xs text-on-surface leading-snug">{translateText(disease.riskPeriod || disease.comesWhen, selectedLanguage)}</p>
             </div>
+
             <div className="bg-surface-variant p-sm rounded-xl border border-outline-variant/30">
-              <h5 className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">{t('favorableConditions', selectedLanguage)}</h5>
-              <p className="font-body-md text-on-surface">{translateText(disease.favorableConditions, selectedLanguage)}</p>
+              <h5 className="font-bold text-[11px] text-on-surface-variant uppercase tracking-wider mb-1 flex items-center gap-1">
+                <span className="material-symbols-outlined text-sm text-tertiary">help_outline</span>
+                <span>Why It Happens</span>
+              </h5>
+              <p className="text-xs text-on-surface leading-snug">{translateText(disease.whyItHappens || disease.primaryCause, selectedLanguage)}</p>
             </div>
           </div>
 
-          {/* Precautions */}
-          <div>
-            <h4 className="font-label-lg text-label-lg text-on-surface mb-2 uppercase tracking-wider">{t('preventivePrecautions', selectedLanguage)}</h4>
-            <ul className="space-y-2">
+          {/* 3. PRECAUTION */}
+          <div className="bg-surface-variant/50 p-md rounded-xl border border-outline-variant/30">
+            <h4 className="font-bold text-xs text-tertiary uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-base">shield</span>
+              <span>Precautions</span>
+            </h4>
+            <ul className="space-y-1.5 text-xs text-on-surface-variant">
               {disease.precautions.map((p, idx) => (
-                <li key={idx} className="flex items-start gap-2 text-on-surface-variant font-body-md">
-                  <span className="material-symbols-outlined text-tertiary text-lg mt-0.5">shield</span>
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="material-symbols-outlined text-tertiary text-base shrink-0 mt-0.5">verified_user</span>
                   <span>{translateText(p, selectedLanguage)}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Recommended Treatment */}
-          <div className="bg-primary-container/40 border border-primary/30 p-md rounded-xl">
-            <h4 className="font-headline-sm text-headline-sm text-primary mb-1">{t('recommendedTreatment', selectedLanguage)}</h4>
-            <p className="font-body-lg text-on-primary-container leading-relaxed">{translateText(disease.treatment, selectedLanguage)}</p>
+          {/* 4. CURE / MANAGEMENT */}
+          <div className="bg-primary-container/25 p-md rounded-xl border border-primary/40">
+            <h4 className="font-bold text-xs text-primary uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-base">healing</span>
+              <span>Cure & Chemical / Organic Management</span>
+            </h4>
+            <div className="text-xs text-on-surface space-y-1.5">
+              {(disease.cureAndManagement || [disease.treatment]).map((c, idx) => (
+                <div key={idx} className="flex items-start gap-2">
+                  <span className="material-symbols-outlined text-primary text-base shrink-0 mt-0.5">medication</span>
+                  <span>{translateText(c, selectedLanguage)}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="mt-md pt-sm border-t border-surface-variant flex justify-end">
-          <button
-            onClick={onClose}
-            className="px-md py-sm bg-primary text-on-primary font-label-lg text-label-lg rounded-lg hover:bg-primary-fixed transition-colors"
-          >
-            {t('closeAnalysis', selectedLanguage)}
-          </button>
+          {/* 5. WHEN TO SEEK HELP */}
+          {disease.whenToSeekHelp && (
+            <div className="p-3 rounded-xl bg-error-container/15 border border-error/30 flex items-start gap-2 text-xs">
+              <span className="material-symbols-outlined text-error text-base shrink-0 mt-0.5">info</span>
+              <div>
+                <span className="font-bold text-error uppercase text-[10px]">When to Seek Expert Help:</span>
+                <p className="text-on-surface-variant mt-0.5">{disease.whenToSeekHelp}</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
-

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useFarm } from '../context/FarmContext';
-import { INITIAL_MARKET_RATES, SUITABLE_CROP_SUGGESTIONS } from '../services/mockData';
+import { EXPANDED_MARKET_RATES, NEARBY_SELLING_MARKETS } from '../services/marketService';
+import { NEARBY_FERTILIZER_SHOPS } from '../services/agriShopsService';
 import { t, translateCrop, translateName, translateText } from '../services/i18n';
 import { LanguageSelectorModal } from './LanguageSelectorModal';
+import { FieldSwitcher } from './FieldSwitcher';
 
 export const AnalyticsMarketScreen: React.FC = () => {
   const {
     farmer,
+    activeField,
     cropHistory,
     addCropHistoryRecord,
     selectedLanguage,
@@ -14,16 +17,19 @@ export const AnalyticsMarketScreen: React.FC = () => {
     isLanguageModalOpen,
     setIsLanguageModalOpen,
   } = useFarm();
-  const [selectedCropMarket, setSelectedCropMarket] = useState<string>('Paddy (Grade A)');
+
+  const [activeSubTab, setActiveSubTab] = useState<'markets' | 'history' | 'selling_mandis' | 'fertilizer_shops'>('markets');
+  const [selectedCropMarket, setSelectedCropMarket] = useState<string>(EXPANDED_MARKET_RATES[0].cropName);
   const [showLogModal, setShowLogModal] = useState<boolean>(false);
 
-  const [newCropName, setNewCropName] = useState<string>('Paddy 2026');
+  // New Harvest Log Form State
+  const [newCropName, setNewCropName] = useState<string>(`${activeField.activeCrop} 2026`);
   const [expectedTons, setExpectedTons] = useState<number>(5.0);
   const [actualTons, setActualTons] = useState<number>(4.4);
   const [lossReason, setLossReason] = useState<string>('Water Deficit & Heat Stress');
 
-  const activeMarket = INITIAL_MARKET_RATES.find((m) => m.cropName === selectedCropMarket) || INITIAL_MARKET_RATES[0];
-  const primaryHistory = cropHistory[0];
+  const activeMarket = EXPANDED_MARKET_RATES.find((m) => m.cropName === selectedCropMarket) || EXPANDED_MARKET_RATES[0];
+  const primaryHistory = activeField.previousCropHistory[0] || cropHistory[0];
 
   const handleLogHarvest = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,8 +38,9 @@ export const AnalyticsMarketScreen: React.FC = () => {
 
     addCropHistoryRecord({
       id: `ch-${Date.now()}`,
+      fieldId: activeField.id,
       yearLabel: newCropName,
-      cropName: farmer.activeCrop,
+      cropName: activeField.activeCrop,
       expectedYieldTons: expectedTons,
       actualYieldTons: actualTons,
       efficiencyPercent: eff,
@@ -51,128 +58,155 @@ export const AnalyticsMarketScreen: React.FC = () => {
   };
 
   return (
-    <div className="bg-background text-on-surface font-body-md text-body-md min-h-screen antialiased selection:bg-primary-container selection:text-on-primary-container flex flex-col pb-[90px] md:pb-8">
+    <div className="bg-background text-on-surface font-body-md min-h-screen antialiased flex flex-col pb-[90px] md:pb-8">
       {/* TopAppBar */}
-      <header className="sticky top-0 w-full z-50 bg-background flex flex-col justify-between px-margin-mobile pt-sm pb-xs w-full max-w-screen-xl mx-auto shadow-[0_4px_30px_rgba(0,0,0,0.5)] border-b border-surface-container-highest/40">
-        <div className="flex items-center justify-between h-14">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden border border-outline-variant bg-surface-container-high flex items-center justify-center">
-              <img
-                alt="Farmer Portrait"
-                className="w-full h-full object-cover"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrbFlHSeABxMdVbLrZ3je4FJ3-0tUoTPMzvpy8CTOvEr1KGXHjFuRaj29KENzaSz6vx7pz1qZ2bAc8HEALMJFgKPqAeWrUR1dUciNrpNyAKybA6nZGi4rGzsJTkpQ5VhngdA7-7gqNvMq9DRj5-nMRL9FRAN_hcZ5pv09xliGngIjaBmQ7R8-E--rpaO8W3E-SFN1hsX6oaB3aeudJqF-37Ot4kc7BOEcXzmFUinyDwl2mTdkY1Q9Q"
-              />
-            </div>
-            <h1 className="font-headline-md text-headline-md-mobile text-primary dark:text-primary-fixed m-0">
-              {t('goodMorning', selectedLanguage)}, {translateName(farmer.name, selectedLanguage)}
-            </h1>
+      <header className="sticky top-0 w-full z-40 bg-background border-b border-surface-container-highest/40">
+        <div className="flex items-center justify-between px-margin-mobile pt-sm pb-xs w-full max-w-screen-xl mx-auto h-16">
+          <div className="flex items-center gap-2 min-w-0">
+            <FieldSwitcher />
           </div>
 
           <div className="flex items-center gap-2">
-            {/* TOP-RIGHT TRANSLATE PIN BUTTON */}
+            {/* Translate Button */}
             <button
               onClick={() => setIsLanguageModalOpen(true)}
               className="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center border border-primary/30 transition-all shadow-sm"
               title={t('selectLanguage', selectedLanguage)}
             >
-              <span className="material-symbols-outlined text-[24px]">translate</span>
+              <span className="material-symbols-outlined text-[22px]">translate</span>
             </button>
 
-            <button
-              onClick={() => setShowLogModal(true)}
-              className="px-3 py-1 bg-primary text-on-primary font-label-sm text-label-sm rounded-full flex items-center gap-1 shadow-sm"
-            >
-              <span className="material-symbols-outlined text-sm">add</span>
-              {t('logHarvest', selectedLanguage)}
-            </button>
+            {activeSubTab === 'history' && (
+              <button
+                onClick={() => setShowLogModal(true)}
+                className="px-3 py-1.5 bg-primary text-on-primary font-bold text-xs rounded-full flex items-center gap-1 shadow-sm hover:bg-primary-fixed"
+              >
+                <span className="material-symbols-outlined text-sm">add</span>
+                <span>{t('logHarvest', selectedLanguage) || 'Log Harvest'}</span>
+              </button>
+            )}
           </div>
         </div>
       </header>
 
       {/* Main Content Canvas */}
-      <main className="flex-1 w-full max-w-screen-md mx-auto px-margin-mobile pt-md flex flex-col gap-md">
-        {/* 1. Crop History Section */}
-        <section className="flex flex-col gap-sm">
-          <div className="flex justify-between items-center">
-            <h2 className="font-headline-md text-headline-md text-on-surface tracking-tight">
-              {t('cropHistoryYield', selectedLanguage)}
-            </h2>
-          </div>
+      <main className="flex-1 w-full max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop py-md flex flex-col gap-md">
+        {/* Navigation Sub-Tabs */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-surface-container p-1.5 rounded-2xl border border-surface-variant">
+          <button
+            onClick={() => setActiveSubTab('markets')}
+            className={`py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
+              activeSubTab === 'markets'
+                ? 'bg-primary text-on-primary shadow-sm'
+                : 'text-on-surface-variant hover:text-on-surface'
+            }`}
+          >
+            <span className="material-symbols-outlined text-lg">trending_up</span>
+            <span>Mandi Rates</span>
+          </button>
 
-          <div className="bg-surface-container rounded-xl border border-surface-variant overflow-hidden relative shadow-lg">
-            <div
-              className="h-24 w-full relative bg-cover bg-center"
-              style={{
-                backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuA6k_M6nwVNHiGoFviqFP_vCzWCtgf3XqLTl2_Wp_NszpgFZ-fh2h2z6pj7dGTpZKP5hD57am8egOhnNW86PrYRJOXY1M3DACkovUDYElGF54_DxbmlbDUvDQv4jhyZ-NwZ73gMhVWqhkJk-gIRos2sSqVJd74hVs0ABcHEhatTF8TxwDDjRAzRxD_HltOvDuJvkZFB4UqF6x2Mikc7Orx5_onHUsOIcjqw-J5P5PVHVOlPa5E3muYb')`,
-              }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent"></div>
-              <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1" }}>
-                  grass
-                </span>
-                <h3 className="font-headline-sm text-headline-sm text-primary">{primaryHistory.yearLabel}</h3>
-              </div>
+          <button
+            onClick={() => setActiveSubTab('selling_mandis')}
+            className={`py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
+              activeSubTab === 'selling_mandis'
+                ? 'bg-primary text-on-primary shadow-sm'
+                : 'text-on-surface-variant hover:text-on-surface'
+            }`}
+          >
+            <span className="material-symbols-outlined text-lg">storefront</span>
+            <span>Nearby Mandis</span>
+          </button>
+
+          <button
+            onClick={() => setActiveSubTab('fertilizer_shops')}
+            className={`py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
+              activeSubTab === 'fertilizer_shops'
+                ? 'bg-primary text-on-primary shadow-sm'
+                : 'text-on-surface-variant hover:text-on-surface'
+            }`}
+          >
+            <span className="material-symbols-outlined text-lg">local_shipping</span>
+            <span>Agri Stores</span>
+          </button>
+
+          <button
+            onClick={() => setActiveSubTab('history')}
+            className={`py-2.5 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all ${
+              activeSubTab === 'history'
+                ? 'bg-primary text-on-primary shadow-sm'
+                : 'text-on-surface-variant hover:text-on-surface'
+            }`}
+          >
+            <span className="material-symbols-outlined text-lg">history</span>
+            <span>Yield History</span>
+          </button>
+        </div>
+
+        {/* TAB 1: MANDI MARKET RATES (Requirements 20) */}
+        {activeSubTab === 'markets' && (
+          <div className="flex flex-col gap-md">
+            {/* Commodity Selector Chips */}
+            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+              {EXPANDED_MARKET_RATES.map((m) => (
+                <button
+                  key={m.cropName}
+                  onClick={() => setSelectedCropMarket(m.cropName)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+                    selectedCropMarket === m.cropName
+                      ? 'bg-primary text-on-primary shadow-sm'
+                      : 'bg-surface-container text-on-surface-variant border border-surface-variant hover:border-primary/40'
+                  }`}
+                >
+                  <span>{m.cropName.split('(')[0]}</span>
+                  <span className={`text-[10px] ${m.changePercent >= 0 ? 'text-primary-fixed' : 'text-error'}`}>
+                    {m.changePercent >= 0 ? `+${m.changePercent}%` : `${m.changePercent}%`}
+                  </span>
+                </button>
+              ))}
             </div>
 
-            <div className="p-4 flex flex-col gap-md">
-              <div className="grid grid-cols-3 gap-2">
-                <div className="flex flex-col">
-                  <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
-                    {t('expected', selectedLanguage)}
+            {/* Active Market Spotlight Card */}
+            <div className="p-md rounded-2xl bg-surface-container border border-surface-variant flex flex-col gap-md shadow-md">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <span className="text-[11px] font-bold text-primary uppercase tracking-wider">
+                    {activeMarket.mandiLocation}
                   </span>
-                  <span className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mt-1">
-                    {primaryHistory.expectedYieldTons}
-                    <span className="text-lg text-on-surface-variant">{t('tonsUnit', selectedLanguage)}</span>
-                  </span>
+                  <h3 className="font-headline-sm text-lg font-bold text-on-surface mt-0.5">{activeMarket.cropName}</h3>
+                  <span className="text-[11px] text-on-surface-variant">Last Updated: {activeMarket.lastUpdated}</span>
                 </div>
-                <div className="flex flex-col border-l border-surface-variant pl-4">
-                  <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
-                    {t('actual', selectedLanguage)}
+
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-bold text-primary font-headline-lg">
+                    ₹{activeMarket.currentRate.toLocaleString()}
                   </span>
-                  <span className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mt-1">
-                    {primaryHistory.actualYieldTons}
-                    <span className="text-lg text-on-surface-variant">{t('tonsUnit', selectedLanguage)}</span>
-                  </span>
-                </div>
-                <div className="flex flex-col border-l border-surface-variant pl-4">
-                  <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
-                    {t('efficiency', selectedLanguage)}
-                  </span>
-                  <span className="font-headline-lg-mobile text-headline-lg-mobile text-primary mt-1">
-                    {primaryHistory.efficiencyPercent}
-                    <span className="text-lg text-primary">%</span>
+                  <span className="text-xs text-on-surface-variant font-bold">/ {activeMarket.unit}</span>
+                  <span
+                    className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                      activeMarket.changePercent >= 0
+                        ? 'bg-primary/20 text-primary border border-primary/30'
+                        : 'bg-error-container/30 text-error border border-error/40'
+                    }`}
+                  >
+                    {activeMarket.changePercent >= 0 ? `+${activeMarket.changePercent}%` : `${activeMarket.changePercent}%`}
                   </span>
                 </div>
               </div>
 
-              <div className="flex flex-col gap-3 pt-4 border-t border-surface-variant/50">
-                <h4 className="font-label-lg text-label-lg text-on-surface-variant">
-                  {t('yieldLossFactors', selectedLanguage)} ({(primaryHistory.expectedYieldTons - primaryHistory.actualYieldTons).toFixed(1)}{t('tonsUnit', selectedLanguage)})
-                </h4>
-                <div className="flex flex-col gap-2">
-                  {primaryHistory.yieldLossFactors.map((factor, idx) => (
-                    <div key={idx} className="flex flex-col gap-1">
-                      <div className="flex justify-between text-body-sm text-on-surface">
-                        <span className="flex items-center gap-1">
-                          <span className="material-symbols-outlined text-error text-[18px]">{factor.icon}</span>
-                          {translateText(factor.factorName, selectedLanguage)}
-                        </span>
-                        <span className="font-bold text-on-surface">
-                          {factor.lossTons}{t('tonsUnit', selectedLanguage)}
-                        </span>
-                      </div>
-                      <div className="w-full h-2.5 bg-surface-container-highest rounded-full overflow-hidden">
+              {/* Price Trend Chart Bar Simulation */}
+              <div className="flex flex-col gap-2 pt-2 border-t border-surface-variant/40">
+                <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+                  4-Month APMC Mandi Price Trend
+                </span>
+                <div className="grid grid-cols-4 gap-2 text-center">
+                  {activeMarket.historicalData.map((h, i) => (
+                    <div key={i} className="p-3 rounded-xl bg-surface-variant/70 border border-outline-variant/30 flex flex-col items-center">
+                      <span className="text-[11px] text-on-surface-variant font-bold">{h.label}</span>
+                      <span className="text-sm font-bold text-on-surface my-1">₹{h.rate.toLocaleString()}</span>
+                      <div className="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden mt-1">
                         <div
-                          className={`h-full ${factor.color} rounded-full`}
-                          style={{
-                            width: `${Math.min(
-                              100,
-                              Math.round(
-                                (factor.lossTons / (primaryHistory.expectedYieldTons - primaryHistory.actualYieldTons)) * 100
-                              )
-                            )}%`,
-                          }}
+                          className="bg-primary h-full rounded-full"
+                          style={{ width: `${Math.min(100, Math.max(20, (h.rate / (activeMarket.currentRate * 1.1)) * 100))}%` }}
                         ></div>
                       </div>
                     </div>
@@ -180,180 +214,306 @@ export const AnalyticsMarketScreen: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </section>
 
-        {/* 2. Market Price Section */}
-        <section className="flex flex-col gap-sm">
-          <div className="flex justify-between items-center">
-            <h2 className="font-headline-md text-headline-md text-on-surface tracking-tight">
-              {t('marketPriceTrends', selectedLanguage)}
-            </h2>
-            <select
-              value={selectedCropMarket}
-              onChange={(e) => setSelectedCropMarket(e.target.value)}
-              className="bg-surface-container border border-surface-variant text-on-surface text-label-sm rounded-lg px-2 py-1 focus:outline-none"
-            >
-              {INITIAL_MARKET_RATES.map((m) => (
-                <option key={m.cropName} value={m.cropName}>
-                  {translateText(m.cropName, selectedLanguage)}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="bg-surface-container rounded-xl border border-surface-variant p-4 flex flex-col gap-4 shadow-lg">
-            <div className="flex justify-between items-start">
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary text-[20px]">trending_up</span>
-                  <span className="font-label-lg text-label-lg text-on-surface">{translateText(activeMarket.cropName, selectedLanguage)} {t('rate', selectedLanguage)}</span>
-                </div>
-                <span className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mt-1">
-                  ₹{activeMarket.currentRate.toLocaleString('en-IN')}{' '}
-                  <span className="font-body-md text-body-md text-on-surface-variant font-normal">/ {t('unitQtl', selectedLanguage)}</span>
-                </span>
-              </div>
-              <div className="bg-primary-container/30 px-3 py-1 rounded-full border border-primary/20">
-                <span className="font-label-sm text-label-sm text-primary">
-                  {activeMarket.changePercent >= 0 ? `+${activeMarket.changePercent}%` : `${activeMarket.changePercent}%`}
-                </span>
-              </div>
-            </div>
-
-            <div className="h-32 w-full mt-2 relative">
-              <div className="absolute inset-0 flex flex-col justify-between">
-                <div className="w-full border-t border-surface-variant/30"></div>
-                <div className="w-full border-t border-surface-variant/30"></div>
-                <div className="w-full border-t border-surface-variant/30"></div>
-              </div>
-
-              <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 40">
-                <path
-                  d="M0,35 C10,30 20,38 30,25 C40,12 50,20 60,15 C70,10 80,18 90,5 L100,0 L100,40 L0,40 Z"
-                  fill="url(#chart-gradient)"
-                  opacity="0.2"
-                ></path>
-                <path
-                  d="M0,35 C10,30 20,38 30,25 C40,12 50,20 60,15 C70,10 80,18 90,5 L100,0"
-                  fill="none"
-                  stroke="#90d792"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  vectorEffect="non-scaling-stroke"
-                ></path>
-                <defs>
-                  <linearGradient id="chart-gradient" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#90d792"></stop>
-                    <stop offset="100%" stopColor="#1b110f" stopOpacity="0"></stop>
-                  </linearGradient>
-                </defs>
-              </svg>
-
-              <div className="absolute -bottom-6 w-full flex justify-between px-1">
-                {activeMarket.historicalData.map((d, i) => (
-                  <span key={i} className="font-label-sm text-label-sm text-on-surface-variant text-[10px]">
-                    {d.label === 'Jun' ? t('monthJun', selectedLanguage) : d.label === 'Jul' ? t('monthJul', selectedLanguage) : d.label === 'Aug' ? t('monthAug', selectedLanguage) : t('monthSep', selectedLanguage)} (₹{d.rate})
-                  </span>
+            {/* All Mandi Prices Table */}
+            <div className="p-md rounded-2xl bg-surface-container border border-surface-variant flex flex-col gap-sm">
+              <h4 className="font-bold text-xs text-on-surface-variant uppercase tracking-wider">
+                Regional APMC Mandi Commodity Rates (Demo Data)
+              </h4>
+              <div className="flex flex-col divide-y divide-surface-variant/40">
+                {EXPANDED_MARKET_RATES.map((m) => (
+                  <div key={m.cropName} className="py-2.5 flex items-center justify-between gap-2 text-xs">
+                    <div>
+                      <div className="font-bold text-on-surface">{m.cropName}</div>
+                      <div className="text-[11px] text-on-surface-variant">{m.mandiLocation}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-primary">₹{m.currentRate.toLocaleString()} / {m.unit}</div>
+                      <div className={`text-[10px] font-semibold ${m.changePercent >= 0 ? 'text-primary' : 'text-error'}`}>
+                        {m.changePercent >= 0 ? `+${m.changePercent}%` : `${m.changePercent}%`}
+                      </div>
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
-            <div className="mt-4"></div>
           </div>
-        </section>
+        )}
 
-        {/* 3. Suitable Suggestions Section */}
-        <section className="flex flex-col gap-sm">
-          <h2 className="font-headline-md text-headline-md text-on-surface tracking-tight">
-            {t('suitableSuggestions', selectedLanguage)}
-          </h2>
+        {/* TAB 2: NEARBY SELLING MANDIS (Requirement 19) */}
+        {activeSubTab === 'selling_mandis' && (
+          <div className="flex flex-col gap-md">
+            <div className="p-md rounded-2xl bg-primary-container/20 border border-primary/30 flex items-center gap-3">
+              <span className="material-symbols-outlined text-3xl text-primary">storefront</span>
+              <div>
+                <h3 className="font-bold text-sm text-on-surface">Where Can I Sell My Ready Harvest?</h3>
+                <p className="text-xs text-on-surface-variant mt-0.5">
+                  Verified APMC procurement centers & grain yards accepting {activeField.activeCrop} near {farmer.district}.
+                </p>
+              </div>
+            </div>
 
-          <div className="flex flex-col gap-3">
-            {SUITABLE_CROP_SUGGESTIONS.map((suggestion, idx) => (
-              <div key={idx} className="bg-surface-container rounded-xl p-4 border border-surface-variant flex items-center justify-between shadow-md">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center shrink-0">
-                    <span className="material-symbols-outlined text-primary text-[24px]">{suggestion.icon}</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
+              {NEARBY_SELLING_MARKETS.map((mkt) => (
+                <div key={mkt.id} className="p-md rounded-2xl bg-surface-container border border-surface-variant flex flex-col justify-between gap-md shadow-sm">
+                  <div className="flex flex-col gap-sm">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h4 className="font-bold text-sm text-on-surface">{mkt.name}</h4>
+                        <span className="text-xs text-on-surface-variant flex items-center gap-1 mt-0.5">
+                          <span className="material-symbols-outlined text-xs text-primary">pin_drop</span>
+                          <span>{mkt.location}</span>
+                        </span>
+                      </div>
+
+                      <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs border border-primary/20 shrink-0">
+                        {mkt.distanceKm} km away
+                      </span>
+                    </div>
+
+                    <div className="text-xs text-on-surface-variant">
+                      <span className="font-bold text-on-surface">Traded Commodities:</span> {mkt.tradedCrops.join(', ')}
+                    </div>
+
+                    {/* Spot Prices */}
+                    <div className="p-2.5 rounded-xl bg-surface-container-low border border-surface-variant/40 space-y-1">
+                      <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">Current Yard Prices:</span>
+                      {mkt.currentRatesSummary.map((r, i) => (
+                        <div key={i} className="flex justify-between text-xs font-semibold">
+                          <span className="text-on-surface">{r.crop}</span>
+                          <span className="text-primary font-bold">₹{r.rate.toLocaleString()} / {r.unit}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex flex-col">
-                    <span className="font-headline-sm text-headline-sm text-on-surface">{translateCrop(suggestion.cropName, selectedLanguage)}</span>
-                    <span className="font-body-md text-body-md text-on-surface-variant">{translateText(suggestion.reason, selectedLanguage)}</span>
+
+                  <a
+                    href={`https://maps.google.com/?q=${encodeURIComponent(mkt.name + ' ' + mkt.location)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full py-2 rounded-xl bg-surface-variant hover:bg-primary hover:text-on-primary text-on-surface font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-sm">directions</span>
+                    <span>Get Driving Directions</span>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: NEARBY FERTILIZER & AGRI SHOPS (Requirement 18) */}
+        {activeSubTab === 'fertilizer_shops' && (
+          <div className="flex flex-col gap-md">
+            <div className="p-md rounded-2xl bg-surface-container border border-surface-variant flex items-center gap-3">
+              <span className="material-symbols-outlined text-3xl text-primary">local_shipping</span>
+              <div>
+                <h3 className="font-bold text-sm text-on-surface">Nearby Agricultural Input & Fertilizer Stores</h3>
+                <p className="text-xs text-on-surface-variant mt-0.5">
+                  Authorized Rythu Bharosa Kendras (RBKs) and fertilizer dealers in {farmer.village}, {farmer.district}.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
+              {NEARBY_FERTILIZER_SHOPS.map((shop) => (
+                <div key={shop.id} className="p-md rounded-2xl bg-surface-container border border-surface-variant flex flex-col justify-between gap-md shadow-sm">
+                  <div className="flex flex-col gap-sm">
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <h4 className="font-bold text-sm text-on-surface">{shop.name}</h4>
+                        <span className="text-xs text-on-surface-variant flex items-center gap-1 mt-0.5">
+                          <span className="material-symbols-outlined text-xs text-primary">location_on</span>
+                          <span>{shop.address}</span>
+                        </span>
+                      </div>
+
+                      <span className="px-2.5 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs border border-primary/20 shrink-0">
+                        {shop.distanceKm} km
+                      </span>
+                    </div>
+
+                    <div className="text-[11px] text-on-surface-variant flex items-center gap-2">
+                      <span className="material-symbols-outlined text-xs text-tertiary">schedule</span>
+                      <span>{shop.openingHours}</span>
+                    </div>
+
+                    {/* Category tags */}
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {shop.categories.map((c, i) => (
+                        <span key={i} className="text-[10px] px-2 py-0.5 rounded-md bg-surface-variant text-on-surface font-medium">
+                          {c}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <a
+                      href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`}
+                      className="py-2 rounded-xl bg-primary text-on-primary font-bold text-xs flex items-center justify-center gap-1 shadow-sm hover:bg-primary-fixed"
+                    >
+                      <span className="material-symbols-outlined text-sm">call</span>
+                      <span>Call Store</span>
+                    </a>
+                    <a
+                      href={`https://maps.google.com/?q=${encodeURIComponent(shop.name + ' ' + shop.address)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="py-2 rounded-xl bg-surface-variant text-on-surface hover:bg-surface-container-high font-bold text-xs flex items-center justify-center gap-1"
+                    >
+                      <span className="material-symbols-outlined text-sm">directions</span>
+                      <span>Navigate</span>
+                    </a>
                   </div>
                 </div>
-                <div className="bg-primary/20 border border-primary px-3 py-1 rounded-full flex items-center gap-1 shrink-0 ml-2">
-                  <div className="w-2 h-2 rounded-full bg-primary"></div>
-                  <span className="font-label-sm text-label-sm text-primary">
-                    {suggestion.suitability === 'High' ? t('highSuitability', selectedLanguage) : t('modSuitability', selectedLanguage)}
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: CROP HISTORY & HARVEST LOGS (Requirement 3) */}
+        {activeSubTab === 'history' && (
+          <div className="flex flex-col gap-md">
+            {/* Primary Highlight Card */}
+            {primaryHistory && (
+              <div className="p-md rounded-2xl bg-surface-container border border-surface-variant flex flex-col gap-md shadow-md">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="text-xs text-primary font-bold uppercase tracking-wider">
+                      {activeField.name} — Previous Season Record
+                    </span>
+                    <h3 className="font-headline-sm text-base text-on-surface font-bold mt-0.5">
+                      {primaryHistory.cropName}
+                    </h3>
+                  </div>
+
+                  <span className="px-3 py-1 rounded-full bg-primary/20 text-primary font-bold text-xs">
+                    {primaryHistory.efficiencyPercent}% Efficiency
                   </span>
                 </div>
+
+                <div className="grid grid-cols-3 gap-2 text-center p-3 rounded-xl bg-surface-container-low border border-surface-variant/40">
+                  <div>
+                    <span className="text-[10px] text-on-surface-variant uppercase">Expected</span>
+                    <div className="text-base font-bold text-on-surface">{primaryHistory.expectedYieldTons} Tons</div>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-on-surface-variant uppercase">Actual Harvest</span>
+                    <div className="text-base font-bold text-primary">{primaryHistory.actualYieldTons} Tons</div>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-on-surface-variant uppercase">Loss Gap</span>
+                    <div className="text-base font-bold text-error">
+                      -{(primaryHistory.expectedYieldTons - primaryHistory.actualYieldTons).toFixed(1)} T
+                    </div>
+                  </div>
+                </div>
               </div>
-            ))}
+            )}
+
+            {/* Historical Log Cards */}
+            <div className="flex flex-col gap-md">
+              {cropHistory.map((rec) => (
+                <div key={rec.id} className="p-md rounded-2xl bg-surface-container border border-surface-variant flex flex-col gap-sm">
+                  <div className="flex justify-between items-center">
+                    <h4 className="font-bold text-sm text-on-surface">{rec.yearLabel} ({rec.cropName})</h4>
+                    <span className="text-xs font-bold text-primary">{rec.efficiencyPercent}% Yield</span>
+                  </div>
+
+                  <div className="space-y-1">
+                    {rec.yieldLossFactors.map((f, idx) => (
+                      <div key={idx} className="flex items-center justify-between text-xs text-on-surface-variant">
+                        <span className="flex items-center gap-1.5">
+                          <span className="material-symbols-outlined text-sm text-error">{f.icon}</span>
+                          <span>{f.factorName}</span>
+                        </span>
+                        <span className="font-bold text-error">-{f.lossTons} T</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-        </section>
+        )}
       </main>
 
       {/* Log Harvest Modal */}
       {showLogModal && (
-        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-md flex items-center justify-center p-4">
-          <form onSubmit={handleLogHarvest} className="bg-surface-container border border-surface-variant p-md rounded-2xl max-w-md w-full space-y-4">
-            <h3 className="font-headline-sm text-headline-sm text-on-surface">{t('logHarvest', selectedLanguage)}</h3>
-
-            <div>
-              <label className="block text-label-sm text-on-surface-variant mb-1">{t('seasonCropName', selectedLanguage)}</label>
-              <input
-                type="text"
-                value={newCropName}
-                onChange={(e) => setNewCropName(e.target.value)}
-                className="w-full bg-surface border border-surface-variant rounded-lg p-2 text-on-surface"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-label-sm text-on-surface-variant mb-1">{t('expected', selectedLanguage)} ({t('tonsUnit', selectedLanguage)})</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={expectedTons}
-                  onChange={(e) => setExpectedTons(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-surface border border-surface-variant rounded-lg p-2 text-on-surface"
-                />
-              </div>
-              <div>
-                <label className="block text-label-sm text-on-surface-variant mb-1">{t('actual', selectedLanguage)} ({t('tonsUnit', selectedLanguage)})</label>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={actualTons}
-                  onChange={(e) => setActualTons(parseFloat(e.target.value) || 0)}
-                  className="w-full bg-surface border border-surface-variant rounded-lg p-2 text-on-surface"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-label-sm text-on-surface-variant mb-1">{t('lossReasonLabel', selectedLanguage)}</label>
-              <input
-                type="text"
-                value={lossReason}
-                onChange={(e) => setLossReason(e.target.value)}
-                className="w-full bg-surface border border-surface-variant rounded-lg p-2 text-on-surface"
-              />
-            </div>
-
-            <div className="flex justify-end gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => setShowLogModal(false)}
-                className="px-4 py-2 bg-surface-variant text-on-surface rounded-lg"
-              >
-                {t('cancel', selectedLanguage)}
-              </button>
-              <button type="submit" className="px-4 py-2 bg-primary text-on-primary font-bold rounded-lg">
-                {t('save', selectedLanguage)}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+          <div className="bg-surface-container-high border border-surface-variant rounded-2xl p-md w-full max-w-md shadow-2xl flex flex-col gap-md">
+            <div className="flex items-center justify-between border-b border-surface-variant/40 pb-2">
+              <h3 className="font-bold text-sm text-on-surface">Log Harvest Yield for {activeField.name}</h3>
+              <button onClick={() => setShowLogModal(false)} className="text-on-surface-variant hover:text-on-surface">
+                <span className="material-symbols-outlined text-xl">close</span>
               </button>
             </div>
-          </form>
+
+            <form onSubmit={handleLogHarvest} className="flex flex-col gap-sm text-xs">
+              <div>
+                <label className="text-on-surface-variant font-semibold">Season / Crop Label</label>
+                <input
+                  type="text"
+                  required
+                  value={newCropName}
+                  onChange={(e) => setNewCropName(e.target.value)}
+                  className="w-full mt-1 p-2.5 rounded-xl bg-surface-container border border-surface-variant text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-on-surface-variant font-semibold">Expected (Tons)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    required
+                    value={expectedTons}
+                    onChange={(e) => setExpectedTons(parseFloat(e.target.value))}
+                    className="w-full mt-1 p-2.5 rounded-xl bg-surface-container border border-surface-variant text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+                <div>
+                  <label className="text-on-surface-variant font-semibold">Actual Harvest (Tons)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    required
+                    value={actualTons}
+                    onChange={(e) => setActualTons(parseFloat(e.target.value))}
+                    className="w-full mt-1 p-2.5 rounded-xl bg-surface-container border border-surface-variant text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-on-surface-variant font-semibold">Main Yield Loss Reason</label>
+                <input
+                  type="text"
+                  value={lossReason}
+                  onChange={(e) => setLossReason(e.target.value)}
+                  className="w-full mt-1 p-2.5 rounded-xl bg-surface-container border border-surface-variant text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-surface-variant/40">
+                <button
+                  type="button"
+                  onClick={() => setShowLogModal(false)}
+                  className="px-4 py-2 rounded-xl bg-surface-variant text-on-surface font-bold text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-xl bg-primary text-on-primary font-bold text-xs shadow hover:bg-primary-fixed"
+                >
+                  Save Record
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 

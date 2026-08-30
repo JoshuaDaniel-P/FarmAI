@@ -1,31 +1,432 @@
-import { Farmer, FieldBoundary, CropHistoryRecord, MarketRate, CropSuggestion } from '../types/farm';
+import {
+  Farmer,
+  Field,
+  FieldBoundary,
+  CropHistoryRecord,
+  MarketRate,
+  CropSuggestion,
+  SoilTestProfile,
+  PreviousCropRecord,
+  LiveSensors,
+  MotorStatus,
+} from '../types/farm';
+import { calculateCropAgeDays, getGrowthStageForCrop } from './cropStageService';
+
+export const INITIAL_SOIL_PROFILE_FIELD_01: SoilTestProfile = {
+  soilType: 'Clay Loam (Alluvial)',
+  testedAt: '10 July 2026',
+  labName: 'District Soil Testing Lab, Nellore',
+  ph: 6.8,
+  phInterpretation: 'Suitable (Optimal)',
+  nitrogenKgHa: 240,
+  nitrogenInterpretation: 'Medium (Adequate)',
+  phosphorusKgHa: 28,
+  phosphorusInterpretation: 'High (Optimal)',
+  potassiumKgHa: 195,
+  potassiumInterpretation: 'Medium (Adequate)',
+  organicCarbonPercent: 0.55,
+  organicCarbonInterpretation: 'Medium',
+  electricalConductivityDsM: 0.72,
+  ecInterpretation: 'Normal / Safe',
+  soilMoisturePercent: 34,
+};
+
+export const INITIAL_SOIL_PROFILE_FIELD_02: SoilTestProfile = {
+  soilType: 'Red Sandy Loam',
+  testedAt: '18 July 2026',
+  labName: 'Rythu Bharosa Kendra, Kovur',
+  ph: 6.4,
+  phInterpretation: 'Suitable (Optimal)',
+  nitrogenKgHa: 180,
+  nitrogenInterpretation: 'Low',
+  phosphorusKgHa: 22,
+  phosphorusInterpretation: 'Medium',
+  potassiumKgHa: 165,
+  potassiumInterpretation: 'Medium (Adequate)',
+  organicCarbonPercent: 0.45,
+  organicCarbonInterpretation: 'Low',
+  electricalConductivityDsM: 0.38,
+  ecInterpretation: 'Normal / Safe',
+  soilMoisturePercent: 38,
+};
+
+export const INITIAL_SOIL_PROFILE_FIELD_03: SoilTestProfile = {
+  soilType: 'Medium Deep Black Cotton Soil',
+  testedAt: '05 June 2026',
+  labName: 'Regional Agri Research Station, Nellore',
+  ph: 7.5,
+  phInterpretation: 'Suitable (Optimal)',
+  nitrogenKgHa: 260,
+  nitrogenInterpretation: 'Medium (Adequate)',
+  phosphorusKgHa: 31,
+  phosphorusInterpretation: 'High (Optimal)',
+  potassiumKgHa: 280,
+  potassiumInterpretation: 'High',
+  organicCarbonPercent: 0.65,
+  organicCarbonInterpretation: 'High',
+  electricalConductivityDsM: 0.61,
+  ecInterpretation: 'Normal / Safe',
+  soilMoisturePercent: 42,
+};
+
+export const INITIAL_PREVIOUS_CROP_FIELD_01: PreviousCropRecord[] = [
+  {
+    id: 'pc-01',
+    cropName: 'Paddy',
+    cropVariety: 'BPT 5204 (Samba Mahsuri)',
+    sowingDate: '2025-07-10',
+    harvestDate: '2025-11-20',
+    expectedYieldTons: 4.8,
+    actualYieldTons: 4.1,
+    efficiencyPercent: 85,
+    mainLossFactor: 'Water Deficit & Stem Borer Infestation',
+    problemsEncountered: [
+      { category: 'pest', description: 'Yellow Stem Borer attack at panicle initiation', impactTons: 0.3 },
+      { category: 'irrigation', description: 'Canal release delay during reproductive phase', impactTons: 0.2 },
+      { category: 'disease', description: 'Brown spot on lower leaves', impactTons: 0.2 },
+    ],
+  },
+  {
+    id: 'pc-02',
+    cropName: 'Black Gram (Minumulu)',
+    cropVariety: 'PU 31',
+    sowingDate: '2024-12-15',
+    harvestDate: '2025-03-05',
+    expectedYieldTons: 1.2,
+    actualYieldTons: 1.1,
+    efficiencyPercent: 91,
+    mainLossFactor: 'Mild Powdery Mildew',
+    problemsEncountered: [
+      { category: 'disease', description: 'Powdery mildew in late flowering', impactTons: 0.1 },
+    ],
+  },
+];
+
+export const INITIAL_PREVIOUS_CROP_FIELD_02: PreviousCropRecord[] = [
+  {
+    id: 'pc-03',
+    cropName: 'Black Gram',
+    cropVariety: 'LBG 752',
+    sowingDate: '2025-11-25',
+    harvestDate: '2026-02-28',
+    expectedYieldTons: 1.1,
+    actualYieldTons: 0.95,
+    efficiencyPercent: 86,
+    mainLossFactor: 'Yellow Mosaic Virus transmitted by whiteflies',
+    problemsEncountered: [
+      { category: 'disease', description: 'Yellow Mosaic Virus in patches', impactTons: 0.15 },
+    ],
+  },
+];
+
+export const INITIAL_PREVIOUS_CROP_FIELD_03: PreviousCropRecord[] = [
+  {
+    id: 'pc-04',
+    cropName: 'Maize',
+    cropVariety: 'DKC 9108',
+    sowingDate: '2024-10-10',
+    harvestDate: '2025-01-25',
+    expectedYieldTons: 3.5,
+    actualYieldTons: 3.1,
+    efficiencyPercent: 88,
+    mainLossFactor: 'Fall Armyworm whorl damage',
+    problemsEncountered: [
+      { category: 'pest', description: 'Fall Armyworm damage during knee-high stage', impactTons: 0.3 },
+      { category: 'weather', description: 'Unseasonal drizzle during harvesting', impactTons: 0.1 },
+    ],
+  },
+];
+
+export const INITIAL_FIELD_01_SENSORS: LiveSensors = {
+  fieldId: 'field-01',
+  overallMoisture: 34,
+  airTemp: 34,
+  humidity: 61,
+  airQuality: 'Good',
+  cropHealthPercent: 78,
+  cropHealthStatus: 'ATTENTION',
+  actionRequired: 'Your soil is dry in Sector 03 (21%). Irrigation is required.',
+  nodes: [
+    {
+      id: 'S01',
+      name: 'Sector 01',
+      sector: 'North Plot',
+      status: 'normal',
+      moisture: 42,
+      temp: 33,
+      humidity: 62,
+      airQuality: 'Good',
+      recommendation: 'Moisture level good',
+      x: 35,
+      y: 30,
+      lastUpdated: 'Just now',
+    },
+    {
+      id: 'S02',
+      name: 'Sector 02',
+      sector: 'West Plot',
+      status: 'normal',
+      moisture: 36,
+      temp: 34,
+      humidity: 60,
+      airQuality: 'Good',
+      recommendation: 'Moisture level good',
+      x: 70,
+      y: 40,
+      lastUpdated: 'Just now',
+    },
+    {
+      id: 'S03',
+      name: 'Sector 03',
+      sector: 'East Plot',
+      status: 'critical',
+      moisture: 21,
+      temp: 36,
+      humidity: 54,
+      airQuality: 'Fair',
+      recommendation: 'Soil is dry! Start irrigation now.',
+      x: 65,
+      y: 65,
+      lastUpdated: 'Just now',
+    },
+    {
+      id: 'S04',
+      name: 'Sector 04',
+      sector: 'South Plot',
+      status: 'normal',
+      moisture: 39,
+      temp: 34,
+      humidity: 61,
+      airQuality: 'Good',
+      recommendation: 'Moisture level good',
+      x: 42,
+      y: 58,
+      lastUpdated: 'Just now',
+    },
+  ],
+};
+
+export const INITIAL_FIELD_02_SENSORS: LiveSensors = {
+  fieldId: 'field-02',
+  overallMoisture: 41,
+  airTemp: 33,
+  humidity: 58,
+  airQuality: 'Good',
+  cropHealthPercent: 92,
+  cropHealthStatus: 'GOOD',
+  actionRequired: null,
+  nodes: [
+    {
+      id: 'F2-S01',
+      name: 'Sector 01',
+      sector: 'North Ridge',
+      status: 'normal',
+      moisture: 40,
+      temp: 33,
+      humidity: 58,
+      recommendation: 'Optimal pegging moisture',
+      x: 30,
+      y: 35,
+      lastUpdated: 'Just now',
+    },
+    {
+      id: 'F2-S02',
+      name: 'Sector 02',
+      sector: 'South Slope',
+      status: 'normal',
+      moisture: 43,
+      temp: 32,
+      humidity: 59,
+      recommendation: 'Healthy root zone',
+      x: 65,
+      y: 60,
+      lastUpdated: 'Just now',
+    },
+  ],
+};
+
+export const INITIAL_FIELD_03_SENSORS: LiveSensors = {
+  fieldId: 'field-03',
+  overallMoisture: 45,
+  airTemp: 34,
+  humidity: 64,
+  airQuality: 'Good',
+  cropHealthPercent: 86,
+  cropHealthStatus: 'GOOD',
+  actionRequired: null,
+  nodes: [
+    {
+      id: 'F3-S01',
+      name: 'Sector 01',
+      sector: 'Block A (Flowering)',
+      status: 'normal',
+      moisture: 46,
+      temp: 34,
+      humidity: 63,
+      recommendation: 'Boll formation moisture good',
+      x: 40,
+      y: 40,
+      lastUpdated: 'Just now',
+    },
+    {
+      id: 'F3-S02',
+      name: 'Sector 02',
+      sector: 'Block B (Boll Setting)',
+      status: 'normal',
+      moisture: 44,
+      temp: 34,
+      humidity: 65,
+      recommendation: 'Maintain regular drip cycle',
+      x: 75,
+      y: 55,
+      lastUpdated: 'Just now',
+    },
+  ],
+};
+
+export const INITIAL_MOTOR_STATUS: MotorStatus = {
+  isOnline: true,
+  isRunning: false,
+  activeSectorId: null,
+  isSimulated: true,
+  history: [
+    {
+      id: 'irr-1',
+      timestamp: '2026-08-29 06:30 AM',
+      action: 'stop',
+      sector: 'Sector 01 (North Plot)',
+      durationMinutes: 45,
+    },
+    {
+      id: 'irr-2',
+      timestamp: '2026-08-27 05:00 PM',
+      action: 'stop',
+      sector: 'Sector 04 (South Plot)',
+      durationMinutes: 30,
+    },
+  ],
+};
+
+export const INITIAL_FIELDS: Field[] = [
+  {
+    id: 'field-01',
+    name: 'Field 01 - Paddy Main Plot',
+    acres: 2.4,
+    location: {
+      district: 'Nellore',
+      village: 'Kovur',
+      mandal: 'Kovur Mandal',
+    },
+    boundary: {
+      id: 'field-01',
+      name: 'Field 01 - Paddy Main Plot',
+      acres: 2.4,
+      isRecorded: true,
+      savedAt: '2026-07-15 10:30 AM',
+      points: [
+        { x: 20, y: 80, lat: 14.5012, lng: 79.9812 },
+        { x: 30, y: 30, lat: 14.5045, lng: 79.9825 },
+        { x: 70, y: 20, lat: 14.505, lng: 79.987 },
+        { x: 85, y: 60, lat: 14.502, lng: 79.9885 },
+        { x: 60, y: 90, lat: 14.4995, lng: 79.985 },
+      ],
+    },
+    activeCrop: 'Paddy',
+    cropVariety: 'BPT 5204',
+    sowingDate: '2026-07-14',
+    cropAgeDays: calculateCropAgeDays('2026-07-14'),
+    growthStage: getGrowthStageForCrop('Paddy', calculateCropAgeDays('2026-07-14')),
+    soilProfile: INITIAL_SOIL_PROFILE_FIELD_01,
+    previousCropHistory: INITIAL_PREVIOUS_CROP_FIELD_01,
+    sensors: INITIAL_FIELD_01_SENSORS,
+    registeredDiseases: [],
+    motorStatus: INITIAL_MOTOR_STATUS,
+  },
+  {
+    id: 'field-02',
+    name: 'Field 02 - North Orchard & Pulses',
+    acres: 1.8,
+    location: {
+      district: 'Nellore',
+      village: 'Kovur North',
+      mandal: 'Kovur Mandal',
+    },
+    boundary: {
+      id: 'field-02',
+      name: 'Field 02 - North Orchard & Pulses',
+      acres: 1.8,
+      isRecorded: true,
+      savedAt: '2026-08-05 09:15 AM',
+      points: [
+        { x: 25, y: 70, lat: 14.511, lng: 79.983 },
+        { x: 35, y: 25, lat: 14.514, lng: 79.984 },
+        { x: 75, y: 30, lat: 14.515, lng: 79.989 },
+        { x: 65, y: 80, lat: 14.51, lng: 79.987 },
+      ],
+    },
+    activeCrop: 'Groundnut',
+    cropVariety: 'Kadiri 6',
+    sowingDate: '2026-08-02',
+    cropAgeDays: calculateCropAgeDays('2026-08-02'),
+    growthStage: getGrowthStageForCrop('Groundnut', calculateCropAgeDays('2026-08-02')),
+    soilProfile: INITIAL_SOIL_PROFILE_FIELD_02,
+    previousCropHistory: INITIAL_PREVIOUS_CROP_FIELD_02,
+    sensors: INITIAL_FIELD_02_SENSORS,
+    registeredDiseases: [],
+    motorStatus: { ...INITIAL_MOTOR_STATUS, isRunning: false },
+  },
+  {
+    id: 'field-03',
+    name: 'Field 03 - West Commercial Plot',
+    acres: 3.0,
+    location: {
+      district: 'Nellore',
+      village: 'Damaramadugu',
+      mandal: 'Buchireddipalem',
+    },
+    boundary: {
+      id: 'field-03',
+      name: 'Field 03 - West Commercial Plot',
+      acres: 3.0,
+      isRecorded: true,
+      savedAt: '2026-06-30 04:00 PM',
+      points: [
+        { x: 15, y: 85, lat: 14.495, lng: 79.972 },
+        { x: 25, y: 20, lat: 14.498, lng: 79.974 },
+        { x: 80, y: 15, lat: 14.499, lng: 79.98 },
+        { x: 90, y: 75, lat: 14.496, lng: 79.982 },
+      ],
+    },
+    activeCrop: 'Cotton',
+    cropVariety: 'Rasi Bt II',
+    sowingDate: '2026-06-25',
+    cropAgeDays: calculateCropAgeDays('2026-06-25'),
+    growthStage: getGrowthStageForCrop('Cotton', calculateCropAgeDays('2026-06-25')),
+    soilProfile: INITIAL_SOIL_PROFILE_FIELD_03,
+    previousCropHistory: INITIAL_PREVIOUS_CROP_FIELD_03,
+    sensors: INITIAL_FIELD_03_SENSORS,
+    registeredDiseases: [],
+    motorStatus: { ...INITIAL_MOTOR_STATUS, isRunning: false },
+  },
+];
 
 export const INITIAL_FARMER: Farmer = {
+  id: 'farmer-raju',
   name: 'Raju Garu',
   phone: '+91 98765 43210',
   district: 'Nellore',
   village: 'Kovur',
-  fieldName: 'Field 01',
+  activeFieldId: 'field-01',
+  fields: INITIAL_FIELDS,
+  // Legacy getters
+  fieldName: 'Field 01 - Paddy Main Plot',
   activeCrop: 'Paddy',
   sowingDate: '2026-07-14',
   cropStage: 'Vegetative Stage',
   cropDay: 47,
 };
 
-export const INITIAL_FIELD_BOUNDARY: FieldBoundary = {
-  id: 'field-01',
-  name: 'Paddy Main Plot - Sector East',
-  acres: 2.4,
-  isRecorded: true,
-  savedAt: '2026-07-15 10:30 AM',
-  points: [
-    { x: 20, y: 80, lat: 14.5012, lng: 79.9812 },
-    { x: 30, y: 30, lat: 14.5045, lng: 79.9825 },
-    { x: 70, y: 20, lat: 14.5050, lng: 79.9870 },
-    { x: 85, y: 60, lat: 14.5020, lng: 79.9885 },
-    { x: 60, y: 90, lat: 14.4995, lng: 79.9850 },
-  ],
-};
+export const INITIAL_FIELD_BOUNDARY: FieldBoundary = INITIAL_FIELDS[0].boundary;
 
 export const INITIAL_CROP_HISTORY: CropHistoryRecord[] = [
   {
@@ -55,89 +456,9 @@ export const INITIAL_CROP_HISTORY: CropHistoryRecord[] = [
   },
 ];
 
-export const INITIAL_MARKET_RATES: MarketRate[] = [
-  {
-    cropName: 'Paddy (Grade A)',
-    currentRate: 2450,
-    unit: 'qtl',
-    changePercent: 3.2,
-    historicalData: [
-      { label: 'Jun', rate: 2280 },
-      { label: 'Jul', rate: 2320 },
-      { label: 'Aug', rate: 2370 },
-      { label: 'Sep', rate: 2450 },
-    ],
-  },
-  {
-    cropName: 'Cotton',
-    currentRate: 7120,
-    unit: 'qtl',
-    changePercent: 1.8,
-    historicalData: [
-      { label: 'Jun', rate: 6800 },
-      { label: 'Jul', rate: 6950 },
-      { label: 'Aug', rate: 7050 },
-      { label: 'Sep', rate: 7120 },
-    ],
-  },
-  {
-    cropName: 'Chillies (Teja Variant)',
-    currentRate: 18500,
-    unit: 'qtl',
-    changePercent: -0.5,
-    historicalData: [
-      { label: 'Jun', rate: 19000 },
-      { label: 'Jul', rate: 18800 },
-      { label: 'Aug', rate: 18600 },
-      { label: 'Sep', rate: 18500 },
-    ],
-  },
-  {
-    cropName: 'Maize',
-    currentRate: 2150,
-    unit: 'qtl',
-    changePercent: 4.1,
-    historicalData: [
-      { label: 'Jun', rate: 1980 },
-      { label: 'Jul', rate: 2020 },
-      { label: 'Aug', rate: 2080 },
-      { label: 'Sep', rate: 2150 },
-    ],
-  },
-];
+export { EXPANDED_MARKET_RATES as INITIAL_MARKET_RATES } from './marketService';
+export { COMPREHENSIVE_CROP_CATALOG as SUITABLE_CROP_SUGGESTIONS } from './cropSuggestionService';
 
-export const SUITABLE_CROP_SUGGESTIONS: CropSuggestion[] = [
-  {
-    cropName: 'Groundnut',
-    suitability: 'High',
-    reason: 'Low water requirement & high nitrogen fixation potential for post-paddy soil profile',
-    waterRequirement: 'Low to Moderate',
-    icon: 'eco',
-  },
-  {
-    cropName: 'Maize',
-    suitability: 'High',
-    reason: 'Current soil moisture and nitrogen levels match winter maize cultivation window',
-    waterRequirement: 'Moderate',
-    icon: 'nutrition',
-  },
-  {
-    cropName: 'Cotton',
-    suitability: 'Moderate',
-    reason: 'Market demand rising in Guntur mandal; suitable for well-drained sandy loam',
-    waterRequirement: 'Moderate to High',
-    icon: 'filter_vintage',
-  },
-  {
-    cropName: 'Red Gram (Kandulu)',
-    suitability: 'High',
-    reason: 'Intercropping option; drought tolerant and restores soil fertility',
-    waterRequirement: 'Low',
-    icon: 'grass',
-  },
-];
-
-// AP Major Crops Database list for reference
 export const ANDHRA_PRADESH_MAJOR_CROPS = [
   'Paddy',
   'Maize',

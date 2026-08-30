@@ -153,7 +153,7 @@ export const FarmProvider: React.FC<{ children: React.ReactNode }> = ({ children
       timestamp: time,
     };
 
-    const answer = voiceAssistantService.answerQuestion(queryText, registeredDiseases);
+    const answer = voiceAssistantService.answerQuestion(queryText, registeredDiseases, selectedLanguage);
     const assistantMsg: ChatMessage = {
       id: `ast-${Date.now()}`,
       sender: 'assistant',
@@ -163,7 +163,42 @@ export const FarmProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     setChatMessages((prev) => [...prev, userMsg, assistantMsg]);
-    voiceAssistantService.speak(answer);
+    voiceAssistantService.speak(answer, selectedLanguage);
+
+    const qLower = queryText.toLowerCase();
+    const isIrrigationAction =
+      qLower.includes('start water') ||
+      qLower.includes('start irrigation') ||
+      qLower.includes('water field') ||
+      qLower.includes('turn on motor') ||
+      qLower.includes('water now') ||
+      qLower.includes('నీరు పెట్టు') ||
+      qLower.includes('నీళ్లు పెట్టు') ||
+      qLower.includes('మోటార్ ఆన్') ||
+      qLower.includes('నీరు ఆన్') ||
+      qLower.includes('మోటార్ స్టార్ట్') ||
+      qLower.includes('నీటిపారుదల ప్రారంభించు') ||
+      qLower.includes('తడి పెట్టు') ||
+      qLower.includes('నీరు పారించు') ||
+      qLower.includes('पानी चालू') ||
+      qLower.includes('सिंचाई शुरू') ||
+      qLower.includes('मोटर चलाओ') ||
+      qLower.includes('पानी दो') ||
+      qLower.includes('मोटर चालू') ||
+      qLower.includes('सिंचाई करो') ||
+      qLower.includes('தண்ணீர் பாய்ச்சு') ||
+      qLower.includes('மோட்டார் போடு') ||
+      qLower.includes('பாசனம் தொடங்கு') ||
+      qLower.includes('தண்ணி விடு') ||
+      qLower.includes('நீர்ப்பாசனம் செய்') ||
+      qLower.includes('ನೀರು ಹಾಯಿಸಿ') ||
+      qLower.includes('ಮೋಟಾರ್ ಆನ್ ಮಾಡಿ') ||
+      qLower.includes('ನೀರಾವರಿ ಪ್ರಾರಂಭಿಸಿ') ||
+      qLower.includes('ನೀರು ಹಾಕಿ');
+
+    if (isIrrigationAction) {
+      triggerIrrigation();
+    }
   };
 
   const addCropHistoryRecord = (record: CropHistoryRecord) => {

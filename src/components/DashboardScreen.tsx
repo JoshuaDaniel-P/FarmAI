@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFarm } from '../context/FarmContext';
-import { t } from '../services/i18n';
+import { t, translateCrop, translateName, translateSector, translateText } from '../services/i18n';
 import { NotificationDrawer } from './NotificationDrawer';
 import { LanguageSelectorModal } from './LanguageSelectorModal';
 
@@ -47,10 +47,10 @@ export const DashboardScreen: React.FC = () => {
             </div>
             <div>
               <h1 className="font-headline-sm text-headline-sm text-on-surface">
-                {t('goodMorning', selectedLanguage)}, {farmer.name.split(' ')[0]}
+                {t('goodMorning', selectedLanguage)}, {translateName(farmer.name, selectedLanguage)}
               </h1>
               <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
-                {farmer.activeCrop} • {farmer.fieldName} • Day {farmer.cropDay}
+                {translateCrop(farmer.activeCrop, selectedLanguage)} • {translateText(farmer.fieldName, selectedLanguage)} • {t('day', selectedLanguage)} {farmer.cropDay}
               </p>
             </div>
           </div>
@@ -127,7 +127,7 @@ export const DashboardScreen: React.FC = () => {
               </div>
             </div>
             <p className="font-body-md text-body-md text-center text-on-surface-variant mt-sm">
-              {t('vegetativeStage', selectedLanguage)} • Day {farmer.cropDay} {farmer.activeCrop}.
+              {t('vegetativeStage', selectedLanguage)} • {t('day', selectedLanguage)} {farmer.cropDay} {translateCrop(farmer.activeCrop, selectedLanguage)}.
             </p>
           </div>
 
@@ -223,8 +223,8 @@ export const DashboardScreen: React.FC = () => {
                     </span>
                   </div>
                   <div>
-                    <h3 className="font-headline-sm text-headline-sm text-on-surface">{node.name}</h3>
-                    <p className="font-body-md text-on-surface-variant">{node.sector}</p>
+                    <h3 className="font-headline-sm text-headline-sm text-on-surface">{translateSector(node.name, selectedLanguage)}</h3>
+                    <p className="font-body-md text-on-surface-variant">{translateText(node.sector, selectedLanguage)}</p>
                   </div>
                 </div>
 
@@ -288,21 +288,21 @@ export const DashboardScreen: React.FC = () => {
 
               <g transform="translate(35, 30)">
                 <circle cx="0" cy="0" fill="#90d792" r="3"></circle>
-                <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">Sector 01 ({sensors.nodes[0].moisture}%)</text>
+                <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">{translateSector('Sector 01', selectedLanguage)} ({sensors.nodes[0].moisture}%)</text>
               </g>
               <g transform="translate(70, 40)">
                 <circle cx="0" cy="0" fill="#90d792" r="3"></circle>
-                <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">Sector 02 ({sensors.nodes[1].moisture}%)</text>
+                <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">{translateSector('Sector 02', selectedLanguage)} ({sensors.nodes[1].moisture}%)</text>
               </g>
               <g transform="translate(65, 65)">
                 <circle className="animate-pulse" cx="0" cy="0" fill={sensors.nodes[2].status === 'critical' ? '#ffb4ab' : '#90d792'} r="4"></circle>
                 <text fill={sensors.nodes[2].status === 'critical' ? '#ffb4ab' : '#90d792'} fontFamily="Sora" fontSize="4" fontWeight="bold" x="7" y="1.5">
-                  Sector 03 ({sensors.nodes[2].moisture}%)
+                  {translateSector('Sector 03', selectedLanguage)} ({sensors.nodes[2].moisture}%)
                 </text>
               </g>
               <g transform="translate(42, 58)">
                 <circle cx="0" cy="0" fill="#90d792" r="3"></circle>
-                <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">Sector 04 ({sensors.nodes[3].moisture}%)</text>
+                <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">{translateSector('Sector 04', selectedLanguage)} ({sensors.nodes[3].moisture}%)</text>
               </g>
             </svg>
           </div>

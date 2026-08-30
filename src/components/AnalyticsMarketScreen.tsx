@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useFarm } from '../context/FarmContext';
 import { INITIAL_MARKET_RATES, SUITABLE_CROP_SUGGESTIONS } from '../services/mockData';
-import { t } from '../services/i18n';
+import { t, translateCrop, translateName, translateText } from '../services/i18n';
 import { LanguageSelectorModal } from './LanguageSelectorModal';
 
 export const AnalyticsMarketScreen: React.FC = () => {
@@ -64,7 +64,7 @@ export const AnalyticsMarketScreen: React.FC = () => {
               />
             </div>
             <h1 className="font-headline-md text-headline-md-mobile text-primary dark:text-primary-fixed m-0">
-              {t('goodMorning', selectedLanguage)}, {farmer.name.split(' ')[0]}
+              {t('goodMorning', selectedLanguage)}, {translateName(farmer.name, selectedLanguage)}
             </h1>
           </div>
 
@@ -123,7 +123,7 @@ export const AnalyticsMarketScreen: React.FC = () => {
                   </span>
                   <span className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mt-1">
                     {primaryHistory.expectedYieldTons}
-                    <span className="text-lg text-on-surface-variant">t</span>
+                    <span className="text-lg text-on-surface-variant">{t('tonsUnit', selectedLanguage)}</span>
                   </span>
                 </div>
                 <div className="flex flex-col border-l border-surface-variant pl-4">
@@ -132,7 +132,7 @@ export const AnalyticsMarketScreen: React.FC = () => {
                   </span>
                   <span className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mt-1">
                     {primaryHistory.actualYieldTons}
-                    <span className="text-lg text-on-surface-variant">t</span>
+                    <span className="text-lg text-on-surface-variant">{t('tonsUnit', selectedLanguage)}</span>
                   </span>
                 </div>
                 <div className="flex flex-col border-l border-surface-variant pl-4">
@@ -148,13 +148,21 @@ export const AnalyticsMarketScreen: React.FC = () => {
 
               <div className="flex flex-col gap-3 pt-4 border-t border-surface-variant/50">
                 <h4 className="font-label-lg text-label-lg text-on-surface-variant">
-                  {t('yieldLossFactors', selectedLanguage)} ({(primaryHistory.expectedYieldTons - primaryHistory.actualYieldTons).toFixed(1)}t)
+                  {t('yieldLossFactors', selectedLanguage)} ({(primaryHistory.expectedYieldTons - primaryHistory.actualYieldTons).toFixed(1)}{t('tonsUnit', selectedLanguage)})
                 </h4>
                 <div className="flex flex-col gap-2">
                   {primaryHistory.yieldLossFactors.map((factor, idx) => (
-                    <div key={idx} className="flex items-center gap-3">
-                      <span className="material-symbols-outlined text-error text-[20px]">{factor.icon}</span>
-                      <div className="flex-1 h-3 bg-surface-container-highest rounded-full overflow-hidden">
+                    <div key={idx} className="flex flex-col gap-1">
+                      <div className="flex justify-between text-body-sm text-on-surface">
+                        <span className="flex items-center gap-1">
+                          <span className="material-symbols-outlined text-error text-[18px]">{factor.icon}</span>
+                          {translateText(factor.factorName, selectedLanguage)}
+                        </span>
+                        <span className="font-bold text-on-surface">
+                          {factor.lossTons}{t('tonsUnit', selectedLanguage)}
+                        </span>
+                      </div>
+                      <div className="w-full h-2.5 bg-surface-container-highest rounded-full overflow-hidden">
                         <div
                           className={`h-full ${factor.color} rounded-full`}
                           style={{
@@ -167,9 +175,6 @@ export const AnalyticsMarketScreen: React.FC = () => {
                           }}
                         ></div>
                       </div>
-                      <span className="font-label-sm text-label-sm text-on-surface min-w-[36px] text-right">
-                        {factor.lossTons}t
-                      </span>
                     </div>
                   ))}
                 </div>
@@ -191,7 +196,7 @@ export const AnalyticsMarketScreen: React.FC = () => {
             >
               {INITIAL_MARKET_RATES.map((m) => (
                 <option key={m.cropName} value={m.cropName}>
-                  {m.cropName}
+                  {translateText(m.cropName, selectedLanguage)}
                 </option>
               ))}
             </select>
@@ -202,11 +207,11 @@ export const AnalyticsMarketScreen: React.FC = () => {
               <div className="flex flex-col">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary text-[20px]">trending_up</span>
-                  <span className="font-label-lg text-label-lg text-on-surface">{activeMarket.cropName} Rate</span>
+                  <span className="font-label-lg text-label-lg text-on-surface">{translateText(activeMarket.cropName, selectedLanguage)} {t('rate', selectedLanguage)}</span>
                 </div>
                 <span className="font-headline-lg-mobile text-headline-lg-mobile text-on-surface mt-1">
                   ₹{activeMarket.currentRate.toLocaleString('en-IN')}{' '}
-                  <span className="font-body-md text-body-md text-on-surface-variant font-normal">/ {activeMarket.unit}</span>
+                  <span className="font-body-md text-body-md text-on-surface-variant font-normal">/ {t('unitQtl', selectedLanguage)}</span>
                 </span>
               </div>
               <div className="bg-primary-container/30 px-3 py-1 rounded-full border border-primary/20">
@@ -248,7 +253,7 @@ export const AnalyticsMarketScreen: React.FC = () => {
               <div className="absolute -bottom-6 w-full flex justify-between px-1">
                 {activeMarket.historicalData.map((d, i) => (
                   <span key={i} className="font-label-sm text-label-sm text-on-surface-variant text-[10px]">
-                    {d.label} (₹{d.rate})
+                    {d.label === 'Jun' ? t('monthJun', selectedLanguage) : d.label === 'Jul' ? t('monthJul', selectedLanguage) : d.label === 'Aug' ? t('monthAug', selectedLanguage) : t('monthSep', selectedLanguage)} (₹{d.rate})
                   </span>
                 ))}
               </div>
@@ -271,8 +276,8 @@ export const AnalyticsMarketScreen: React.FC = () => {
                     <span className="material-symbols-outlined text-primary text-[24px]">{suggestion.icon}</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-headline-sm text-headline-sm text-on-surface">{suggestion.cropName}</span>
-                    <span className="font-body-md text-body-md text-on-surface-variant">{suggestion.reason}</span>
+                    <span className="font-headline-sm text-headline-sm text-on-surface">{translateCrop(suggestion.cropName, selectedLanguage)}</span>
+                    <span className="font-body-md text-body-md text-on-surface-variant">{translateText(suggestion.reason, selectedLanguage)}</span>
                   </div>
                 </div>
                 <div className="bg-primary/20 border border-primary px-3 py-1 rounded-full flex items-center gap-1 shrink-0 ml-2">
@@ -294,7 +299,7 @@ export const AnalyticsMarketScreen: React.FC = () => {
             <h3 className="font-headline-sm text-headline-sm text-on-surface">{t('logHarvest', selectedLanguage)}</h3>
 
             <div>
-              <label className="block text-label-sm text-on-surface-variant mb-1">Season / Crop Name</label>
+              <label className="block text-label-sm text-on-surface-variant mb-1">{t('seasonCropName', selectedLanguage)}</label>
               <input
                 type="text"
                 value={newCropName}
@@ -305,7 +310,7 @@ export const AnalyticsMarketScreen: React.FC = () => {
 
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="block text-label-sm text-on-surface-variant mb-1">{t('expected', selectedLanguage)} (Tons)</label>
+                <label className="block text-label-sm text-on-surface-variant mb-1">{t('expected', selectedLanguage)} ({t('tonsUnit', selectedLanguage)})</label>
                 <input
                   type="number"
                   step="0.1"
@@ -315,7 +320,7 @@ export const AnalyticsMarketScreen: React.FC = () => {
                 />
               </div>
               <div>
-                <label className="block text-label-sm text-on-surface-variant mb-1">{t('actual', selectedLanguage)} (Tons)</label>
+                <label className="block text-label-sm text-on-surface-variant mb-1">{t('actual', selectedLanguage)} ({t('tonsUnit', selectedLanguage)})</label>
                 <input
                   type="number"
                   step="0.1"
@@ -327,7 +332,7 @@ export const AnalyticsMarketScreen: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-label-sm text-on-surface-variant mb-1">Loss Reason</label>
+              <label className="block text-label-sm text-on-surface-variant mb-1">{t('lossReasonLabel', selectedLanguage)}</label>
               <input
                 type="text"
                 value={lossReason}
@@ -342,10 +347,10 @@ export const AnalyticsMarketScreen: React.FC = () => {
                 onClick={() => setShowLogModal(false)}
                 className="px-4 py-2 bg-surface-variant text-on-surface rounded-lg"
               >
-                Cancel
+                {t('cancel', selectedLanguage)}
               </button>
               <button type="submit" className="px-4 py-2 bg-primary text-on-primary font-bold rounded-lg">
-                Save
+                {t('save', selectedLanguage)}
               </button>
             </div>
           </form>

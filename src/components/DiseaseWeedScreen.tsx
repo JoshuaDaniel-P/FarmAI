@@ -3,7 +3,7 @@ import { useFarm } from '../context/FarmContext';
 import { getDiseasesByCrop } from '../services/diseaseService';
 import { WEED_DATABASE, getActiveWeedAlerts } from '../services/weedService';
 import { droneService } from '../services/droneService';
-import { t } from '../services/i18n';
+import { t, translateCrop, translateRisk, translateText } from '../services/i18n';
 import { CameraScanModal } from './CameraScanModal';
 import { LanguageSelectorModal } from './LanguageSelectorModal';
 
@@ -106,7 +106,7 @@ export const DiseaseWeedScreen: React.FC = () => {
                   : 'bg-surface-container text-on-surface-variant border-surface-variant hover:bg-surface-container-high'
               }`}
             >
-              {crop}
+              {translateCrop(crop, selectedLanguage)}
             </button>
           ))}
         </div>
@@ -145,17 +145,17 @@ export const DiseaseWeedScreen: React.FC = () => {
                     <div key={reg.id} className="bg-surface-variant p-md rounded-xl border border-primary/30 space-y-2">
                       <div className="flex justify-between items-start">
                         <div>
-                          <span className="font-label-sm text-primary uppercase">{reg.crop}</span>
-                          <h4 className="font-headline-sm text-on-surface">{reg.diseaseName}</h4>
+                          <span className="font-label-sm text-primary uppercase">{translateCrop(reg.crop, selectedLanguage)}</span>
+                          <h4 className="font-headline-sm text-on-surface">{translateText(reg.diseaseName, selectedLanguage)}</h4>
                         </div>
                         <span className="bg-primary-container text-primary-fixed font-label-sm px-2 py-0.5 rounded">
-                          {reg.confidencePercent}% Match
+                          {reg.confidencePercent}% {t('match', selectedLanguage)}
                         </span>
                       </div>
-                      <p className="font-body-sm text-on-surface-variant">Registered: {reg.detectedAt}</p>
+                      <p className="font-body-sm text-on-surface-variant">{t('registered', selectedLanguage)}: {reg.detectedAt}</p>
                       <div className="pt-2 border-t border-surface-container-high text-body-sm">
-                        <p className="text-on-surface"><strong className="text-primary">{t('precaution', selectedLanguage)}:</strong> {reg.precaution}</p>
-                        <p className="text-on-surface mt-1"><strong className="text-primary">{t('cure', selectedLanguage)}:</strong> {reg.cure}</p>
+                        <p className="text-on-surface"><strong className="text-primary">{t('precaution', selectedLanguage)}:</strong> {translateText(reg.precaution, selectedLanguage)}</p>
+                        <p className="text-on-surface mt-1"><strong className="text-primary">{t('cure', selectedLanguage)}:</strong> {translateText(reg.cure, selectedLanguage)}</p>
                       </div>
                     </div>
                   ))}
@@ -167,39 +167,57 @@ export const DiseaseWeedScreen: React.FC = () => {
             <div className="flex flex-col gap-sm">
               <h3 className="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">coronavirus</span>
-                {t('commonDiseases', selectedLanguage)} ({selectedCrop})
+                {t('commonDiseases', selectedLanguage)} ({translateCrop(selectedCrop, selectedLanguage)})
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
                 {cropDiseases.map((disease) => (
                   <div
                     key={disease.id}
-                    className="bg-surface-container p-md rounded-2xl border border-surface-bright flex flex-col justify-between gap-md shadow-md"
+                    className="bg-surface-container p-md rounded-2xl border border-surface-bright flex flex-col justify-between gap-md shadow-md overflow-hidden hover:border-primary/50 transition-all"
                   >
                     <div>
+                      {/* Leaf Disease Photo */}
+                      {disease.imageUrl && (
+                        <div className="w-full h-44 rounded-xl overflow-hidden mb-3 border border-surface-variant/40 relative group bg-surface-container-high">
+                          <img
+                            src={disease.imageUrl}
+                            alt={translateText(disease.diseaseName, selectedLanguage)}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent flex items-end p-2.5">
+                            <span className="font-label-sm text-xs bg-background/80 backdrop-blur-sm text-primary px-2.5 py-0.5 rounded-full border border-primary/30 flex items-center gap-1">
+                              <span className="material-symbols-outlined text-[14px]">photo_camera</span>
+                              {translateCrop(disease.crop, selectedLanguage)}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
                       <div className="flex justify-between items-start mb-sm">
                         <div className="flex items-center gap-2">
                           <span className="material-symbols-outlined text-error text-2xl">{disease.icon}</span>
-                          <h4 className="font-headline-sm text-headline-sm text-on-surface">{disease.diseaseName}</h4>
+                          <h4 className="font-headline-sm text-headline-sm text-on-surface">{translateText(disease.diseaseName, selectedLanguage)}</h4>
                         </div>
                         <span className={`px-2.5 py-0.5 rounded-full font-label-sm text-label-sm ${disease.riskBadgeColor}`}>
-                          {disease.riskLevel} Risk
+                          {translateRisk(disease.riskLevel, selectedLanguage)}
                         </span>
                       </div>
 
                       <div className="space-y-sm text-body-md">
                         <div className="bg-surface-variant p-sm rounded-lg">
                           <span className="font-label-sm text-on-surface-variant uppercase block">{t('comesRiskPeriod', selectedLanguage)}</span>
-                          <span className="font-body-md text-on-surface font-medium">{disease.comesWhen}</span>
+                          <span className="font-body-md text-on-surface font-medium">{translateText(disease.comesWhen, selectedLanguage)}</span>
                         </div>
 
                         <div className="bg-surface-variant p-sm rounded-lg">
                           <span className="font-label-sm text-on-surface-variant uppercase block">{t('precaution', selectedLanguage)}</span>
-                          <span className="font-body-md text-on-surface">{disease.shortPrecaution}</span>
+                          <span className="font-body-md text-on-surface">{translateText(disease.shortPrecaution, selectedLanguage)}</span>
                         </div>
 
                         <div className="bg-primary-container/30 border border-primary/20 p-sm rounded-lg">
                           <span className="font-label-sm text-primary uppercase block">{t('cure', selectedLanguage)}</span>
-                          <span className="font-body-md text-on-surface font-semibold">{disease.shortCure}</span>
+                          <span className="font-body-md text-on-surface font-semibold">{translateText(disease.shortCure, selectedLanguage)}</span>
                         </div>
                       </div>
                     </div>
@@ -220,7 +238,7 @@ export const DiseaseWeedScreen: React.FC = () => {
                   <h3 className="font-headline-sm text-headline-sm text-on-surface">{t('activeWeedAlert', selectedLanguage)}</h3>
                 </div>
                 <span className="bg-primary-container text-primary-fixed font-label-sm px-3 py-1 rounded-full">
-                  Paddy Day {farmer.cropDay}
+                  {translateCrop('Paddy', selectedLanguage)} {t('day', selectedLanguage)} {farmer.cropDay}
                 </span>
               </div>
 
@@ -234,13 +252,13 @@ export const DiseaseWeedScreen: React.FC = () => {
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
                           <span className="material-symbols-outlined text-primary text-xl">grass</span>
-                          <h4 className="font-headline-sm text-on-surface">{weed.weedName}</h4>
+                          <h4 className="font-headline-sm text-on-surface">{translateText(weed.weedName, selectedLanguage)}</h4>
                         </div>
                         <p className="font-body-md text-on-surface-variant">
-                          <strong>{t('comesAt', selectedLanguage)}:</strong> Days {weed.startDay}–{weed.endDay} after sowing
+                          <strong>{t('comesAt', selectedLanguage)}:</strong> {weed.startDay}–{weed.endDay} {t('days', selectedLanguage)} {t('afterSowing', selectedLanguage)}
                         </p>
                         <p className="font-body-md text-error font-semibold">
-                          <strong>Action:</strong> {weed.action}
+                          <strong>{t('actionLabel', selectedLanguage)}:</strong> {translateText(weed.action, selectedLanguage)}
                         </p>
                       </div>
 
@@ -265,7 +283,7 @@ export const DiseaseWeedScreen: React.FC = () => {
               <div className="flex justify-between items-center">
                 <div>
                   <h3 className="font-headline-sm text-headline-sm text-on-surface">{t('droneSurveillanceMap', selectedLanguage)}</h3>
-                  <p className="font-body-md text-on-surface-variant">Latest scan: {latestScan.timestamp}</p>
+                  <p className="font-body-md text-on-surface-variant">{t('latestScan', selectedLanguage)}: {latestScan.timestamp}</p>
                 </div>
                 <span className="bg-primary/20 text-primary border border-primary px-3 py-1 rounded-full text-label-sm font-bold">
                   {latestScan.detectedWeedLocations} {t('clustersIdentified', selectedLanguage)}
@@ -275,7 +293,7 @@ export const DiseaseWeedScreen: React.FC = () => {
               <div className="relative w-full h-[200px] bg-surface-variant rounded-xl overflow-hidden scanline">
                 <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
                 <div className="absolute top-[20%] left-[30%] w-[40%] h-[50%] border-2 border-[#f2cc81]/60 bg-[#a67b27]/20 rounded-lg flex items-center justify-center">
-                  <span className="bg-surface px-2 py-1 rounded text-[#f2cc81] text-xs">Zone B Alert</span>
+                  <span className="bg-surface px-2 py-1 rounded text-[#f2cc81] text-xs">{t('zoneBAlert', selectedLanguage)}</span>
                 </div>
                 <div className="absolute top-[30%] left-[40%] w-3 h-3 rounded-full bg-error animate-pulse"></div>
                 <div className="absolute top-[35%] left-[55%] w-3 h-3 rounded-full bg-error animate-pulse" style={{ animationDelay: '0.2s' }}></div>
@@ -287,7 +305,7 @@ export const DiseaseWeedScreen: React.FC = () => {
             <div className="flex flex-col gap-sm">
               <h3 className="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">grass</span>
-                {t('weedReferenceGuide', selectedLanguage)} ({selectedCrop})
+                {t('weedReferenceGuide', selectedLanguage)} ({translateCrop(selectedCrop, selectedLanguage)})
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
                 {cropWeeds.map((weed) => (
@@ -295,18 +313,18 @@ export const DiseaseWeedScreen: React.FC = () => {
                     <div>
                       <div className="flex items-center gap-2 mb-sm">
                         <span className="material-symbols-outlined text-primary text-2xl">{weed.icon}</span>
-                        <h4 className="font-headline-sm text-headline-sm text-on-surface">{weed.weedName}</h4>
+                        <h4 className="font-headline-sm text-headline-sm text-on-surface">{translateText(weed.weedName, selectedLanguage)}</h4>
                       </div>
 
                       <div className="space-y-xs text-body-md">
                         <div className="flex justify-between bg-surface-variant p-2 rounded">
                           <span className="text-on-surface-variant uppercase text-xs">{t('comesAt', selectedLanguage)}</span>
-                          <span className="font-bold text-on-surface">{weed.startDay}–{weed.endDay} Days</span>
+                          <span className="font-bold text-on-surface">{weed.startDay}–{weed.endDay} {t('days', selectedLanguage)}</span>
                         </div>
 
                         <div className="bg-surface-variant p-2 rounded">
                           <span className="text-on-surface-variant uppercase text-xs block">{t('remove', selectedLanguage)}</span>
-                          <span className="text-on-surface">{weed.action}</span>
+                          <span className="text-on-surface">{translateText(weed.action, selectedLanguage)}</span>
                         </div>
                       </div>
 

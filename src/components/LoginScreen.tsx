@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useFarm } from '../context/FarmContext';
+import { t } from '../services/i18n';
+import { LanguageSelectorModal } from './LanguageSelectorModal';
 
 export const LoginScreen: React.FC = () => {
-  const { login } = useFarm();
+  const { login, selectedLanguage, setSelectedLanguage, isLanguageModalOpen, setIsLanguageModalOpen } = useFarm();
   const [mobileNumber, setMobileNumber] = useState<string>('+91 98765 43210');
   const [otp, setOtp] = useState<string[]>(['4', '0', '2', '8']);
   const [showOtp, setShowOtp] = useState<boolean>(false);
@@ -18,6 +20,18 @@ export const LoginScreen: React.FC = () => {
 
   return (
     <div className="bg-background text-on-surface h-screen flex flex-col items-center justify-center relative overflow-hidden">
+      {/* Language selector pin on top right of Login Screen */}
+      <div className="absolute top-4 right-4 z-20">
+        <button
+          onClick={() => setIsLanguageModalOpen(true)}
+          className="p-2.5 rounded-full bg-surface-container text-primary hover:bg-surface-container-high border border-primary/30 transition-all flex items-center gap-1 shadow-md"
+          title={t('selectLanguage', selectedLanguage)}
+        >
+          <span className="material-symbols-outlined text-2xl">translate</span>
+          <span className="font-label-sm text-xs uppercase font-bold">{selectedLanguage}</span>
+        </button>
+      </div>
+
       {/* Decorative Earthy/Tech Background Elements */}
       <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-surface-container-high to-transparent opacity-50 -z-10"></div>
       
@@ -34,10 +48,10 @@ export const LoginScreen: React.FC = () => {
             </span>
           </div>
           <h1 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary text-center">
-            Smart Agriculture
+            {t('appName', selectedLanguage)}
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant mt-sm text-center">
-            Data-driven farming, from soil to silo.
+            {t('farmerSubtitle', selectedLanguage)}
           </p>
         </div>
 
@@ -48,11 +62,11 @@ export const LoginScreen: React.FC = () => {
         >
           {/* Ambient Glow */}
           <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary opacity-5 rounded-full blur-2xl"></div>
-          <h2 className="font-headline-md text-headline-md mb-md text-on-surface">Welcome, Farmer</h2>
+          <h2 className="font-headline-md text-headline-md mb-md text-on-surface">{t('welcomeFarmer', selectedLanguage)}</h2>
 
           <div className="mb-md">
             <label className="block font-label-lg text-label-lg text-on-surface-variant mb-base" htmlFor="mobile-number">
-              Mobile Number
+              {t('mobileNumber', selectedLanguage)}
             </label>
             <div className="relative">
               <span className="absolute inset-y-0 left-0 flex items-center pl-sm">
@@ -74,8 +88,8 @@ export const LoginScreen: React.FC = () => {
           {/* OTP Input */}
           <div className={`mb-lg transition-opacity duration-300 ${showOtp ? 'opacity-100' : 'opacity-60'}`}>
             <label className="block font-label-lg text-label-lg text-on-surface-variant mb-base flex items-center justify-between">
-              Enter OTP
-              <span className="font-label-sm text-label-sm text-primary cursor-pointer hover:underline">Resend</span>
+              {t('enterOtp', selectedLanguage)}
+              <span className="font-label-sm text-label-sm text-primary cursor-pointer hover:underline">{t('resend', selectedLanguage)}</span>
             </label>
             <div className="flex justify-between gap-base">
               {otp.map((digit, idx) => (
@@ -100,7 +114,7 @@ export const LoginScreen: React.FC = () => {
             type="submit"
             className="w-full bg-primary text-on-primary font-label-lg text-label-lg py-md rounded-lg flex items-center justify-center gap-sm hover:bg-primary-fixed transition-colors shadow-sm active:scale-95 duration-150"
           >
-            {showOtp ? 'Verify & Start Farming' : 'Get OTP'}
+            {showOtp ? t('verifyStart', selectedLanguage) : t('getOtp', selectedLanguage)}
             <span className="material-symbols-outlined" data-icon="arrow_forward">
               arrow_forward
             </span>
@@ -108,9 +122,18 @@ export const LoginScreen: React.FC = () => {
         </form>
 
         <p className="font-label-sm text-label-sm text-on-surface-variant mt-md text-center opacity-70">
-          By continuing, you agree to our Terms of Service & Privacy Policy.
+          {t('termsPolicy', selectedLanguage)}
         </p>
       </div>
+
+      {/* Language Selector Modal */}
+      <LanguageSelectorModal
+        isOpen={isLanguageModalOpen}
+        onClose={() => setIsLanguageModalOpen(false)}
+        currentLanguage={selectedLanguage}
+        onSelectLanguage={setSelectedLanguage}
+      />
     </div>
   );
 };
+

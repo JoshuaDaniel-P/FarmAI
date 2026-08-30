@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFarm } from '../context/FarmContext';
-import { t } from '../services/i18n';
+import { t, translateCrop, translateName, translateText } from '../services/i18n';
 
 export const Navigation: React.FC = () => {
   const { currentScreen, setCurrentScreen, farmer, selectedLanguage, setIsLanguageModalOpen } = useFarm();
@@ -95,32 +95,36 @@ export const Navigation: React.FC = () => {
       </nav>
 
       {/* Desktop Sidebar Navigation */}
-      <aside className="hidden md:flex flex-col h-screen py-lg w-80 shrink-0 bg-surface-container border-r border-surface-variant fixed left-0 top-0 z-40">
-        <div className="px-md mb-lg flex flex-col items-start w-full">
-          <div className="flex justify-between items-start w-full">
-            <div className="w-16 h-16 rounded-full bg-surface-variant flex items-center justify-center mb-4 overflow-hidden border-2 border-primary/30">
-              <span className="material-symbols-outlined text-primary text-4xl" style={{ fontVariationSettings: "'FILL' 1" }}>
-                energy_savings_leaf
-              </span>
+      <aside className="hidden md:flex flex-col w-80 h-screen fixed left-0 top-0 bg-surface-container border-r border-surface-variant z-40 p-4 overflow-y-auto">
+        <div className="flex flex-col gap-1 p-4 mb-4 bg-surface-container-low rounded-2xl border border-surface-variant">
+          <div className="flex items-center justify-between mb-2">
+            <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-primary-container">
+              <img
+                alt="Farmer Portrait"
+                className="w-full h-full object-cover"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIApBsvQSGN9pM5oS-4TKErfdj9Zewzc89JjDs7Fa8ww9U1-hpCxmZpQOMs-XdyG07nPb0Ekcw9Z9DpoHeBfCqKfcjfWW3GLf5hmLJds8gnOxpzBNFk4n_eKPcEANmY5eRKFN8keelEkvj_UV8GqF9ryhezcYq70Uqs380nlb6Sa6Z2cC0-kCJRvtGVuA36WmPcrb1Ox-QIrJvlFtnmD1L6BtJCTE0vnimzaqhLctl7CpNtmqwzi9h"
+              />
             </div>
-
-            {/* Translate Pin in Sidebar */}
+            {/* Direct Language Switcher Button */}
             <button
               onClick={() => setIsLanguageModalOpen(true)}
-              className="p-2.5 rounded-full bg-surface-container-high text-primary hover:bg-surface-bright border border-primary/30 transition-all flex items-center gap-1"
-              title="Translate App Language"
+              className="p-2.5 rounded-full bg-surface-container-high text-primary hover:bg-surface-bright border border-primary/30 transition-all flex items-center gap-1 px-3"
+              title={t('selectLanguage', selectedLanguage)}
+              aria-label={t('selectLanguage', selectedLanguage)}
             >
               <span className="material-symbols-outlined text-2xl">translate</span>
-              <span className="font-label-sm text-xs uppercase">{selectedLanguage}</span>
+              <span className="font-label-sm text-xs font-bold">
+                {selectedLanguage === 'te' ? 'తెలుగు' : selectedLanguage === 'hi' ? 'हिंदी' : selectedLanguage === 'ta' ? 'தமிழ்' : selectedLanguage === 'kn' ? 'ಕನ್ನಡ' : 'EN'}
+              </span>
             </button>
           </div>
 
-          <h2 className="font-headline-md text-headline-md text-primary">{farmer.name}</h2>
+          <h2 className="font-headline-md text-headline-md text-primary">{translateName(farmer.name, selectedLanguage)}</h2>
           <p className="font-body-md text-body-md text-on-surface">
-            {farmer.activeCrop} • {farmer.fieldName}
+            {translateCrop(farmer.activeCrop, selectedLanguage)} • {translateText(farmer.fieldName, selectedLanguage)}
           </p>
           <p className="font-label-sm text-label-sm text-on-surface-variant">
-            {farmer.village}, {farmer.district}
+            {translateText(farmer.village, selectedLanguage)}, {translateText(farmer.district, selectedLanguage)}
           </p>
         </div>
 

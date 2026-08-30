@@ -63,6 +63,7 @@ export interface DiseaseInfo {
   treatment: string;
   currentRiskPrediction: string;
   icon: string;
+  imageUrl?: string;
   // Concise farmer-friendly fields
   comesWhen: string;
   shortPrecaution: string;
@@ -92,6 +93,7 @@ export interface WeedInfo {
   identification: string;
   action: string;
   icon: string;
+  imageUrl?: string;
   learnMoreText?: string;
 }
 

@@ -5,15 +5,24 @@ export interface LanguageOption {
   name: string;
   nativeName: string;
   flag: string;
+  speechLocale: string;
 }
 
 export const SUPPORTED_LANGUAGES: LanguageOption[] = [
-  { code: 'en', name: 'English', nativeName: 'English', flag: '🇬🇧' },
-  { code: 'te', name: 'Telugu', nativeName: 'తెలుగు', flag: '🇮🇳' },
-  { code: 'hi', name: 'Hindi', nativeName: 'हिंदी', flag: '🇮🇳' },
-  { code: 'ta', name: 'Tamil', nativeName: 'தமிழ்', flag: '🇮🇳' },
-  { code: 'kn', name: 'Kannada', nativeName: 'ಕನ್ನಡ', flag: '🇮🇳' },
+  { code: 'en', name: 'English', nativeName: 'English', flag: '🇬🇧', speechLocale: 'en-IN' },
+  { code: 'te', name: 'Telugu', nativeName: 'తెలుగు', flag: '🇮🇳', speechLocale: 'te-IN' },
+  { code: 'hi', name: 'Hindi', nativeName: 'हिंदी', flag: '🇮🇳', speechLocale: 'hi-IN' },
+  { code: 'ta', name: 'Tamil', nativeName: 'தமிழ்', flag: '🇮🇳', speechLocale: 'ta-IN' },
+  { code: 'kn', name: 'Kannada', nativeName: 'ಕನ್ನಡ', flag: '🇮🇳', speechLocale: 'kn-IN' },
 ];
+
+export const SPEECH_LOCALES: Record<LanguageCode, string> = {
+  en: 'en-IN',
+  te: 'te-IN',
+  hi: 'hi-IN',
+  ta: 'ta-IN',
+  kn: 'kn-IN',
+};
 
 export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
   en: {
@@ -23,6 +32,13 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     farmerSubtitle: 'Data-driven farming, from soil to silo.',
     selectLanguage: 'Select Language',
     changeLanguage: 'Change Language',
+    welcomeFarmer: 'Welcome, Farmer',
+    mobileNumber: 'Mobile Number',
+    enterOtp: 'Enter OTP',
+    resend: 'Resend',
+    getOtp: 'Get OTP',
+    verifyStart: 'Verify & Start Farming',
+    termsPolicy: 'By continuing, you agree to our Terms of Service & Privacy Policy.',
     
     // Navigation
     navHome: 'Home',
@@ -54,11 +70,46 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     fieldSectorMap: 'Field Sector Map Layout',
     moistureLevelGood: 'Moisture level good',
     soilIsDry: 'Your soil is dry in Sector 03. Start water now.',
+    sector: 'Sector',
+    sector01: 'Sector 01',
+    sector02: 'Sector 02',
+    sector03: 'Sector 03',
+    sector04: 'Sector 04',
+    day: 'Day',
+    field: 'Field',
+    
+    // Field Setup
+    step1RecordBoundary: 'Step 1: Record Field Boundary',
+    boundaryDesc: 'Accurate boundaries ensure precise crop scheduling and market estimates.',
+    walkAroundPrompt: 'Walk around your field to record the boundary.',
+    recordingGps: 'Recording GPS boundary points...',
+    fieldRecorded: 'Field boundary recorded! 2.4 Acres calculated.',
+    walkAndMap: 'Walk & Map',
+    saveField: 'Save Field 01',
+    acres: 'Acres',
     
     // Notifications
     notifications: 'Notifications',
+    newNotif: 'new',
+    newAlerts: 'New Alerts',
+    noAlerts: 'No alerts',
     markAllRead: 'Mark all read',
     noActiveAlerts: 'No active alerts. Your field is running smoothly!',
+    irrigationRequired: 'Irrigation Required',
+    irrigationNotifMsg: 'Your soil is dry in Sector 03 (21% moisture). Start watering to maintain root health.',
+    irrigationDoneMsg: 'Sector 03 irrigated successfully. Moisture level optimal.',
+    activeWeedAlertNotif: 'Active Weed Alert',
+    weedNotifMsg: 'Paddy is currently Day 47. Common weed expected: Echinochloa. Action: Inspect field and pluck out before seed formation.',
+    diseaseRiskWarning: 'Disease Risk Warning',
+    diseaseNotifMsg: 'Paddy Brown Spot risk is moderate due to 61% relative humidity. Spray Mancozeb if spots appear.',
+    droneScanCompleted: 'Drone Scan Completed',
+    droneNotifMsg: 'Morning drone run detected 12 weed locations in Zone B. Targeted spray is recommended.',
+    inspectWeeds: 'Inspect Weeds',
+    viewGuidance: 'View Guidance',
+    deploySpray: 'Deploy Spray',
+    justNow: 'Just Now',
+    today8am: 'Today, 08:00 AM',
+    today630am: 'Today, 06:30 AM',
     
     // Disease & Weed
     diseases: 'DISEASES',
@@ -70,27 +121,51 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     commonDiseases: 'Common Diseases',
     comesRiskPeriod: 'Comes / Risk Period',
     precaution: 'Precaution',
-    cure: 'Cure',
+    cure: 'Cure / Treatment',
     activeWeedAlert: 'Active Weed Alert',
     weedReferenceGuide: 'Weed Reference Guide',
     comesAt: 'COMES AT',
     remove: 'REMOVE',
     inspectField: 'Inspect Field',
     droneSurveillanceMap: 'Drone Surveillance Map',
+    latestScan: 'Latest scan',
     clustersIdentified: 'Clusters Identified',
+    zoneBAlert: 'Zone B Alert',
     learnMore: 'Learn More',
     hideDetails: 'Hide Details',
+    afterSowing: 'after sowing',
+    actionLabel: 'Action',
+    days: 'Days',
+    match: 'Match',
+    registered: 'Registered',
+    risk: 'Risk',
+    highRisk: 'High Risk',
+    moderateRisk: 'Moderate Risk',
+    lowRisk: 'Low Risk',
     
     // Camera Scan Modal
     cropLeafScan: 'Crop Leaf Disease Scan',
+    cropLeafScanDesc: 'Take or select a clear photograph of the affected leaf for AI diagnosis.',
     alignLeaf: 'Align Affected Leaf',
     uploadPhoto: 'Upload Photo',
     analyzePhoto: 'Analyze Photo',
+    analyzingSymptoms: 'Analyzing leaf symptoms...',
+    scanningPatterns: 'Scanning for fungal, viral, and pest damage patterns.',
     diseaseDetected: 'DISEASE DETECTED',
     symptoms: 'Symptoms',
     likelyCause: 'Likely Cause',
     registerDisease: 'Register Disease',
     scanAnother: 'Scan Another',
+    
+    // Disease Detail Modal
+    intelligenceModule: 'Intelligence Module',
+    currentRisk: 'Current Risk',
+    observedSymptoms: 'Observed Symptoms',
+    primaryCause: 'Primary Cause',
+    favorableConditions: 'Favorable Conditions',
+    preventivePrecautions: 'Preventive Precautions',
+    recommendedTreatment: 'Recommended Treatment & Cure',
+    closeAnalysis: 'Close Analysis',
     
     // Assistant
     farmAssistant: 'Farm Assistant',
@@ -98,6 +173,14 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     listening: 'Listening...',
     listen: 'Listen',
     askAnything: 'Ask assistant anything about your field...',
+    voiceTimeout: 'Listening timed out. Tap again or type.',
+    statusQuickBtn: 'Status',
+    farmerSpeaker: 'Farmer',
+    assistantSpeaker: 'Assistant',
+    howIsMyField: 'How is my field?',
+    back: 'Back',
+    send: 'Send',
+    stopListening: 'Stop listening',
     
     // Markets & History
     cropHistoryYield: 'Crop History & Yield',
@@ -110,15 +193,53 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     logHarvest: 'Log Harvest',
     highSuitability: 'High',
     modSuitability: 'Moderate',
+    rate: 'Rate',
+    unitQtl: 'qtl',
+    tonsUnit: 't',
+    monthJun: 'Jun',
+    monthJul: 'Jul',
+    monthAug: 'Aug',
+    monthSep: 'Sep',
+    seasonCropName: 'Season / Crop Name',
+    expectedTonsLabel: 'Expected (Tons)',
+    actualTonsLabel: 'Actual (Tons)',
+    lossReasonLabel: 'Loss Reason',
+    cancel: 'Cancel',
+    save: 'Save',
+    
+    // Crops
+    cropPaddy: 'Paddy',
+    cropCotton: 'Cotton',
+    cropChilli: 'Chilli',
+    cropMaize: 'Maize',
+    cropGroundnut: 'Groundnut',
+    cropRedGram: 'Red Gram (Kandulu)',
+    cropSugarcane: 'Sugarcane',
+    cropTurmeric: 'Turmeric',
+
+    // Loss Factors
+    factorStemBorer: 'Pest Infestation (Stem Borer)',
+    factorIrrigationDeficit: 'Irrigation Deficit (Mid-season)',
+    factorBrownSpot: 'Fungal Infection (Brown Spot)',
+    factorBollworm: 'Bollworm Attack',
+    factorRainfall: 'Unseasonal Rainfall',
+    factorWaterStress: 'Water Deficit & Heat Stress',
   },
 
   te: {
-    // Telugu Translations
+    // Header & Greeting
     appName: 'స్మార్ట్ వ్యవసాయం',
     goodMorning: 'శుభోదయం',
     farmerSubtitle: 'నేల నుండి ధాన్యాగారం వరకు సమాచార ఆధారిత వ్యవసాయం.',
     selectLanguage: 'భాషను ఎంచుకోండి',
     changeLanguage: 'భాష మార్చండి',
+    welcomeFarmer: 'స్వాగతం, రైతు సోదరా',
+    mobileNumber: 'మొబైల్ నంబర్',
+    enterOtp: 'OTP నమోదు చేయండి',
+    resend: 'మళ్ళీ పంపండి',
+    getOtp: 'OTP పొందండి',
+    verifyStart: 'ధృవీకరించి ప్రారంభించండి',
+    termsPolicy: 'కొనసాగించడం ద్వారా, మీరు మా సేవా నిబంధనలు మరియు గోప్యతా విధానాన్ని అంగీకరిస్తున్నారు.',
     
     // Navigation
     navHome: 'హోమ్',
@@ -146,22 +267,57 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     liveReadings: 'లైవ్ రీడింగ్‌లు',
     lowSoilMoisture: 'నేలలో తేమ తక్కువగా ఉంది',
     startWater: 'నీరు పెట్టండి',
-    expandMap: 'మ్యాప్ చూడండి',
+    expandMap: 'మ్యాప్ విస్తరించండి',
     fieldSectorMap: 'పొలం సెక్టార్ మ్యాప్ ల్యాఅవుట్',
     moistureLevelGood: 'తేమ మట్టం సరిగ్గా ఉంది',
     soilIsDry: 'సెక్టార్ 03 లో నేల ఎండిపోయింది. వెంటనే నీరు పెట్టండి.',
+    sector: 'సెక్టార్',
+    sector01: 'సెక్టార్ 01',
+    sector02: 'సెక్టార్ 02',
+    sector03: 'సెక్టార్ 03',
+    sector04: 'సెక్టార్ 04',
+    day: 'రోజు',
+    field: 'పొలం',
+    
+    // Field Setup
+    step1RecordBoundary: 'దశ 1: పొలం సరిహద్దును నమోదు చేయండి',
+    boundaryDesc: 'ఖచ్చితమైన సరిహద్దులు పంట ప్రణాళిక మరియు మార్కెట్ అంచనాలను మెరుగుపరుస్తాయి.',
+    walkAroundPrompt: 'సరిహద్దును నమోదు చేయడానికి మీ పొలం చుట్టూ నడవండి.',
+    recordingGps: 'GPS సరిహద్దు పాయింట్లను రికార్డ్ చేస్తోంది...',
+    fieldRecorded: 'పొలం సరిహద్దు నమోదైంది! 2.4 ఎకరాలు లెక్కించబడింది.',
+    walkAndMap: 'నడిచి మ్యాప్ చేయండి',
+    saveField: 'పొలం 01 భద్రపరచండి',
+    acres: 'ఎకరాలు',
     
     // Notifications
     notifications: 'నోటిఫికేషన్‌లు',
+    newNotif: 'కొత్తవి',
+    newAlerts: 'కొత్త హెచ్చరికలు',
+    noAlerts: 'ఎలాంటి హెచ్చరికలు లేవు',
     markAllRead: 'అన్నీ చదివినట్లు గుర్తించు',
     noActiveAlerts: 'ఎలాంటి అత్యవసర హెచ్చరికలు లేవు. మీ పొలం బాగుంది!',
+    irrigationRequired: 'నీటి తడులు అవసరం',
+    irrigationNotifMsg: 'సెక్టార్ 03 లో నేల ఎండిపోయింది (21% తేమ). వేరు వ్యవస్థ రక్షణకు వెంటనే నీరు పెట్టండి.',
+    irrigationDoneMsg: 'సెక్టార్ 03 లో నీటిపారుదల పూర్తయింది. తేమ స్థాయి సమతుల్యంగా ఉంది.',
+    activeWeedAlertNotif: 'కలుపు మొక్కల హెచ్చరిక',
+    weedNotifMsg: 'వరి ప్రస్తుతం 47వ రోజులో ఉంది. ఊద కలుపు ఆశించే అవకాశం ఉంది. విత్తనాలు రాకముందే పీకివేయండి.',
+    diseaseRiskWarning: 'తెగులు ప్రమాద హెచ్చరిక',
+    diseaseNotifMsg: '61% తేమ కారణంగా వరి ఆకుమచ్చ తెగులు వచ్చే అవకాశం ఉంది. మచ్చలు కనిపిస్తే మాంకోజెబ్ పిచికారీ చేయండి.',
+    droneScanCompleted: 'డ్రోన్ స్కానింగ్ పూర్తయింది',
+    droneNotifMsg: 'ఉదయం డ్రోన్ స్కాన్‌లో జోన్ B లో 12 కలుపు ప్రాంతాలు గుర్తించబడ్డాయి. పిచికారీ సూచించబడింది.',
+    inspectWeeds: 'కలుపును పరిశీలించండి',
+    viewGuidance: 'సలహాలు చూడండి',
+    deploySpray: 'పిచికారీ చేయండి',
+    justNow: 'ఇప్పుడే',
+    today8am: 'ఈరోజు, ఉదయం 08:00',
+    today630am: 'ఈరోజు, ఉదయం 06:30',
     
     // Disease & Weed
     diseases: 'తెగుళ్ళు',
     weeds: 'కలుపు మొక్కలు',
     scanCropLeaf: 'ఆకును స్కాన్ చేయండి',
     imageDiseaseId: 'ఫోటో ద్వారా తెగులు గుర్తింపు',
-    imageDiseaseDesc: 'తెగులును గుర్తించి చికిత్స తెలుసుకోవడానికి ఆకు ఫోటో తీయండి లేదా అప్‌లోడ్ చేయండి.',
+    imageDiseaseDesc: 'తెగులును గుర్తించి నివారణ చర్యలు తెలుసుకోవడానికి ఆకు ఫోటో తీయండి లేదా అప్‌లోడ్ చేయండి.',
     registeredDiseases: 'నమోదైన పంట తెగుళ్ళు',
     commonDiseases: 'సాధారణ తెగుళ్ళు',
     comesRiskPeriod: 'వచ్చే సమయం / ప్రమాద కాలం',
@@ -173,20 +329,44 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     remove: 'తొలగించే విధానం',
     inspectField: 'పొలాన్ని పరిశీలించండి',
     droneSurveillanceMap: 'డ్రోన్ నిఘా మ్యాప్',
+    latestScan: 'తాజా స్కాన్',
     clustersIdentified: 'గుర్తించిన కలుపు స్థానాలు',
+    zoneBAlert: 'జోన్ B హెచ్చరిక',
     learnMore: 'మరిన్ని వివరాలు',
     hideDetails: 'వివరాలు దాచు',
+    afterSowing: 'విత్తిన తర్వాత',
+    actionLabel: 'చర్య',
+    days: 'రోజులు',
+    match: 'సరిపోలిక',
+    registered: 'నమోదైనది',
+    risk: 'ప్రమాదం',
+    highRisk: 'అధిక ప్రమాదం',
+    moderateRisk: 'మధ్యస్థ ప్రమాదం',
+    lowRisk: 'తక్కువ ప్రమాదం',
     
     // Camera Scan Modal
     cropLeafScan: 'పంట ఆకు తెగులు స్కాన్',
+    cropLeafScanDesc: 'AI నిర్ధారణ కోసం తెగులు ఉన్న ఆకు స్పష్టమైన ఫోటో తీయండి లేదా ఎంచుకోండి.',
     alignLeaf: 'తెగులు ఉన్న ఆకును అమర్చండి',
     uploadPhoto: 'ఫోటో అప్‌లోడ్ చేయండి',
     analyzePhoto: 'విశ్లేషించండి',
+    analyzingSymptoms: 'ఆకు లక్షణాలను విశ్లేషిస్తోంది...',
+    scanningPatterns: 'ఫంగల్, వైరల్ మరియు తెగుళ్ళ నష్టాన్ని స్కాన్ చేస్తోంది...',
     diseaseDetected: 'గుర్తించిన తెగులు',
     symptoms: 'లక్షణాలు',
     likelyCause: 'ప్రధాన కారణం',
     registerDisease: 'తెగులును నమోదు చేయండి',
     scanAnother: 'మరొకటి స్కాన్ చేయండి',
+    
+    // Disease Detail Modal
+    intelligenceModule: 'తెగులు నిఘా విభాగం',
+    currentRisk: 'ప్రస్తుత ప్రమాదం',
+    observedSymptoms: 'గమనించిన లక్షణాలు',
+    primaryCause: 'ప్రధాన కారణం',
+    favorableConditions: 'అనుకూల పరిస్థితులు',
+    preventivePrecautions: 'ముందస్తు నివారణ చర్యలు',
+    recommendedTreatment: 'సిఫార్సు చేయబడిన చికిత్స & మందులు',
+    closeAnalysis: 'విశ్లేషణ మూసివేయి',
     
     // Assistant
     farmAssistant: 'వ్యవసాయ అసిస్టెంట్',
@@ -194,6 +374,14 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     listening: 'వింటోంది...',
     listen: 'వినండి',
     askAnything: 'మీ పొలం గురించి ఏదైనా అడగండి...',
+    voiceTimeout: 'సమయం ముగిసింది. మళ్ళీ మైక్ నొక్కండి లేదా టైప్ చేయండి.',
+    statusQuickBtn: 'పొలం స్థితి',
+    farmerSpeaker: 'రైతు',
+    assistantSpeaker: 'అసిస్టెంట్',
+    howIsMyField: 'నా పొలం ఎలా ఉంది?',
+    back: 'వెనుకకు',
+    send: 'పంపండి',
+    stopListening: 'ఆపండి',
     
     // Markets & History
     cropHistoryYield: 'పంట చరిత్ర & దిగుబడి',
@@ -206,15 +394,53 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     logHarvest: 'దిగుబడి నమోదు చేయండి',
     highSuitability: 'చాలా తగినది',
     modSuitability: 'మధ్యస్థం',
+    rate: 'ధర',
+    unitQtl: 'క్వింటాల్',
+    tonsUnit: 'టన్నులు',
+    monthJun: 'జూన్',
+    monthJul: 'జూలై',
+    monthAug: 'ఆగస్టు',
+    monthSep: 'సెప్టెంబర్',
+    seasonCropName: 'సీజన్ / పంట పేరు',
+    expectedTonsLabel: 'ఆశించిన దిగుబడి (టన్నులు)',
+    actualTonsLabel: 'వాస్తవ దిగుబడి (టన్నులు)',
+    lossReasonLabel: 'నష్టానికి కారణం',
+    cancel: 'రద్దు',
+    save: 'భద్రపరచు',
+    
+    // Crops
+    cropPaddy: 'వరి',
+    cropCotton: 'పత్తి',
+    cropChilli: 'మిరప',
+    cropMaize: 'మొక్కజొన్న',
+    cropGroundnut: 'వేరుశనగ',
+    cropRedGram: 'కందులు',
+    cropSugarcane: 'చెరకు',
+    cropTurmeric: 'పసుపు',
+
+    // Loss Factors
+    factorStemBorer: 'కాండం తొలిచే పురుగు ఉధృతి',
+    factorIrrigationDeficit: 'మధ్య దశలో నీటి కొరత',
+    factorBrownSpot: 'ఆకుమచ్చ తెగులు శిలీంధ్రం',
+    factorBollworm: 'గులాబీ రంగు కాయ తొలిచే పురుగు',
+    factorRainfall: 'అకాల వర్షాలు',
+    factorWaterStress: 'నీటి ఎద్దడి మరియు అధిక ఉష్ణోగ్రత',
   },
 
   hi: {
-    // Hindi Translations
+    // Header & Greeting
     appName: 'स्मार्ट कृषि',
     goodMorning: 'शुभ प्रभात',
     farmerSubtitle: 'मिट्टी से खलिहान तक डेटा-संचालित खेती।',
     selectLanguage: 'भाषा चुनें',
     changeLanguage: 'भाषा बदलें',
+    welcomeFarmer: 'स्वागत है, किसान भाई',
+    mobileNumber: 'मोबाइल नंबर',
+    enterOtp: 'ओटीपी दर्ज करें',
+    resend: 'पुनः भेजें',
+    getOtp: 'ओटीपी प्राप्त करें',
+    verifyStart: 'सत्यापित करें और खेती शुरू करें',
+    termsPolicy: 'जारी रखकर, आप हमारी सेवा की शर्तों और गोपनीयता नीति से सहमत होते हैं।',
     
     // Navigation
     navHome: 'होम',
@@ -246,43 +472,102 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     fieldSectorMap: 'खेत सेक्टर मानचित्र',
     moistureLevelGood: 'नमी का स्तर अच्छा है',
     soilIsDry: 'सेक्टर 03 में मिट्टी सूखी है। सिंचाई करें।',
+    sector: 'सेक्टर',
+    sector01: 'सेक्टर 01',
+    sector02: 'सेक्टर 02',
+    sector03: 'सेक्टर 03',
+    sector04: 'सेक्टर 04',
+    day: 'दिन',
+    field: 'खेत',
+    
+    // Field Setup
+    step1RecordBoundary: 'चरण 1: खेत की सीमा रिकॉर्ड करें',
+    boundaryDesc: 'सटीक सीमाएं फसल नियोजन और बाज़ार अनुमान को बेहतर बनाती हैं।',
+    walkAroundPrompt: 'सीमा रिकॉर्ड करने के लिए अपने खेत के चारों ओर घूमें।',
+    recordingGps: 'जीपीएस सीमा बिंदु रिकॉर्ड हो रहे हैं...',
+    fieldRecorded: 'खेत की सीमा दर्ज हो गई! 2.4 एकड़ क्षेत्रफल।',
+    walkAndMap: 'घूमकर मैप बनाएं',
+    saveField: 'खेत 01 सुरक्षित करें',
+    acres: 'एकड़',
     
     // Notifications
     notifications: 'सूचनाएं',
+    newNotif: 'नई',
+    newAlerts: 'नई चेतावनियाँ',
+    noAlerts: 'कोई सूचना नहीं',
     markAllRead: 'सभी पढ़े गए चिह्नित करें',
     noActiveAlerts: 'कोई सक्रिय चेतावनी नहीं है। आपका खेत सुरक्षित है!',
+    irrigationRequired: 'सिंचाई की आवश्यकता है',
+    irrigationNotifMsg: 'सेक्टर 03 में मिट्टी सूखी है (21% नमी)। जड़ स्वास्थ्य बनाए रखने के लिए सिंचाई करें।',
+    irrigationDoneMsg: 'सेक्टर 03 में सिंचाई पूरी हो गई। नमी का स्तर इष्टतम है।',
+    activeWeedAlertNotif: 'सक्रिय खरपतवार चेतावनी',
+    weedNotifMsg: 'धान वर्तमान में 47वें दिन पर है। सांवा खरपतवार की संभावना है। बीज बनने से पहले उखाड़ें।',
+    diseaseRiskWarning: 'रोग जोखिम चेतावनी',
+    diseaseNotifMsg: '61% आर्द्रता के कारण धान में भूरा धब्बा रोग का खतरा है। मैन्कोजेब का छिड़काव करें।',
+    droneScanCompleted: 'ड्रोन स्कैन पूरा हुआ',
+    droneNotifMsg: 'सुबह के ड्रोन स्कैन में ज़ोन B में 12 खरपतवार स्थल मिले। छिड़काव की सलाह दी जाती है।',
+    inspectWeeds: 'खरपतवार देखें',
+    viewGuidance: 'सलाह देखें',
+    deploySpray: 'छिड़काव शुरू करें',
+    justNow: 'अभी-अभी',
+    today8am: 'आज, सुबह 08:00',
+    today630am: 'आज, सुबह 06:30',
     
     // Disease & Weed
     diseases: 'फसल रोग',
     weeds: 'खरपतवार',
     scanCropLeaf: 'पत्ती स्कैन करें',
     imageDiseaseId: 'चित्र द्वारा रोग पहचान',
-    imageDiseaseDesc: 'रोग की पहचान और उपचार जानने के लिए पत्ती की फोटो लें।',
+    imageDiseaseDesc: 'रोग की पहचान और उपचार जानने के लिए पत्ती की फोटो लें या अपलोड करें।',
     registeredDiseases: 'पंजीकृत फसल रोग',
     commonDiseases: 'सामान्य रोग',
     comesRiskPeriod: 'आने का समय / जोखिम अवधि',
     precaution: 'सावधानी',
-    cure: 'उपचार',
+    cure: 'उपचार / निदान',
     activeWeedAlert: 'सक्रिय खरपतवार चेतावनी',
     weedReferenceGuide: 'खरपतवार संदर्भ मार्गदर्शिका',
     comesAt: 'आने का समय',
     remove: 'हटाने का तरीका',
     inspectField: 'खेत का निरीक्षण करें',
     droneSurveillanceMap: 'ड्रोन निगरानी मानचित्र',
+    latestScan: 'नवीनतम स्कैन',
     clustersIdentified: 'पहचाने गए समूह',
+    zoneBAlert: 'ज़ोन B चेतावनी',
     learnMore: 'अधिक जानें',
     hideDetails: 'विवरण छुपाएं',
+    afterSowing: 'बुवाई के बाद',
+    actionLabel: 'कार्यवाही',
+    days: 'दिन',
+    match: 'समानता',
+    registered: 'पंजीकृत',
+    risk: 'जोखिम',
+    highRisk: 'उच्च जोखिम',
+    moderateRisk: 'मध्यम जोखिम',
+    lowRisk: 'कम जोखिम',
     
     // Camera Scan Modal
     cropLeafScan: 'फसल पत्ती रोग स्कैन',
+    cropLeafScanDesc: 'एआई निदान के लिए प्रभावित पत्ती की स्पष्ट तस्वीर लें या चुनें।',
     alignLeaf: 'प्रभावित पत्ती को संरेखित करें',
     uploadPhoto: 'फोटो अपलोड करें',
     analyzePhoto: 'विश्लेषण करें',
+    analyzingSymptoms: 'पत्ती के लक्षणों का विश्लेषण हो रहा है...',
+    scanningPatterns: 'फंगल, वायरल और कीट क्षति पैटर्न की जांच की जा रही है...',
     diseaseDetected: 'पहचाना गया रोग',
     symptoms: 'लक्षण',
     likelyCause: 'संभावित कारण',
     registerDisease: 'रोग पंजीकृत करें',
     scanAnother: 'दूसरा स्कैन करें',
+    
+    // Disease Detail Modal
+    intelligenceModule: 'रोग निगरानी मॉड्यूल',
+    currentRisk: 'वर्तमान जोखिम',
+    observedSymptoms: 'देखे गए लक्षण',
+    primaryCause: 'प्राथमिक कारण',
+    favorableConditions: 'अनुकूल परिस्थितियां',
+    preventivePrecautions: 'निवारक सावधानियां',
+    recommendedTreatment: 'अनुशंसित उपचार और दवाएं',
+    closeAnalysis: 'विश्लेषण बंद करें',
     
     // Assistant
     farmAssistant: 'कृषि सहायक',
@@ -290,6 +575,14 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     listening: 'सुन रहा है...',
     listen: 'सुनें',
     askAnything: 'अपने खेत के बारे में कुछ भी पूछें...',
+    voiceTimeout: 'समय समाप्त। पुनः माइक दबाएं या लिखें।',
+    statusQuickBtn: 'खेत की स्थिति',
+    farmerSpeaker: 'किसान',
+    assistantSpeaker: 'सहायक',
+    howIsMyField: 'मेरा खेत कैसा है?',
+    back: 'पीछे जाएं',
+    send: 'भेजें',
+    stopListening: 'रोकें',
     
     // Markets & History
     cropHistoryYield: 'फसल इतिहास एवं उपज',
@@ -302,15 +595,53 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     logHarvest: 'उपज दर्ज करें',
     highSuitability: 'उच्च',
     modSuitability: 'मध्यम',
+    rate: 'दर',
+    unitQtl: 'क्विंटल',
+    tonsUnit: 'टन',
+    monthJun: 'जून',
+    monthJul: 'जुलाई',
+    monthAug: 'अगस्त',
+    monthSep: 'सितंबर',
+    seasonCropName: 'मौसम / फसल का नाम',
+    expectedTonsLabel: 'अनुमानित (टन)',
+    actualTonsLabel: 'वास्तविक (टन)',
+    lossReasonLabel: 'नुकसान का कारण',
+    cancel: 'रद्द करें',
+    save: 'सुरक्षित करें',
+    
+    // Crops
+    cropPaddy: 'धान',
+    cropCotton: 'कपास',
+    cropChilli: 'मिर्च',
+    cropMaize: 'मक्का',
+    cropGroundnut: 'मूंगफली',
+    cropRedGram: 'अरहर (तूर)',
+    cropSugarcane: 'गन्ना',
+    cropTurmeric: 'हल्दी',
+
+    // Loss Factors
+    factorStemBorer: 'तना छेदक कीट का प्रकोप',
+    factorIrrigationDeficit: 'मध्य काल में सिंचाई की कमी',
+    factorBrownSpot: 'भूरा धब्बा फफूंद संक्रमण',
+    factorBollworm: 'गुलाबी सुंडी का हमला',
+    factorRainfall: 'बेमौसम बारिश',
+    factorWaterStress: 'पानी की कमी और गर्मी का तनाव',
   },
 
   ta: {
-    // Tamil Translations
+    // Header & Greeting
     appName: 'ஸ்மார்ட் விவசாயம்',
     goodMorning: 'காலை வணக்கம்',
     farmerSubtitle: 'மண்ணில் இருந்து களஞ்சியம் வரை தரவு சார்ந்த விவசாயம்.',
     selectLanguage: 'மொழியைத் தேர்ந்தெடுக்கவும்',
     changeLanguage: 'மொழியை மாற்றவும்',
+    welcomeFarmer: 'வணக்கம், விவசாயத் தோழரே',
+    mobileNumber: 'கைபேசி எண்',
+    enterOtp: 'OTP உள்ளிடவும்',
+    resend: 'மீண்டும் அனுப்புக',
+    getOtp: 'OTP பெறவும்',
+    verifyStart: 'சரிபார்த்து விவசாயத்தைத் தொடங்குங்கள்',
+    termsPolicy: 'தொடர்வதன் மூலம், எங்கள் சேவை விதிமுறைகள் மற்றும் தனியுரிமைக் கொள்கையை ஏற்கிறீர்கள்.',
     
     // Navigation
     navHome: 'முகப்பு',
@@ -342,43 +673,102 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     fieldSectorMap: 'நில பிரிவு வரைபடம்',
     moistureLevelGood: 'ஈரப்பதம் நன்றாக உள்ளது',
     soilIsDry: 'பிரிவு 03 இல் மண் உலர்ந்துள்ளது. நீர் பாய்ச்சவும்.',
+    sector: 'பிரிவு',
+    sector01: 'பிரிவு 01',
+    sector02: 'பிரிவு 02',
+    sector03: 'பிரிவு 03',
+    sector04: 'பிரிவு 04',
+    day: 'நாள்',
+    field: 'நிலம்',
+    
+    // Field Setup
+    step1RecordBoundary: 'படி 1: நில எல்லையைப் பதிவு செய்யவும்',
+    boundaryDesc: 'துல்லியமான எல்லைகள் பயிர் திட்டமிடல் மற்றும் சந்தை மதிப்பீட்டை மேம்படுத்துகின்றன.',
+    walkAroundPrompt: 'எல்லையைப் பதிவு செய்ய உங்கள் நிலத்தைச் சுற்றி நடக்கவும்.',
+    recordingGps: 'ஜிபிஎஸ் எல்லைப் புள்ளிகள் பதிவாகின்றன...',
+    fieldRecorded: 'நில எல்லை பதிவாகியது! 2.4 ஏக்கர் கணக்கிடப்பட்டது.',
+    walkAndMap: 'நடந்து வரைபடம் அமைக்கவும்',
+    saveField: 'நிலம் 01 சேமிக்கவும்',
+    acres: 'ஏக்கர்',
     
     // Notifications
     notifications: 'அறிவிப்புகள்',
+    newNotif: 'புதியவை',
+    newAlerts: 'புதிய எச்சரிக்கைகள்',
+    noAlerts: 'எச்சரிக்கைகள் இல்லை',
     markAllRead: 'அனைத்தும் படித்ததாகக் குறிக்கவும்',
     noActiveAlerts: 'எச்சரிக்கைகள் இல்லை. உங்கள் நிலம் பாதுகாப்பாக உள்ளது!',
+    irrigationRequired: 'நீர்ப்பாசனம் தேவை',
+    irrigationNotifMsg: 'பிரிவு 03 இல் மண் உலர்ந்துள்ளது (21% ஈரப்பதம்). பயிரைப் பாதுகாக்க உடனடியாக நீர் பாய்ச்சவும்.',
+    irrigationDoneMsg: 'பிரிவு 03 இல் நீர்ப்பாசனம் முடிந்தது. ஈரப்பத அளவு சரியாக உள்ளது.',
+    activeWeedAlertNotif: 'களை எச்சரிக்கை',
+    weedNotifMsg: 'நெல் பயிர் 47வது நாளில் உள்ளது. காடைக்கண்ணி களை உருவாகலாம். விதைகள் தோன்றும் முன் பிடுங்கி எறியவும்.',
+    diseaseRiskWarning: 'நோய் அபாய எச்சரிக்கை',
+    diseaseNotifMsg: '61% ஈரப்பதம் காரணமாக இலைப்புள்ளி நோய் ஆபத்து உள்ளது. மேன்கோசெப் தெளிக்கவும்.',
+    droneScanCompleted: 'ட்ரோன் ஸ்கேன் முடிந்தது',
+    droneNotifMsg: 'காலை ட்ரோன் ஸ்கேனில் மண்டலம் B இல் 12 களைப் பகுதிகள் கண்டறியப்பட்டன. தெளிக்க பரிந்துரைக்கப்படுகிறது.',
+    inspectWeeds: 'களைகளைப் பார்க்கவும்',
+    viewGuidance: 'ஆலோசனையைப் பார்க்கவும்',
+    deploySpray: 'மருந்து தெளிக்கவும்',
+    justNow: 'இப்போது',
+    today8am: 'இன்று, காலை 08:00',
+    today630am: 'இன்று, காலை 06:30',
     
     // Disease & Weed
     diseases: 'பயிர் நோய்கள்',
     weeds: 'களைகள்',
     scanCropLeaf: 'இலையை ஸ்கேன் செய்யவும்',
     imageDiseaseId: 'புகைப்பட நோய் கண்டறிதல்',
-    imageDiseaseDesc: 'நோயை கண்டறிந்து சிகிச்சை பெற இலையின் புகைப்படத்தை எடுக்கவும்.',
+    imageDiseaseDesc: 'நோயை கண்டறிந்து சிகிச்சை பெற இலையின் புகைப்படத்தை எடுக்கவும் அல்லது பதிவேற்றவும்.',
     registeredDiseases: 'பதிவுசெய்யப்பட்ட நோய்கள்',
     commonDiseases: 'பொதுவான நோய்கள்',
-    comesRiskPeriod: 'வரும் காலம்',
+    comesRiskPeriod: 'வரும் காலம் / ஆபத்துக் காலம்',
     precaution: 'முன்னெச்சரிக்கை',
-    cure: 'சிகிச்சை',
+    cure: 'சிகிச்சை / தீர்வு',
     activeWeedAlert: 'களை எச்சரிக்கை',
     weedReferenceGuide: 'களை வழிகாட்டி',
     comesAt: 'வரும் காலம்',
     remove: 'அகற்றும் முறை',
     inspectField: 'நிலத்தை ஆய்வு செய்யவும்',
     droneSurveillanceMap: 'ட்ரோன் வரைபடம்',
+    latestScan: 'சமீபத்திய ஸ்கேன்',
     clustersIdentified: 'கண்டறியப்பட்ட பகுதிகள்',
+    zoneBAlert: 'மண்டலம் B எச்சரிக்கை',
     learnMore: 'மேலும் அறிய',
     hideDetails: 'விவரங்களை மறைக்கவும்',
+    afterSowing: 'விதைத்த பிறகு',
+    actionLabel: 'நடவடிக்கை',
+    days: 'நாட்கள்',
+    match: 'பொருத்தம்',
+    registered: 'பதிவு செய்யப்பட்டது',
+    risk: 'அபாயம்',
+    highRisk: 'அதிக ஆபத்து',
+    moderateRisk: 'மிதமான ஆபத்து',
+    lowRisk: 'குறைந்த ஆபத்து',
     
     // Camera Scan Modal
     cropLeafScan: 'இலை நோய் ஸ்கேன்',
+    cropLeafScanDesc: 'AI கண்டறிதலுக்காக பாதிக்கப்பட்ட இலையின் தெளிவான புகைப்படத்தை எடுக்கவும்.',
     alignLeaf: 'பாதிக்கப்பட்ட இலையை வைக்கவும்',
     uploadPhoto: 'புகைப்படம் பதிவேற்றவும்',
     analyzePhoto: 'பகுப்பாய்வு செய்யவும்',
+    analyzingSymptoms: 'இலை அறிகுறிகள் பகுப்பாய்வு செய்யப்படுகின்றன...',
+    scanningPatterns: 'பூஞ்சை, வைரஸ் மற்றும் பூச்சி தாக்குதல்கள் ஸ்கேன் செய்யப்படுகின்றன...',
     diseaseDetected: 'கண்டறியப்பட்ட நோய்',
     symptoms: 'அறிகுறிகள்',
-    likelyCause: 'காரணம்',
+    likelyCause: 'சாத்தியமான காரணம்',
     registerDisease: 'நோயை பதிவு செய்யவும்',
     scanAnother: 'மறுகட்டமைப்பு செய்யவும்',
+    
+    // Disease Detail Modal
+    intelligenceModule: 'நோய் நுண்ணறிவு பிரிவு',
+    currentRisk: 'தற்போதைய ஆபத்து',
+    observedSymptoms: 'கண்டறியப்பட்ட அறிகுறிகள்',
+    primaryCause: 'முதன்மைக் காரணம்',
+    favorableConditions: 'சாதகமான சூழல்',
+    preventivePrecautions: 'முன்னெச்சரிக்கை நடவடிக்கைகள்',
+    recommendedTreatment: 'பரிந்துரைக்கப்பட்ட சிகிச்சை & மருந்துகள்',
+    closeAnalysis: 'பகுப்பாய்வை மூடு',
     
     // Assistant
     farmAssistant: 'விவசாய உதவியாளர்',
@@ -386,6 +776,14 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     listening: 'கேட்கிறது...',
     listen: 'கேளுங்கள்',
     askAnything: 'உங்கள் நிலத்தைப் பற்றி கேட்கவும்...',
+    voiceTimeout: 'நேரம் முடிந்தது. மீண்டும் மைக் அழுத்தவும் அல்லது தட்டச்சு செய்யவும்.',
+    statusQuickBtn: 'நிலத்தின் நிலை',
+    farmerSpeaker: 'விவசாயி',
+    assistantSpeaker: 'உதவியாளர்',
+    howIsMyField: 'என் நிலம் எப்படி உள்ளது?',
+    back: 'பின்செல்க',
+    send: 'அனுப்புக',
+    stopListening: 'நிறுத்து',
     
     // Markets & History
     cropHistoryYield: 'பயிர் வரலாறு & விளைச்சல்',
@@ -398,15 +796,53 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     logHarvest: 'விளைச்சலை பதிவு செய்யவும்',
     highSuitability: 'மிகவும் உகந்தது',
     modSuitability: 'மிதமான',
+    rate: 'விலை',
+    unitQtl: 'குவிண்டால்',
+    tonsUnit: 'டன்',
+    monthJun: 'ஜூன்',
+    monthJul: 'ஜூலை',
+    monthAug: 'ஆகஸ்ட்',
+    monthSep: 'செப்டம்பர்',
+    seasonCropName: 'பருவம் / பயிர் பெயர்',
+    expectedTonsLabel: 'எதிர்பார்த்தது (டன்)',
+    actualTonsLabel: 'உண்மையானது (டன்)',
+    lossReasonLabel: 'இழப்பு காரணம்',
+    cancel: 'ரத்து செய்',
+    save: 'சேமி',
+    
+    // Crops
+    cropPaddy: 'நெல்',
+    cropCotton: 'பருத்தி',
+    cropChilli: 'மிளகாய்',
+    cropMaize: 'மக்காச்சோளம்',
+    cropGroundnut: 'நிலக்கடலை',
+    cropRedGram: 'துவரம் பருப்பு',
+    cropSugarcane: 'கரும்பு',
+    cropTurmeric: 'மஞ்சள்',
+
+    // Loss Factors
+    factorStemBorer: 'தண்டு துளைப்பான் பூச்சி தாக்குதல்',
+    factorIrrigationDeficit: 'இடைப்பருவ நீர்ப்பாசன பற்றாக்குறை',
+    factorBrownSpot: 'இலைப்புள்ளி பூஞ்சை தொற்று',
+    factorBollworm: 'காய்ப்புழு தாக்குதல்',
+    factorRainfall: 'பருவம் தவறிய மழை',
+    factorWaterStress: 'நீர் பற்றாக்குறை மற்றும் வெப்ப அழுத்தம்',
   },
 
   kn: {
-    // Kannada Translations
+    // Header & Greeting
     appName: 'ಸ್ಮಾರ್ಟ್ ಕೃಷಿ',
     goodMorning: 'ಶುಭೋದಯ',
     farmerSubtitle: 'ಮಣ್ಣಿನಿಂದ ಗೋದಾಮಿನವರೆಗೆ ಡೇಟಾ-ಆಧಾರಿತ ಕೃಷಿ.',
     selectLanguage: 'ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ',
     changeLanguage: 'ಭಾಷೆ ಬದಲಾಯಿಸಿ',
+    welcomeFarmer: 'ಸ್ವಾಗತ, ರೈತ ಮಿತ್ರರೇ',
+    mobileNumber: 'ಮೊಬೈಲ್ ಸಂಖ್ಯೆ',
+    enterOtp: 'OTP ನಮೂದಿಸಿ',
+    resend: 'ಮತ್ತೆ ಕಳುಹಿಸಿ',
+    getOtp: 'OTP ಪಡೆಯಿರಿ',
+    verifyStart: 'ಪರಿಶೀಲಿಸಿ ಕೃಷಿ ಪ್ರಾರಂಭಿಸಿ',
+    termsPolicy: 'ಮುಂದುವರಿಯುವ ಮೂಲಕ, ನೀವು ನಮ್ಮ ಸೇವಾ ನಿಯಮಗಳು ಮತ್ತು ಗೌಪ್ಯತೆ ನೀತಿಯನ್ನು ಒಪ್ಪುತ್ತೀರಿ.',
     
     // Navigation
     navHome: 'ಹೋಮ್',
@@ -438,43 +874,102 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     fieldSectorMap: 'ಜಮೀನಿನ ನಕ್ಷೆ',
     moistureLevelGood: 'ತೇವಾಂಶ ಮಟ್ಟ ಉತ್ತಮವಾಗಿದೆ',
     soilIsDry: 'ವಲಯ 03 ರಲ್ಲಿ ಮಣ್ಣು ಒಣಗಿದೆ. ನೀರು ಹಾಯಿಸಿ.',
+    sector: 'ವಲಯ',
+    sector01: 'ವಲಯ 01',
+    sector02: 'ವಲಯ 02',
+    sector03: 'ವಲಯ 03',
+    sector04: 'ವಲಯ 04',
+    day: 'ದಿನ',
+    field: 'ಜಮೀನು',
+    
+    // Field Setup
+    step1RecordBoundary: 'ಹಂತ 1: ಜಮೀನಿನ ಗಡಿ ದಾಖಲಿಸಿ',
+    boundaryDesc: 'ನಿಖರವಾದ ಗಡಿಗಳು ಬೆಳೆ ಯೋಜನೆ ಮತ್ತು ಮಾರುಕಟ್ಟೆ ಅಂದಾಜುಗಳನ್ನು ಸುಧಾರಿಸುತ್ತವೆ.',
+    walkAroundPrompt: 'ಗಡಿ ದಾಖಲಿಸಲು ನಿಮ್ಮ ಜಮೀನಿನ ಸುತ್ತಲೂ ನಡೆಯಿರಿ.',
+    recordingGps: 'ಜಿಪಿಎಸ್ ಗಡಿ ಬಿಂದುಗಳು ದಾಖಲಾಗುತ್ತಿವೆ...',
+    fieldRecorded: 'ಜಮೀನಿನ ಗಡಿ ದಾಖಲಾಗಿದೆ! 2.4 ಎಕರೆ ಲೆಕ್ಕಹಾಕಲಾಗಿದೆ.',
+    walkAndMap: 'ನಡೆದು ನಕ್ಷೆ ಮಾಡಿ',
+    saveField: 'ಜಮೀನು 01 ಉಳಿಸಿ',
+    acres: 'ಎಕರೆ',
     
     // Notifications
     notifications: 'ಸೂಚನೆಗಳು',
+    newNotif: 'ಹೊಸತು',
+    newAlerts: 'ಹೊಸ ಎಚ್ಚರಿಕೆಗಳು',
+    noAlerts: 'ಯಾವುದೇ ಎಚ್ಚರಿಕೆಗಳಿಲ್ಲ',
     markAllRead: 'ಎಲ್ಲವನ್ನೂ ಓದಲಾಗಿದೆ ಎಂದು ಗುರುತಿಸಿ',
     noActiveAlerts: 'ಯಾವುದೇ ಸಕ್ರಿಯ ಎಚ್ಚರಿಕೆಗಳಿಲ್ಲ. ಜಮೀನು ಸುರಕ್ಷಿತವಾಗಿದೆ!',
+    irrigationRequired: 'ನೀರಾವರಿ ಅಗತ್ಯವಿದೆ',
+    irrigationNotifMsg: 'ವಲಯ 03 ರಲ್ಲಿ ಮಣ್ಣು ಒಣಗಿದೆ (21% ತೇವಾಂಶ). ಬೆಳೆ ರಕ್ಷಣೆಗೆ ನೀರು ಹಾಯಿಸಿ.',
+    irrigationDoneMsg: 'ವಲಯ 03 ರಲ್ಲಿ ನೀರಾವರಿ ಪೂರ್ಣಗೊಂಡಿದೆ. ತೇವಾಂಶ ಮಟ್ಟ ಸೂಕ್ತವಾಗಿದೆ.',
+    activeWeedAlertNotif: 'ಸಕ್ರಿಯ ಕಳೆ ಎಚ್ಚರಿಕೆ',
+    weedNotifMsg: 'ಭತ್ತವು 47ನೇ ದಿನದಲ್ಲಿದೆ. ಕಾಡು ಹುಲ್ಲು ಕಳೆ ಬರುವ ಸಾಧ್ಯತೆ ಇದೆ. ಬೀಜ ಬರುವ ಮುನ್ನ ಕೀಳಿ.',
+    diseaseRiskWarning: 'ರೋಗ ಅಪಾಯದ ಎಚ್ಚರಿಕೆ',
+    diseaseNotifMsg: '61% ತೇವಾಂಶದಿಂದಾಗಿ ಭತ್ತದಲ್ಲಿ ಎಲೆ ಚುಕ್ಕೆ ರೋಗದ ಅಪಾಯವಿದೆ. ಮ್ಯಾಂಕೋಜೆಬ್ ಸಿಂಪಡಿಸಿ.',
+    droneScanCompleted: 'ಡ್ರೋನ್ ಸ್ಕ್ಯಾನ್ ಪೂರ್ಣಗೊಂಡಿದೆ',
+    droneNotifMsg: 'ಬೆಳಗಿನ ಡ್ರೋನ್ ಸ್ಕ್ಯಾನ್‌ನಲ್ಲಿ ವಲಯ B ಯಲ್ಲಿ 12 ಕಳೆ ಪ್ರದೇಶಗಳು ಪತ್ತೆಯಾಗಿವೆ. ಸಿಂಪಡಣೆ ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ.',
+    inspectWeeds: 'ಕಳೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ',
+    viewGuidance: 'ಮಾರ್ಗದರ್ಶನ ನೋಡಿ',
+    deploySpray: 'ಸಿಂಪಡಣೆ ಮಾಡಿ',
+    justNow: 'ಈಗಷ್ಟೇ',
+    today8am: 'ಇಂದು, ಬೆಳಗ್ಗೆ 08:00',
+    today630am: 'ಇಂದು, ಬೆಳಗ್ಗೆ 06:30',
     
     // Disease & Weed
     diseases: 'ಬೆಳೆ ರೋಗಗಳು',
     weeds: 'ಕಳೆಗಳು',
     scanCropLeaf: 'ಎಲೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಿ',
     imageDiseaseId: 'ಚಿತ್ರದ ಮೂಲಕ ರೋಗ ಪತ್ತೆ',
-    imageDiseaseDesc: 'ರೋಗ ಗುರುತಿಸಲು ಮತ್ತು ಚಿಕಿತ್ಸೆ ತಿಳಿಯಲು ಎಲೆಯ ಫೋಟೋ ತೆಗೆಯಿರಿ.',
+    imageDiseaseDesc: 'ರೋಗ ಗುರುತಿಸಲು ಮತ್ತು ಚಿಕಿತ್ಸೆ ತಿಳಿಯಲು ಎಲೆಯ ಫೋಟೋ ತೆಗೆಯಿರಿ ಅಥವಾ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.',
     registeredDiseases: 'ನೋಂದಾಯಿತ ಬೆಳೆ ರೋಗಗಳು',
     commonDiseases: 'ಸಾಮಾನ್ಯ ರೋಗಗಳು',
-    comesRiskPeriod: 'ಬರುವ ಸಮಯ',
+    comesRiskPeriod: 'ಬರುವ ಸಮಯ / ಅಪಾಯದ ಅವಧಿ',
     precaution: 'ಮುನ್ನೆಚ್ಚರಿಕೆ',
-    cure: 'ಚಿಕಿತ್ಸೆ',
+    cure: 'ಚಿಕಿತ್ಸೆ / ಪರಿಹಾರ',
     activeWeedAlert: 'ಸಕ್ರಿಯ ಕಳೆ ಎಚ್ಚರಿಕೆ',
     weedReferenceGuide: 'ಕಳೆ ಮಾರ್ಗದರ್ಶಿ',
     comesAt: 'ಬರುವ ಸಮಯ',
     remove: 'ತೆಗೆಯುವ ವಿಧಾನ',
     inspectField: 'ಜಮೀನು ಪರಿಶೀಲಿಸಿ',
     droneSurveillanceMap: 'ಡ್ರೋನ್ ನಕ್ಷೆ',
+    latestScan: 'ಇತ್ತೀಚಿನ ಸ್ಕ್ಯಾನ್',
     clustersIdentified: 'ಗುರುತಿಸಲಾದ ಪ್ರದೇಶಗಳು',
+    zoneBAlert: 'ವಲಯ B ಎಚ್ಚರಿಕೆ',
     learnMore: 'ಹೆಚ್ಚು ತಿಳಿಯಿರಿ',
     hideDetails: 'ವಿವರ ಮುಚ್ಚಿ',
+    afterSowing: 'ಬಿತ್ತನೆಯ ನಂತರ',
+    actionLabel: 'ಕ್ರಮ',
+    days: 'ದಿನಗಳು',
+    match: 'ಹೊಂದಾಣಿಕೆ',
+    registered: 'ನೋಂದಾಯಿಸಲಾಗಿದೆ',
+    risk: 'ಅಪಾಯ',
+    highRisk: 'ಹೆಚ್ಚಿನ ಅಪಾಯ',
+    moderateRisk: 'ಮಧ್ಯಮ ಅಪಾಯ',
+    lowRisk: 'ಕಡಿಮೆ ಅಪಾಯ',
     
     // Camera Scan Modal
     cropLeafScan: 'ಎಲೆ ರೋಗ ಸ್ಕ್ಯಾನ್',
+    cropLeafScanDesc: 'AI ರೋಗನಿರ್ಣಯಕ್ಕಾಗಿ ಬಾಧಿತ ಎಲೆಯ ಸ್ಪಷ್ಟ ಫೋಟೋ ತೆಗೆದುಕೊಳ್ಳಿ.',
     alignLeaf: 'ಬಾಧಿತ ಎಲೆಯನ್ನು ಇರಿಸಿ',
     uploadPhoto: 'ಫೋಟೋ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ',
     analyzePhoto: 'ವಿಶ್ಲೇಷಿಸಿ',
+    analyzingSymptoms: 'ಎಲೆಯ ಲಕ್ಷಣಗಳನ್ನು ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ...',
+    scanningPatterns: 'ಶಿಲೀಂಧ್ರ, ವೈರಸ್ ಮತ್ತು ಕೀಟ ಹಾನಿ ಮಾದರಿಗಳನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಲಾಗುತ್ತಿದೆ...',
     diseaseDetected: 'ಪತ್ತೆಯಾದ ರೋಗ',
     symptoms: 'ಲಕ್ಷಣಗಳು',
     likelyCause: 'ಸಾಧ್ಯತೆಯ ಕಾರಣ',
     registerDisease: 'ರೋಗ ನೋಂದಾಯಿಸಿ',
     scanAnother: 'ಮತ್ತೊಂದು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ',
+    
+    // Disease Detail Modal
+    intelligenceModule: 'ರೋಗ ಗುಪ್ತಚರ ವಿಭಾಗ',
+    currentRisk: 'ಪ್ರಸ್ತುತ ಅಪಾಯ',
+    observedSymptoms: 'ಕಂಡುಬಂದ ಲಕ್ಷಣಗಳು',
+    primaryCause: 'ಪ್ರಾಥಮಿಕ ಕಾರಣ',
+    favorableConditions: 'ಅನುಕೂಲಕರ ಪರಿಸ್ಥಿತಿಗಳು',
+    preventivePrecautions: 'ಮುನ್ನೆಚ್ಚರಿಕೆ ಕ್ರಮಗಳು',
+    recommendedTreatment: 'ಶಿಫಾರಸು ಮಾಡಿದ ಚಿಕಿತ್ಸೆ ಮತ್ತು ಔಷಧಿಗಳು',
+    closeAnalysis: 'ವಿಶ್ಲೇಷಣೆ ಮುಚ್ಚಿ',
     
     // Assistant
     farmAssistant: 'ಕೃಷಿ ಸಹಾಯಕ',
@@ -482,6 +977,14 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     listening: 'ಆಲಿಸುತ್ತಿದೆ...',
     listen: 'ಕೇಳಿ',
     askAnything: 'ನಿಮ್ಮ ಜಮೀನಿನ ಬಗ್ಗೆ ಕೇಳಿ...',
+    voiceTimeout: 'ಸಮಯ ಮುಗಿದಿದೆ. ಮತ್ತೆ ಮೈಕ್ ಒತ್ತಿ ಅಥವಾ ಟೈಪ್ ಮಾಡಿ.',
+    statusQuickBtn: 'ಜಮೀನಿನ ಸ್ಥಿತಿ',
+    farmerSpeaker: 'ರೈತ',
+    assistantSpeaker: 'ಸಹಾಯಕ',
+    howIsMyField: 'ನನ್ನ ಜಮೀನು ಹೇಗಿದೆ?',
+    back: 'ಹಿಂದಕ್ಕೆ',
+    send: 'ಕಳುಹಿಸಿ',
+    stopListening: 'ನಿಲ್ಲಿಸಿ',
     
     // Markets & History
     cropHistoryYield: 'ಬೆಳೆ ಇತಿಹಾಸ ಮತ್ತು ಇಳುವರಿ',
@@ -494,9 +997,919 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     logHarvest: 'ಇಳುವರಿ ದಾಖಲಿಸಿ',
     highSuitability: 'ಹೆಚ್ಚು ಸೂಕ್ತ',
     modSuitability: 'ಮಧ್ಯಮ',
+    rate: 'ದರ',
+    unitQtl: 'ಕ್ವಿಂಟಾಲ್',
+    tonsUnit: 'ಟನ್',
+    monthJun: 'ಜೂನ್',
+    monthJul: 'ಜುಲೈ',
+    monthAug: 'ಆಗಸ್ಟ್',
+    monthSep: 'ಸೆಪ್ಟೆಂಬರ್',
+    seasonCropName: 'ಋತು / ಬೆಳೆ ಹೆಸರು',
+    expectedTonsLabel: 'ನಿರೀಕ್ಷಿತ (ಟನ್)',
+    actualTonsLabel: 'ವಾಸ್ತವ (ಟನ್)',
+    lossReasonLabel: 'ನಷ್ಟದ ಕಾರಣ',
+    cancel: 'ರದ್ದು',
+    save: 'ಉಳಿಸಿ',
+    
+    // Crops
+    cropPaddy: 'ಭತ್ತ',
+    cropCotton: 'ಹತ್ತಿ',
+    cropChilli: 'ಮೆಣಸಿನಕಾಯಿ',
+    cropMaize: 'ಮೆಕ್ಕೆಜೋಳ',
+    cropGroundnut: 'ಕಡಲೆಕಾಯಿ',
+    cropRedGram: 'ತೊಗರಿ',
+    cropSugarcane: 'ಕಬ್ಬು',
+    cropTurmeric: 'ಅರಿಶಿನ',
+
+    // Loss Factors
+    factorStemBorer: 'ಕಾಂಡ ಕೊರೆಯುವ ಕೀಟ ಬಾಧೆ',
+    factorIrrigationDeficit: 'ಮಧ್ಯ ಹಂತದಲ್ಲಿ ನೀರಿನ ಕೊರತೆ',
+    factorBrownSpot: 'ಎಲೆ ಚುಕ್ಕೆ ಶಿಲೀಂಧ್ರ ಸೋಂಕು',
+    factorBollworm: 'ಕಾಯಿಕೊರಕ ಹುಳು ದಾಳಿ',
+    factorRainfall: 'ಅಕಾಲಿಕ ಮಳೆ',
+    factorWaterStress: 'ನೀರಿನ ಕೊರತೆ ಮತ್ತು ಬಿಸಿಲಿನ ಒತ್ತಡ',
   },
 };
 
+// Complete localized crop name dictionary
+export const CROP_TRANSLATIONS: Record<string, Record<LanguageCode, string>> = {
+  'paddy': { en: 'Paddy', te: 'వరి', hi: 'धान', ta: 'நெல்', kn: 'ಭತ್ತ' },
+  'cotton': { en: 'Cotton', te: 'పత్తి', hi: 'कपास', ta: 'பருத்தி', kn: 'ಹತ್ತಿ' },
+  'chilli': { en: 'Chilli', te: 'మిరప', hi: 'मिर्च', ta: 'மிளகாய்', kn: 'ಮೆಣಸಿನಕಾಯಿ' },
+  'chillies': { en: 'Chillies', te: 'మిరప', hi: 'मिर्च', ta: 'மிளகாய்', kn: 'ಮೆಣಸಿನಕಾಯಿ' },
+  'maize': { en: 'Maize', te: 'మొక్కజొన్న', hi: 'मक्का', ta: 'மக்காச்சோளம்', kn: 'ಮೆಕ್ಕೆಜೋಳ' },
+  'groundnut': { en: 'Groundnut', te: 'వేరుశనగ', hi: 'मूंगफली', ta: 'நிலக்கடலை', kn: 'ಕಡಲೆಕಾಯಿ' },
+  'red gram': { en: 'Red Gram', te: 'కందులు', hi: 'अरहर', ta: 'துவரம் பருப்பு', kn: 'ತೊಗರಿ' },
+  'sugarcane': { en: 'Sugarcane', te: 'చెరకు', hi: 'गन्ना', ta: 'கரும்பு', kn: 'ಕಬ್ಬು' },
+  'turmeric': { en: 'Turmeric', te: 'పసుపు', hi: 'हल्दी', ta: 'மஞ்சள்', kn: 'ಅರಿಶಿನ' },
+};
+
+// Generic translator
 export function t(key: string, lang: LanguageCode = 'en'): string {
   return TRANSLATIONS[lang]?.[key] || TRANSLATIONS.en[key] || key;
+}
+
+// Crop name translator
+export function translateCrop(crop: string, lang: LanguageCode = 'en'): string {
+  const key = crop.toLowerCase().trim();
+  for (const [k, map] of Object.entries(CROP_TRANSLATIONS)) {
+    if (key.includes(k)) {
+      return map[lang] || crop;
+    }
+  }
+  return crop;
+}
+
+// Risk level translator
+export function translateRisk(risk: string, lang: LanguageCode = 'en'): string {
+  const r = risk.toLowerCase();
+  if (r.includes('high')) return t('highRisk', lang);
+  if (r.includes('mod')) return t('moderateRisk', lang);
+  if (r.includes('low')) return t('lowRisk', lang);
+  return `${risk} ${t('risk', lang)}`;
+}
+
+// Sector name translator
+export function translateSector(sectorName: string, lang: LanguageCode = 'en'): string {
+  if (sectorName.includes('01') || sectorName.includes('1')) return `${t('sector', lang)} 01`;
+  if (sectorName.includes('02') || sectorName.includes('2')) return `${t('sector', lang)} 02`;
+  if (sectorName.includes('03') || sectorName.includes('3')) return `${t('sector', lang)} 03`;
+  if (sectorName.includes('04') || sectorName.includes('4')) return `${t('sector', lang)} 04`;
+  return sectorName.replace(/Sector/gi, t('sector', lang));
+}
+
+// Person name translator
+export function translateName(name: string, lang: LanguageCode = 'en'): string {
+  if (!name || lang === 'en') return name;
+  if (name.includes('Raju') || name.includes('రాజు') || name.includes('राजू') || name.includes('ராஜு') || name.includes('ರಾಜು')) {
+    if (name.includes('Garu') || name.includes('గారు') || name.includes('जी') || name.includes('அவர்கள்') || name.includes('ಅವರು')) {
+      if (lang === 'te') return 'రాజు గారు';
+      if (lang === 'hi') return 'राजू जी';
+      if (lang === 'ta') return 'ராஜு அவர்கள்';
+      if (lang === 'kn') return 'ರಾಜು ಅವರು';
+      return 'Raju Garu';
+    }
+    if (lang === 'te') return 'రాజు';
+    if (lang === 'hi') return 'राजू';
+    if (lang === 'ta') return 'ராஜு';
+    if (lang === 'kn') return 'ರಾಜು';
+    return 'Raju';
+  }
+  return DYNAMIC_DICTIONARY[name]?.[lang] || name;
+}
+
+// Universal text translation dictionary for dynamic strings
+export const DYNAMIC_DICTIONARY: Record<string, Record<LanguageCode, string>> = {
+  // Plots & Field Areas
+  'North Plot': { en: 'North Plot', te: 'ఉత్తర విభాగం', hi: 'उत्तरी प्लॉट', ta: 'வடக்கு பகுதி', kn: 'ಉತ್ತರ ವಿಭಾಗ' },
+  'South Plot': { en: 'South Plot', te: 'దక్షిణ విభాగం', hi: 'दक्षिणी प्लॉट', ta: 'தெற்கு பகுதி', kn: 'ದಕ್ಷಿಣ ವಿಭಾಗ' },
+  'East Plot': { en: 'East Plot', te: 'తూర్పు విభాగం', hi: 'पूर्वी प्लॉट', ta: 'கிழக்கு பகுதி', kn: 'ಪೂರ್ವ ವಿಭಾಗ' },
+  'West Plot': { en: 'West Plot', te: 'పశ్చిమ విభాగం', hi: 'पश्चिमी प्लॉट', ta: 'மேற்கு பகுதி', kn: 'ಪಶ್ಚಿಮ ವಿಭಾಗ' },
+  'North': { en: 'North', te: 'ఉత్తరం', hi: 'उत्तर', ta: 'வடக்கு', kn: 'ಉತ್ತರ' },
+  'South': { en: 'South', te: 'దక్షిణం', hi: 'दक्षिण', ta: 'தெற்கு', kn: 'ದಕ್ಷಿಣ' },
+  'East': { en: 'East', te: 'తూర్పు', hi: 'पूर्व', ta: 'கிழக்கு', kn: 'ಪೂರ್ವ' },
+  'West': { en: 'West', te: 'పశ్చిమం', hi: 'पश्चिम', ta: 'மேற்கு', kn: 'ಪಶ್ಚಿಮ' },
+  'Main Plot': { en: 'Main Plot', te: 'ప్రధాన పొలం', hi: 'मुख्य खेत', ta: 'முதன்மை நிலம்', kn: 'ಮುಖ್ಯ ಜಮೀನು' },
+  'Sector East': { en: 'Sector East', te: 'తూర్పు విభాగం', hi: 'पूर्वी सेक्टर', ta: 'கிழக்கு பிரிவு', kn: 'ಪೂರ್ವ ವಲಯ' },
+  'Sector West': { en: 'Sector West', te: 'పశ్చిమ విభాగం', hi: 'पश्चिमी सेक्टर', ta: 'மேற்கு பிரிவு', kn: 'ಪಶ್ಚಿಮ ವಲಯ' },
+  'Sector North': { en: 'Sector North', te: 'ఉత్తర విభాగం', hi: 'उत्तरी सेक्टर', ta: 'வடக்கு பிரிவு', kn: 'ಉತ್ತರ ವಲಯ' },
+  'Sector South': { en: 'Sector South', te: 'దక్షిణ విభాగం', hi: 'दक्षिणी सेक्टर', ta: 'தெற்கு பிரிவு', kn: 'ದಕ್ಷಿಣ ವಲಯ' },
+  'Moisture level good': { en: 'Moisture level good', te: 'తేమ సమతుల్యంగా ఉంది', hi: 'नमी का स्तर अच्छा है', ta: 'ஈரப்பதம் போதுமானது', kn: 'ತೇವಾಂಶ ಮಟ್ಟ ಉತ್ತಮವಾಗಿದೆ' },
+  'Soil is dry! Start irrigation now.': { en: 'Soil is dry! Start irrigation now.', te: 'నేల ఎండిపోయింది! వెంటనే నీరు పెట్టండి.', hi: 'मिट्टी सूखी है! तुरंत पानी दें।', ta: 'மண் வறண்டுள்ளது! உடனடியாக நீர்ப்பாசனம் செய்யவும்.', kn: 'ಮಣ್ಣು ಒಣಗಿದೆ! ತಕ್ಷಣ ನೀರಾವರಿ ಮಾಡಿ.' },
+
+  // Farmer Names & Places
+  'Raju Garu': { en: 'Raju Garu', te: 'రాజు గారు', hi: 'राजू जी', ta: 'ராஜு அவர்கள்', kn: 'ರಾಜು ಅವರು' },
+  'Raju': { en: 'Raju', te: 'రాజు', hi: 'राजू', ta: 'ராஜு', kn: 'ರಾಜು' },
+  'Venkatachalam': { en: 'Venkatachalam', te: 'వెంకటాచలం', hi: 'वेंकटाचलम', ta: 'வெங்கடாசலம்', kn: 'ವೆಂಕಟಾಚಲಂ' },
+  'Nellore': { en: 'Nellore', te: 'నెల్లూరు', hi: 'नेल्लोर', ta: 'நெல்லூர்', kn: 'ನೆಲ್ಲೂರು' },
+  'Kovur': { en: 'Kovur', te: 'కోవూరు', hi: 'कोवूर', ta: 'கோவூர்', kn: 'ಕೋವೂರು' },
+  'Common Diseases': { en: 'Common Diseases', te: 'సాధారణ తెగుళ్ళు', hi: 'सामान्य रोग', ta: 'பொதுவான நோய்கள்', kn: 'ಸಾಮಾನ್ಯ ರೋಗಗಳು' },
+  'Registered Field Diseases': { en: 'Registered Field Diseases', te: 'నమోదైన పంట తెగుళ్ళు', hi: 'पंजीकृत फसल रोग', ta: 'பதிவுசெய்யப்பட்ட நோய்கள்', kn: 'ನೋಂದಾಯಿತ ಬೆಳೆ ರೋಗಗಳು' },
+
+  // Common terms
+  'Paddy (Grade A)': { en: 'Paddy (Grade A)', te: 'వరి (గ్రేడ్ A)', hi: 'धान (ग्रेड A)', ta: 'நெல் (தரம் A)', kn: 'ಭತ್ತ (ಗ್ರೇಡ್ A)' },
+  'Chillies (Teja Variant)': { en: 'Chillies (Teja)', te: 'తేజ మిరప', hi: 'तेजा मिर्च', ta: 'தேஜா மிளகாய்', kn: 'ತೇಜಾ ಮೆಣಸಿನಕಾಯಿ' },
+  'Paddy 2025': { en: 'Paddy 2025', te: 'వరి 2025', hi: 'धान 2025', ta: 'நெல் 2025', kn: 'ಭತ್ತ 2025' },
+  'Cotton 2024': { en: 'Cotton 2024', te: 'పత్తి 2024', hi: 'कपास 2024', ta: 'பருத்தி 2024', kn: 'ಹತ್ತಿ 2024' },
+  'Field 01': { en: 'Field 01', te: 'పొలం 01', hi: 'खेत 01', ta: 'நிலம் 01', kn: 'ಜಮೀನು 01' },
+  'Paddy Main Plot - Sector East': { en: 'Paddy Main Plot - Sector East', te: 'వరి ప్రధాన పొలం - తూర్పు విభాగం', hi: 'धान मुख्य खेत - पूर्वी सेक्टर', ta: 'நெல் முதன்மை நிலம் - கிழக்கு பிரிவு', kn: 'ಭತ್ತ ಮುಖ್ಯ ಜಮೀನು - ಪೂರ್ವ ವಲಯ' },
+  'Vegetative Stage': { en: 'Vegetative Stage', te: 'శాఖీయ దశ', hi: 'वानस्पतिक चरण', ta: 'வளர்ச்சி நிலை', kn: 'ಬೆಳವಣಿಗೆಯ ಹಂತ' },
+  'Active Monitoring': { en: 'Active Monitoring', te: 'నిరంతర పర్యవేక్షణ', hi: 'सक्रिय निगरानी', ta: 'தீவிர கண்காணிப்பு', kn: 'ಸಕ್ರಿಯ ಮೇಲ್ವಿಚಾರಣೆ' },
+  'Optimal': { en: 'Optimal', te: 'సమతుల్యం', hi: 'उत्कृष्ट', ta: 'சிறந்தது', kn: 'ಉತ್ತಮ' },
+
+  // Loss Factors
+  'Pest Infestation (Stem Borer)': { en: 'Pest Infestation (Stem Borer)', te: 'కాండం తొలిచే పురుగు ఉధృతి', hi: 'तना छेदक कीट का प्रकोप', ta: 'தண்டு துளைப்பான் பூச்சி தாக்குதல்', kn: 'ಕಾಂಡ ಕೊರೆಯುವ ಕೀಟ ಬಾಧೆ' },
+  'Irrigation Deficit (Mid-season)': { en: 'Irrigation Deficit (Mid-season)', te: 'మధ్య దశలో నీటి కొరత', hi: 'मध्य काल में सिंचाई की कमी', ta: 'இடைப்பருவ நீர்ப்பாசன பற்றாக்குறை', kn: 'ಮಧ್ಯ ಹಂತದಲ್ಲಿ ನೀರಿನ ಕೊರತೆ' },
+  'Fungal Infection (Brown Spot)': { en: 'Fungal Infection (Brown Spot)', te: 'ఆకుమచ్చ తెగులు శిలీంధ్రం', hi: 'भूरा धब्बा फफूंद संक्रमण', ta: 'இலைப்புள்ளி பூஞ்சை தொற்று', kn: 'ಎಲೆ ಚುಕ್ಕೆ ಶಿಲೀಂಧ್ರ ಸೋಂಕು' },
+  'Bollworm Attack': { en: 'Bollworm Attack', te: 'గులాబీ రంగు కాయ తొలిచే పురుగు', hi: 'गुलाबी सुंडी का हमला', ta: 'காய்ப்புழு தாக்குதல்', kn: 'ಕಾಯಿಕೊರಕ ಹುಳು ದಾಳಿ' },
+  'Unseasonal Rainfall': { en: 'Unseasonal Rainfall', te: 'అకాల వర్షాలు', hi: 'बेमौसम बारिश', ta: 'பருவம் தவறிய மழை', kn: 'ಅಕಾಲಿಕ ಮಳೆ' },
+  'Water Deficit & Heat Stress': { en: 'Water Deficit & Heat Stress', te: 'నీటి ఎద్దడి మరియు అధిక ఉష్ణోగ్రత', hi: 'पानी की कमी और गर्मी का तनाव', ta: 'நீர் பற்றாக்குறை மற்றும் வெப்ப அழுத்தம்', kn: 'ನೀರಿನ ಕೊರತೆ ಮತ್ತು ಬಿಸಿಲಿನ ಒತ್ತಡ' },
+
+  // Suggestions
+  'Low water requirement & high nitrogen fixation potential for post-paddy soil profile': {
+    en: 'Low water requirement & high nitrogen fixation potential for post-paddy soil profile',
+    te: 'తక్కువ నీటి అవసరం & వరి కోత తర్వాత నేలలో నత్రజని స్థిరీకరణ సామర్థ్యం',
+    hi: 'कम पानी की आवश्यकता और धान के बाद मिट्टी में नाइट्रोजन स्थिरीकरण की उच्च क्षमता',
+    ta: 'குறைந்த நீர் தேவை மற்றும் நெல் அறுவடைக்கு பின் மண்ணில் தழைச்சத்து உருவாக்கும் திறன்',
+    kn: 'ಕಡಿಮೆ ನೀರಿನ ಅಗತ್ಯ ಮತ್ತು ಭತ್ತದ ನಂತರ ಮಣ್ಣಿನಲ್ಲಿ ಸಾರಜನಕ ಸ್ಥಿರೀಕರಣ ಸಾಮರ್ಥ್ಯ',
+  },
+  'Current soil moisture and nitrogen levels match winter maize cultivation window': {
+    en: 'Current soil moisture and nitrogen levels match winter maize cultivation window',
+    te: 'ప్రస్తుత నేల తేమ మరియు నత్రజని స్థాయిలు శీతాకాలపు మొక్కజొన్న సాగుకు అనుకూలం',
+    hi: 'वर्तमान मिट्टी की नमी और नाइट्रोजन का स्तर शीतकालीन मक्का की खेती के लिए अनुकूल है',
+    ta: 'தற்போதைய மண் ஈரப்பதம் மற்றும் தழைச்சத்து அளவு குளிர்கால மக்காச்சோள சாகுபடிக்கு உகந்தது',
+    kn: 'ಪ್ರಸ್ತುತ ಮಣ್ಣಿನ ತೇವಾಂಶ ಮತ್ತು ಸಾರಜನಕ ಮಟ್ಟ ಚಳಿಗಾಲದ ಮೆಕ್ಕೆಜೋಳ ಕೃಷಿಗೆ ಸೂಕ್ತವಾಗಿದೆ',
+  },
+  'Market demand rising in Guntur mandal; suitable for well-drained sandy loam': {
+    en: 'Market demand rising in Guntur mandal; suitable for well-drained sandy loam',
+    te: 'మార్కెట్లో గిరాకీ పెరుగుతోంది; నీరు నిలవని ఇసుక నేలలకు ఎంతో అనుకూలం',
+    hi: 'बाज़ार में मांग बढ़ रही है; अच्छे जल निकास वाली बलुई दोमट मिट्टी के लिए उपयुक्त',
+    ta: 'சந்தையில் தேவை அதிகரிக்கிறது; மணல் கலந்த வண்டல் மண்ணுக்கு மிகவும் ஏற்றது',
+    kn: 'ಮಾರುಕಟ್ಟೆಯಲ್ಲಿ ಬೇಡಿಕೆ ಹೆಚ್ಚುತ್ತಿದೆ; ಮರಳು ಮಿಶ್ರಿತ ಗೋಡು ಮಣ್ಣಿಗೆ ಸೂಕ್ತವಾಗಿದೆ',
+  },
+  'Intercropping option; drought tolerant and restores soil fertility': {
+    en: 'Intercropping option; drought tolerant and restores soil fertility',
+    te: 'అంతరపంటగా వేయవచ్చు; బెట్టను తట్టుకుని నేల సారాన్ని పెంచుతుంది',
+    hi: 'अंतःफसल विकल्प; सूखा सहनशील और मिट्टी की उर्वरता बहाल करता है',
+    ta: 'ஊடுபயிர் வாய்ப்பு; வறட்சியைத் தாங்கி மண் வளத்தை மீட்டெடுக்கும்',
+    kn: 'ಅಂತರ್ಬೆಳೆ ಆಯ್ಕೆ; ಬರ ನಿರೋಧಕ ಮತ್ತು ಮಣ್ಣಿನ ಫಲವತ್ತತೆಯನ್ನು ಹೆಚ್ಚಿಸುತ್ತದೆ',
+  },
+
+  // Diseases
+  'Paddy Brown Spot': { en: 'Paddy Brown Spot', te: 'వరి ఆకుమచ్చ తెగులు', hi: 'धान भूरा धब्बा रोग', ta: 'நெல் இலைப்புள்ளி நோய்', kn: 'ಭತ್ತದ ಎಲೆ ಚುಕ್ಕೆ ರೋಗ' },
+  'Paddy Blast': { en: 'Paddy Blast (Aggi తెగులు)', te: 'వరి అగ్గి తెగులు (బ్లాస్ట్)', hi: 'धान झुलसा रोग (ब्लास्ट)', ta: 'நெல் குலை நோய் (பிளாஸ்ட்)', kn: 'ಭತ್ತದ ಬೆಂಕಿ ರೋಗ (ಬ್ಲಾಸ್ಟ್)' },
+  'Cotton Alternaria Leaf Spot': { en: 'Cotton Alternaria Leaf Spot', te: 'పత్తి ఆల్టర్నేరియా ఆకుమచ్చ తెగులు', hi: 'कपास आल्टरनेरिया पत्ती धब्बा', ta: 'பருத்தி ஆல்டர்னேரியா இலைப்புள்ளி', kn: 'ಹತ್ತಿ ಆಲ್ಟರ್ನೇರಿಯಾ ಎಲೆ ಚುಕ್ಕೆ' },
+  'Cotton Pink Bollworm': { en: 'Cotton Pink Bollworm', te: 'పత్తి గులాబీ రంగు కాయ తొలిచే పురుగు', hi: 'कपास गुलाबी सुंडी', ta: 'பருத்தி இளஞ்சிவப்பு காய்ப்புழு', kn: 'ಹತ್ತಿ ಗುಲಾಬಿ ಕಾಯಿಕೊರಕ' },
+  'Chilli Leaf Curl Virus': { en: 'Chilli Leaf Curl (Gemini Virus)', te: 'మిరప బొబ్బర / ఆకుముడత తెగులు', hi: 'मिर्च पत्ती मरोड़ रोग (लीफ कर्ल)', ta: 'மிளகாய் இலை சுருட்டல் நோய்', kn: 'ಮೆಣಸಿನಕಾಯಿ ಎಲೆ ಮುರುಟು ರೋಗ' },
+  'Chilli Anthracnose / Fruit Rot': { en: 'Chilli Anthracnose / Fruit Rot', te: 'మిరప కాయకుళ్ళు / కొమ్మ ఎండు తెగులు', hi: 'मिर्च फल सड़न / एन्थ्रेक्ನೋಜ್', ta: 'மிளகாய் பழ அழுகல் நோய்', kn: 'ಮೆಣಸಿನಕಾಯಿ ಹಣ್ಣು ಕೊಳೆ ರೋಗ' },
+  'Maize Fall Armyworm': { en: 'Maize Fall Armyworm', te: 'మొక్కజొన్న కత్తెర పురుగు (ఫాల్ ఆర్మీవార్మ్)', hi: 'मक्का फॉल आर्मीवॉर्म (सैनिक कीट)', ta: 'மक्काச்சோளம் படைப்புழு', kn: 'ಮೆಕ್ಕೆಜೋಳ ಲದ್ದಿಹುಳು' },
+  'Groundnut Tikka Disease': { en: 'Groundnut Tikka Leaf Spot', te: 'వేరుశనగ తిక్కా ఆకుమచ్చ తెగులు', hi: 'मूंगफली टिक्का रोग', ta: 'நிலக்கடலை டிக்கா இலைப்புள்ளி', kn: 'ಕಡಲೆಕಾಯಿ ತಿಕ್ಕಾ ರೋಗ' },
+
+  // Weeds
+  'Echinochloa (Barnyard Grass)': { en: 'Echinochloa (Barnyard Grass / Ooda)', te: 'ఊద / గడ్డి జాతి కలుపు (ఎచినోక్లోవా)', hi: 'सांवा / जंगली घास (इचिनोक्लोआ)', ta: 'காடைக்கண்ணி புல்', kn: 'ಕಾಡು ಹುಲ್ಲು (ಸಾವೆ)' },
+  'Cyperus rotundus (Nut Grass)': { en: 'Cyperus rotundus (Nut Grass / Thunga)', te: 'తుంగ కలుపు మొక్క (సైపరస్)', hi: 'मोथा घास (साइपरस)', ta: 'கோரைப்புல்', kn: 'ಜೇಕು ಹುಲ್ಲು' },
+  'Eclipta alba (Gunta Galagara)': { en: 'Eclipta alba (Gunta Galagara)', te: 'గుంటగలగర కలుపు (ఎక్లిప్టా)', hi: 'भृंगराज / घमरा (एक्लिप्टा)', ta: 'கரிசலாங்கண்ணி', kn: 'ಗರುಡವರ್ಧನ / ಭೃಂಗರಾಜ' },
+  'Parthenium (Gajjelu)': { en: 'Parthenium (Congress Grass / Vayari Bhama)', te: 'వయ్యారిభామ / కాంగ్రెస్ గడ్డి (పార్థీనియం)', hi: 'गाजर घास / कांग्रेस घास (पार्थेनियम)', ta: 'பார்த்தீனியம் / நச்சுப்பூண்டு', kn: 'ಕಾಂಗ್ರೆಸ್ ಹುಲ್ಲು (ಪಾರ್ಥೇನಿಯಂ)' },
+  // Notifications Titles
+  'Irrigation Required': {
+    en: 'Irrigation Required',
+    te: 'నీటిపారుదల అవసరం',
+    hi: 'सिंचाई आवश्यक है',
+    ta: 'நீர்ப்பாசனம் தேவை',
+    kn: 'ನೀರಾವರಿ ಅಗತ್ಯವಿದೆ',
+  },
+  'Active Weed Alert': {
+    en: 'Active Weed Alert',
+    te: 'కలుపు హెచ్చరిక',
+    hi: 'सक्रिय खरपतवार चेतावनी',
+    ta: 'தீவிர களை எச்சரிக்கை',
+    kn: 'ಸಕ್ರಿಯ ಕಳೆ ಎಚ್ಚರಿಕೆ',
+  },
+  'Disease Risk Warning': {
+    en: 'Disease Risk Warning',
+    te: 'తెగులు ముప్పు హెచ్చరిక',
+    hi: 'रोग जोखिम चेतावनी',
+    ta: 'நோய் ஆபத்து எச்சரிக்கை',
+    kn: 'ರೋಗ ಅಪಾಯದ ಎಚ್ಚರಿಕೆ',
+  },
+  'Drone Scan Completed': {
+    en: 'Drone Scan Completed',
+    te: 'డ్రోన్ స్కాన్ పూర్తయింది',
+    hi: 'ड्रोन स्कैन पूरा हुआ',
+    ta: 'ட்ரோன் ஸ்கேன் முடிந்தது',
+    kn: 'ಡ್ರೋನ್ ಸ್ಕ್ಯಾನ್ ಪೂರ್ಣಗೊಂಡಿದೆ',
+  },
+  'Sector 03 Irrigated': {
+    en: 'Sector 03 Irrigated',
+    te: 'సెక్టార్ 03 నీటిపారుదల పూర్తయింది',
+    hi: 'सेक्टर 03 की सिंचाई पूरी हुई',
+    ta: 'பிரிவு 03 நீர்ப்பாசனம் முடிந்தது',
+    kn: 'ವಲಯ 03 ನೀರಾವರಿ ಪೂರ್ಣಗೊಂಡಿದೆ',
+  },
+
+  // Notification Messages
+  'Your soil is dry in Sector 03 (21% moisture). Start watering to maintain root health.': {
+    en: 'Your soil is dry in Sector 03 (21% moisture). Start watering to maintain root health.',
+    te: 'సెక్టార్ 03 లో నేల చాలా పొడిగా ఉంది (21% తేమ). వేర్ల ఆరోగ్యం కోసం వెంటనే నీరు పెట్టండి.',
+    hi: 'सेक्टर 03 में मिट्टी सूखी है (21% नमी)। जड़ों के स्वास्थ्य के लिए पानी देना शुरू करें।',
+    ta: 'பிரிவு 03 இல் மண் வறண்டுள்ளது (21% ஈரப்பதம்). வேர்களின் ஆரோக்கியத்திற்காக நீர்ப்பாசனம் செய்யவும்.',
+    kn: 'ವಲಯ 03 ರಲ್ಲಿ ಮಣ್ಣು ಒಣಗಿದೆ (21% ತೇವಾಂಶ). ಬೇರುಗಳ ಆರೋಗ್ಯಕ್ಕಾಗಿ ನೀರುಣಿಸಲು ಪ್ರಾರಂಭಿಸಿ.',
+  },
+  'Paddy is currently Day 42. Common weed expected: Echinochloa. Action: Inspect field and pluck out before seed formation.': {
+    en: 'Paddy is currently Day 42. Common weed expected: Echinochloa. Action: Inspect field and pluck out before seed formation.',
+    te: 'వరి ప్రస్తుతం 42వ రోజులో ఉంది. ఆశించే కలుపు: ఊద గడ్డి (ఎచినోక్లోవా). చర్య: పొలాన్ని పరిశీలించి విత్తనాలు రాకముందే కలుపు తీయండి.',
+    hi: 'धान वर्तमान में दिन 42 पर है। संभावित खरपतवार: सांवा घास (इचिनोक्लोआ)। कार्रवाई: खेत का निरीक्षण करें और बीज बनने से पहले निकालें।',
+    ta: 'நெல் தற்போது நாள் 42 இல் உள்ளது. எதிர்பார்க்கப்படும் களை: காடைக்கண்ணி புல். நடவடிக்கை: நிலத்தை ஆய்வு செய்து விதைகள் உருவாகும் முன் பிடுங்கவும்.',
+    kn: 'ಭತ್ತ ಪ್ರಸ್ತುತ 42ನೇ ದಿನದಲ್ಲಿದೆ. ನಿರೀಕ್ಷಿತ ಕಳೆ: ಕಾಡು ಹುಲ್ಲು (ಸಾವೆ). ಕ್ರಮ: ಜಮೀನನ್ನು ಪರಿಶೀಲಿಸಿ ಬೀಜಗಳು ಬರುವ ಮುನ್ನ ಕಳೆ ತೆಗೆಯಿರಿ.',
+  },
+  'Paddy Brown Spot risk is moderate due to 61% relative humidity. Spray Mancozeb if spots appear.': {
+    en: 'Paddy Brown Spot risk is moderate due to 61% relative humidity. Spray Mancozeb if spots appear.',
+    te: '61% గాలి తేమ కారణంగా వరి ఆకుమచ్చ తెగులు ముప్పు మధ్యస్థంగా ఉంది. మచ్చలు కనిపిస్తే మ్యాంకోజెబ్ పిచికారీ చేయండి.',
+    hi: '61% सापेक्ष आर्द्रता के कारण धान भूरा धब्बा रोग का मध्यम जोखिम है। धब्बे दिखने पर मैंकोजेब का छिड़काव करें।',
+    ta: '61% காற்றின் ஈரப்பதம் காரணமாக நெல் இலைப்புள்ளி நோய் ஆபத்து உள்ளது. புள்ளிகள் தோன்றினால் மேன்கோசெப் தெளிக்கவும்.',
+    kn: '61% ಸಾಪೇಕ್ಷ ಆರ್ದ್ರತೆಯಿಂದಾಗಿ ಭತ್ತದ ಎಲೆ ಚುಕ್ಕೆ ರೋಗದ ಅಪಾಯವಿದೆ. ಚುಕ್ಕೆಗಳು ಕಂಡುಬಂದರೆ ಮ್ಯಾಂಕೋಜೆಬ್ ಸಿಂಪಡಿಸಿ.',
+  },
+  'Morning drone run detected 12 weed locations in Zone B. Targeted spray is recommended.': {
+    en: 'Morning drone run detected 12 weed locations in Zone B. Targeted spray is recommended.',
+    te: 'ఉదయం డ్రోన్ సర్వేలో జోన్ బి లో 12 చోట్ల కలుపు గుర్తించబడింది. లక్ష్యిత పిచికారీ చేయాలని సిఫార్సు చేయబడింది.',
+    hi: 'सुबह के ड्रोन रन ने ज़ोन बी में 12 खरपतवार स्थानों का पता लगाया। लक्षित छिड़काव की सिफारिश की जाती है।',
+    ta: 'காலை ட்ரோன் ஆய்வில் மண்டலம் பி-யில் 12 இடங்களில் களைகள் கண்டறியப்பட்டன. குறிப்பிட்ட இடங்களில் மருந்து தெளிக்க பரிந்துரைக்கப்படுகிறது.',
+    kn: 'ಬೆಳಗಿನ ಡ್ರೋನ್ ಪರಿಶೀಲನೆಯಲ್ಲಿ ವಲಯ ಬಿ ಯಲ್ಲಿ 12 ಕಳೆ ಸ್ಥಳಗಳನ್ನು ಪತ್ತೆಹಚ್ಚಲಾಗಿದೆ. ಉದ್ದೇಶಿತ ಸಿಂಪಡಣೆಯನ್ನು ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ.',
+  },
+  'Sector 03 irrigated successfully. Moisture level optimal.': {
+    en: 'Sector 03 irrigated successfully. Moisture level optimal.',
+    te: 'సెక్టార్ 03 లో నీటిపారుదల విజయవంతంగా పూర్తయింది. నేల తేమ సమతుల్యంగా ఉంది.',
+    hi: 'सेक्टर 03 की सिंचाई सफलतापूर्वक पूरी हुई। नमी का स्तर अनुकूल है।',
+    ta: 'பிரிவு 03 வெற்றிகரமாக நீர்ப்பாசனம் செய்யப்பட்டது. ஈரப்பதம் சரியான அளவில் உள்ளது.',
+    kn: 'ವಲಯ 03 ರ ನೀರಾವರಿ ಯಶಸ್ವಿಯಾಗಿ ಪೂರ್ಣಗೊಂಡಿದೆ. ತೇವಾಂಶದ ಮಟ್ಟ ಸೂಕ್ತವಾಗಿದೆ.',
+  },
+
+  // Action labels & Timestamps
+  'Inspect Weeds': { en: 'Inspect Weeds', te: 'కలుపు పరిశీలించండి', hi: 'खरपतवार जांचें', ta: 'களைகளை ஆய்வு செய்க', kn: 'ಕಳೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ' },
+  'View Guidance': { en: 'View Guidance', te: 'సలహాలు చూడండి', hi: 'मार्गदर्शन देखें', ta: 'வழிகாட்டுதலைப் பார்க்கவும்', kn: 'ಮಾರ್ಗದರ್ಶನ ನೋಡಿ' },
+  'Deploy Spray': { en: 'Deploy Spray', te: 'పిచికారీ చేయండి', hi: 'छिड़काव करें', ta: 'மருந்து தெளிக்கவும்', kn: 'ಸಿಂಪಡಣೆ ಮಾಡಿ' },
+  'Start Water': { en: 'Start Water', te: 'నీరు పెట్టండి', hi: 'पानी दें', ta: 'தண்ணீர் பாய்ச்சவும்', kn: 'ನೀರುಣಿಸಿ' },
+  'Just Now': { en: 'Just Now', te: 'ఇప్పుడే', hi: 'अभी', ta: 'இப்போது', kn: 'ಈಗಷ್ಟೇ' },
+  'Today, 08:00 AM': { en: 'Today, 08:00 AM', te: 'ఈరోజు, ఉదయం 08:00', hi: 'आज, सुबह 08:00 बजे', ta: 'இன்று, காலை 08:00', kn: 'ಇಂದು, ಬೆಳಿಗ್ಗೆ 08:00' },
+  'Today, 06:30 AM': { en: 'Today, 06:30 AM', te: 'ఈరోజు, ఉదయం 06:30', hi: 'आज, सुबह 06:30 बजे', ta: 'இன்று, காலை 06:30', kn: 'ಇಂದು, ಬೆಳಿಗ್ಗೆ 06:30' },
+  'What is the soil moisture in Sector 3?': {
+    en: 'What is the soil moisture in Sector 3?',
+    te: 'సెక్టార్ 3 లో నేల తేమ ఎంత ఉంది?',
+    hi: 'सेक्टर 3 में मिट्टी की नमी कितनी है?',
+    ta: 'பிரிவு 3 இல் மண் ஈரப்பதம் எவ்வளவு?',
+    kn: 'ವಲಯ 3 ರಲ್ಲಿ ಮಣ್ಣಿನ ತೇವಾಂಶ ಎಷ್ಟು?',
+  },
+  'Soil moisture in Sector 03 is 21%. It is dry and requires irrigation immediately.': {
+    en: 'Soil moisture in Sector 03 is 21%. It is dry and requires irrigation immediately.',
+    te: 'విభాగం 03 (సెక్టార్ 03) లో నేల తేమ 21% మాత్రమే ఉంది. ఇది చాలా పొడిగా ఉంది, వెంటనే నీరు పెట్టడం అవసరం.',
+    hi: 'सेक्टर 03 में मिट्टी की नमी केवल 21% है। यह सूखा है और तुरंत सिंचाई की आवश्यकता है।',
+    ta: 'பிரிவு 03 இல் மண் ஈரப்பதம் 21% ஆக உள்ளது. இது வறண்டுள்ளது, உடனடியாக நீர்ப்பாசனம் தேவை.',
+    kn: 'ವಲಯ 03 ರಲ್ಲಿ ಮಣ್ಣಿನ ತೇವಾಂಶ 21% ಇದೆ. ಇದು ಒಣಗಿದೆ ಮತ್ತು ತಕ್ಷಣ ನೀರಾವರಿ ಅಗತ್ಯವಿದೆ.',
+  },
+  // Disease Names
+  'Groundnut Tikka Leaf Spot': { en: 'Groundnut Tikka Leaf Spot', te: 'వేరుశనగ తిక్కా ఆకుమచ్చ తెగులు', hi: 'मूंगफली टिक्का रोग', ta: 'வேர்க்கடலை டிக்கா இலைப்புள்ளி', kn: 'ಕಡಲೆಕಾಯಿ ತಿಕ್ಕಾ ಎಲೆ ಚುಕ್ಕೆ ರೋಗ' },
+
+  // Risk Periods (comesWhen)
+  'Warm humid weather (>85% humidity) during tillering stage': {
+    en: 'Warm humid weather (>85% humidity) during tillering stage',
+    te: 'పిలకలు తొడిగే దశలో వెచ్చని తేమతో కూడిన వాతావరణం (>85% తేమ)',
+    hi: 'कल्ले फूटने की अवस्था में गर्म और आर्द्र मौसम (>85% आर्द्रता)',
+    ta: 'தூர்கட்டும் பருவத்தில் அதிக ஈரப்பதம் உள்ள சூழல் (>85% ஈரப்பதம்)',
+    kn: 'ತೆನೆ ಒಡೆಯುವ ಹಂತದಲ್ಲಿ ಬೆಚ್ಚಗಿನ ತೇವಾಂಶದ ವಾತಾವರಣ (>85% ತೇವಾಂಶ)',
+  },
+  'Cool night temperatures (<20°C) with morning dew drops': {
+    en: 'Cool night temperatures (<20°C) with morning dew drops',
+    te: 'ఉదయం మంచు బిందువులతో రాత్రి చల్లని ఉష్ణోగ్రతలు (<20°C)',
+    hi: 'सुबह की ओस की बूंदों के साथ रात का ठंडा तापमान (<20°C)',
+    ta: 'காலை பனித்துளிகளுடன் கூடிய குளிர்ந்த இரவு வெப்பநிலை (<20°C)',
+    kn: 'ಬೆಳಗಿನ ಇಬ್ಬನಿಯೊಂದಿಗೆ ರಾತ್ರಿಯ ತಂಪಾದ ತಾಪಮಾನ (<20°C)',
+  },
+  'Warm weather with sudden light rains (26-32°C)': {
+    en: 'Warm weather with sudden light rains (26-32°C)',
+    te: 'ఆకస్మిక తేలికపాటి వర్షాలతో వెచ్చని వాతావరణం (26-32°C)',
+    hi: 'अचानक हल्की बारिश के साथ गर्म मौसम (26-32°C)',
+    ta: 'திடீர் லேசான மழையுடன் கூடிய மிதமான வெப்பம் (26-32°C)',
+    kn: 'ಹಠಾತ್ ತುಂತುರು ಮಳೆಯೊಂದಿಗೆ ಬೆಚ್ಚಗಿನ ವಾತಾವರಣ (26-32°C)',
+  },
+  'Warm dry weather during flowering and boll formation': {
+    en: 'Warm dry weather during flowering and boll formation',
+    te: 'పూత మరియు కాయ ఏర్పడే దశలో వెచ్చని పొడి వాతావరణం',
+    hi: 'फूल आने और गूलर बनने के दौरान गर्म और शुष्क मौसम',
+    ta: 'பூக்கும் மற்றும் காய் பிடிக்கும் பருவத்தில் வறண்ட வெப்பம்',
+    kn: 'ಹೂಬಿಡುವ ಮತ್ತು ಕಾಯಿ ಕಟ್ಟುವ ಹಂತದಲ್ಲಿ ಒಣ ಹವಾಮಾನ',
+  },
+  'Hot dry weather when whiteflies multiply quickly': {
+    en: 'Hot dry weather when whiteflies multiply quickly',
+    te: 'తెల్లదోమలు వేగంగా వృద్ధి చెందే వేడి పొడి వాతావరణం',
+    hi: 'गर्म शुष्क मौसम जब सफेद मक्खियाँ तेजी से बढ़ती हैं',
+    ta: 'வெள்ளை ஈக்கள் வேகமாகப் பெருகும் வெப்பமான வறண்ட சூழல்',
+    kn: 'ಬಿಳಿ ನೊಣಗಳು ವೇಗವಾಗಿ ಹರಡುವ ಬಿಸಿ ಒಣ ಹವಾಮಾನ',
+  },
+  'Warm weather between 15 and 45 days after sowing': {
+    en: 'Warm weather between 15 and 45 days after sowing',
+    te: 'విత్తిన 15 నుండి 45 రోజుల మధ్య వెచ్చని వాతావరణం',
+    hi: 'बुआई के 15 से 45 दिनों के बीच गर्म मौसम',
+    ta: 'விதைத்த 15 முதல் 45 நாட்களுக்குள் நிலவும் வெப்பம்',
+    kn: 'ಬಿತ್ತನೆಯ 15 ರಿಂದ 45 ದಿನಗಳ ನಡುವಿನ ಬೆಚ್ಚಗಿನ ಹವಾಮಾನ',
+  },
+  'High humidity (>80%) with frequent rain showers': {
+    en: 'High humidity (>80%) with frequent rain showers',
+    te: 'తరచుగా వర్షపు జల్లులతో అధిక తేమ (>80%)',
+    hi: 'बार-बार बारिश की फुहारों के साथ उच्च आर्द्रता (>80%)',
+    ta: 'அடிக்கடி பெய்யும் மழையுடன் கூடிய அதிக ஈரப்பதம் (>80%)',
+    kn: 'ನಿರಂತರ ಮಳೆಯೊಂದಿಗೆ ಹೆಚ್ಚಿನ ತೇವಾಂಶ (>80%)',
+  },
+
+  // Short Precautions (shortPrecaution)
+  'Use certified seeds & avoid excessive nitrogen late in season': {
+    en: 'Use certified seeds & avoid excessive nitrogen late in season',
+    te: 'ధృవీకరించిన విత్తనాలు వాడండి & ఆఖరి దశలో అధిక నత్రజని వేయకండి',
+    hi: 'प्रमाणित बीजों का उपयोग करें और देर से अतिरिक्त नाइट्रोजन न डालें',
+    ta: 'சான்றளிக்கப்பட்ட விதைகளைப் பயன்படுத்தவும் & அதிக தழைச்சத்தை தவிர்க்கவும்',
+    kn: 'ಪ್ರಮಾಣೀಕೃತ ಬೀಜ ಬಳಸಿ & ತಡವಾಗಿ ಅಧಿಕ ಸಾರಜನಕ ಗೊಬ್ಬರ ಹಾಕಬೇಡಿ',
+  },
+  'Treat seeds before sowing & maintain plant spacing': {
+    en: 'Treat seeds before sowing & maintain plant spacing',
+    te: 'విత్తన శుద్ధి చేయండి & మొక్కల మధ్య సరైన దూరం పాటించండి',
+    hi: 'बुआई से पहले बीज शोधन करें और पौधों के बीच उचित दूरी रखें',
+    ta: 'விதை நேர்த்தி செய்யவும் & பயிர்களுக்கு இடையே இடைவெளி விடவும்',
+    kn: 'ಬಿತ್ತನೆಗೆ ಮುನ್ನ ಬೀಜೋಪಚಾರ ಮಾಡಿ & ಗಿಡಗಳ ನಡುವೆ ಅಂತರ ಕಾಪಾಡಿ',
+  },
+  'Remove old leaves & maintain plant spacing': {
+    en: 'Remove old leaves & maintain plant spacing',
+    te: 'పాత ఆకులను తొలగించండి & మొక్కల మధ్య దూరం పాటించండి',
+    hi: 'पुरानी पत्तियाँ हटाएँ और पौधों के बीच दूरी बनाए रखें',
+    ta: 'பழைய இலைகளை அகற்றவும் & பயிர் இடைவெளியைப் பராமரிக்கவும்',
+    kn: 'ಹಳೆಯ ಎಲೆಗಳನ್ನು ತೆಗೆಯಿರಿ & ಗಿಡಗಳ ನಡುವೆ ಅಂತರವಿರಲಿ',
+  },
+  'Hang 5 Pheromone traps per acre': {
+    en: 'Hang 5 Pheromone traps per acre',
+    te: 'ఎకరానికి 5 లింగాకర్షక బుట్టలు (ఫెరమోన్ ట్రాప్స్) అమర్చండి',
+    hi: 'प्रति एकड़ 5 फेरोमोन ट्रैप लगाएं',
+    ta: 'ஏக்கருக்கு 5 இனக்கவர்ச்சி பொறிகளை வைக்கவும்',
+    kn: 'ಪ್ರತಿ ಎಕರೆಗೆ 5 ಮೋಹಕ ಬಲೆಗಳನ್ನು ಅಳವಡಿಸಿ',
+  },
+  'Put Yellow Sticky Traps @ 15 per acre': {
+    en: 'Put Yellow Sticky Traps @ 15 per acre',
+    te: 'ఎకరానికి 15 పసుపు రంగు జిగురు పూసిన అట్టలను అమర్చండి',
+    hi: 'प्रति एकड़ 15 पीले चिपचिपे जाल लगाएं',
+    ta: 'ஏக்கருக்கு 15 மஞ்சள் நிற ஒட்டும் பொறிகளை அமைக்கவும்',
+    kn: 'ಎಕರೆಗೆ 15 ಹಳದಿ ಅಂಟು ಬಲೆಗಳನ್ನು ಇರಿಸಿ',
+  },
+  'Deep summer plowing & apply neem cake in whorls': {
+    en: 'Deep summer plowing & apply neem cake in whorls',
+    te: 'వేసవిలో లోతు దుక్కులు దున్నండి & సుడులలో వేపపిండి వేయండి',
+    hi: 'गर्मियों में गहरी जुताई करें और पोंगों में नीम की खली डालें',
+    ta: 'கோடைக்கால ஆழ உழவு & இலைச் சுருளில் வேப்பம் புண்ணாக்கு இடவும்',
+    kn: 'ಬೇಸಿಗೆಯಲ್ಲಿ ಆಳವಾದ ಉಳುಮೆ ಮಾಡಿ & ಸುಳಿಗಳಲ್ಲಿ ಬೇವಿನ ಹಿಂಡಿ ಹಾಕಿ',
+  },
+  'Rotate crops with Jowar/Bajra & treat seeds': {
+    en: 'Rotate crops with Jowar/Bajra & treat seeds',
+    te: 'జొన్న/సజ్జలతో పంట మార్పిడి చేయండి & విత్తన శుద్ధి చేయండి',
+    hi: 'ज्वार/बाजरा के साथ फसल चक्र अपनाएं और बीज उपचार करें',
+    ta: 'சோளம்/கம்பு உடன் பயிர் சுழற்சி & விதை நேர்த்தி செய்யவும்',
+    kn: 'ಜೋಳ/ಸಜ್ಜೆಯೊಂದಿಗೆ ಬೆಳೆ ಪರಿವರ್ತನೆ ಮಾಡಿ & ಬೀಜೋಪಚಾರ ಮಾಡಿ',
+  },
+
+  // Short Cures (shortCure)
+  'Spray Mancozeb @ 2.5g per liter of water': {
+    en: 'Spray Mancozeb @ 2.5g per liter of water',
+    te: 'లీటరు నీటికి 2.5 గ్రాముల మాంకోజెబ్ కలిపి పిచికారీ చేయండి',
+    hi: '2.5 ग्राम मैन्कोजेब प्रति लीटर पानी में मिलाकर छिड़कें',
+    ta: 'ஒரு லிட்டர் தண்ணீருக்கு 2.5 கிராம் மான்கோசெப் தெளிக்கவும்',
+    kn: 'ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 2.5 ಗ್ರಾಂ ಮ್ಯಾಂಕೋಜೆಬ್ ಸಿಂಪಡಿಸಿ',
+  },
+  'Spray Tricyclazole 75% WP @ 0.6g per liter of water': {
+    en: 'Spray Tricyclazole 75% WP @ 0.6g per liter of water',
+    te: 'లీటరు నీటికి 0.6 గ్రాముల ట్రైసైక్లజోల్ 75% WP పిచికారీ చేయండి',
+    hi: '0.6 ग्राम ट्राइसाइक्लाजोल 75% WP प्रति लीटर पानी में छिड़कें',
+    ta: 'ஒரு லிட்டர் தண்ணீருக்கு 0.6 கிராம் ட்ரைசைக்ளசோல் 75% WP தெளிக்கவும்',
+    kn: 'ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 0.6 ಗ್ರಾಂ ಟ್ರೈಸೈಕ್ಲಾಜೋಲ್ 75% WP ಸಿಂಪಡಿಸಿ',
+  },
+  'Spray Copper Oxychloride @ 3g per liter of water': {
+    en: 'Spray Copper Oxychloride @ 3g per liter of water',
+    te: 'లీటరు నీటికి 3 గ్రాముల కాపర్ ఆక్సిక్లోరైడ్ పిచికారీ చేయండి',
+    hi: '3 ग्राम कॉपर ऑक्सीक्लोराइड प्रति लीटर पानी में मिलाकर छिड़कें',
+    ta: 'ஒரு லிட்டர் தண்ணீருக்கு 3 கிராம் காப்பர் ஆக்ஸிகுளோரைடு தெளிக்கவும்',
+    kn: 'ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 3 ಗ್ರಾಂ ತಾಮ್ರದ ಆಕ್ಸಿಕ್ಲೋರೈಡ್ ಸಿಂಪಡಿಸಿ',
+  },
+  'Spray Chlorantraniliprole 18.5 SC @ 0.3ml per liter': {
+    en: 'Spray Chlorantraniliprole 18.5 SC @ 0.3ml per liter',
+    te: 'లీటరు నీటికి 0.3 మి.లీ క్లోరాంట్రానిలిప్రోల్ 18.5 SC పిచికారీ చేయండి',
+    hi: '0.3 मिली क्लोरैंट्रानिलीप्रोल 18.5 SC प्रति लीटर पानी में छिड़कें',
+    ta: 'ஒரு லிட்டர் தண்ணீருக்கு 0.3 மி.லி குளோரான்ட்ரனிலிப்ரோல் தெளிக்கவும்',
+    kn: 'ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 0.3 ಮಿ.ಲೀ ಕ್ಲೋರಾಂಟ್ರಾನಿಲಿಪ್ರೋಲ್ ಸಿಂಪಡಿಸಿ',
+  },
+  'Spray Imidacloprid 17.8 SL @ 0.3ml per liter to stop whiteflies': {
+    en: 'Spray Imidacloprid 17.8 SL @ 0.3ml per liter to stop whiteflies',
+    te: 'తెల్లదోమల నివారణకు లీటరు నీటికి 0.3 మి.లీ ఇమిడాక్లోప్రిడ్ 17.8 SL పిచికారీ చేయండి',
+    hi: 'सफेद मक्खियों की रोकथाम के लिए 0.3 मिली इमिडाक्लोप्रिड 17.8 SL प्रति लीटर छिड़कें',
+    ta: 'வெள்ளை ஈக்களைக் கட்டுப்படுத்த ஒரு லிட்டர் தண்ணீருக்கு 0.3 மி.லி இமிடாக்ளோப்ரிட் தெளிக்கவும்',
+    kn: 'ಬಿಳಿ ನೊಣ ನಿಯಂತ್ರಣಕ್ಕೆ ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 0.3 ಮಿ.ಲೀ ಇಮಿಡಾಕ್ಲೋಪ್ರಿಡ್ ಸಿಂಪಡಿಸಿ',
+  },
+  'Apply Emamectin Benzoate 5% SG @ 0.4g/L inside plant whorls': {
+    en: 'Apply Emamectin Benzoate 5% SG @ 0.4g/L inside plant whorls',
+    te: 'సుడులలో లీటరు నీటికి 0.4 గ్రాముల ఇమామెక్టిన్ బెంజోయేట్ 5% SG వేయండి',
+    hi: 'पोंगो के अंदर 0.4 ग्राम इमामेक्टिन बेंजोएट 5% SG प्रति लीटर पानी में डालें',
+    ta: 'இலைச் சுருளுக்குள் லிட்டருக்கு 0.4 கிராம் எமாமெக்டின் பென்சோயேட் இடவும்',
+    kn: 'ಸುಳಿಗಳಲ್ಲಿ ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 0.4 ಗ್ರಾಂ ಇಮಾಮೆಕ್ಟಿನ್ ಬೆಂಜೊಯೆಟ್ ಹಾಕಿ',
+  },
+  'Spray Tebuconazole @ 1ml per liter of water': {
+    en: 'Spray Tebuconazole @ 1ml per liter of water',
+    te: 'లీటరు నీటికి 1 మి.లీ టెబుకోనజోల్ కలిపి పిచికారీ చేయండి',
+    hi: '1 मिली टेबुकोनाजोल प्रति लीटर पानी में मिलाकर छिड़कें',
+    ta: 'ஒரு லிட்டர் தண்ணீருக்கு 1 மி.லி டெபுகோனசோல் தெளிக்கவும்',
+    kn: 'ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 1 ಮಿ.ಲೀ ಟೆಬುಕೊನಜೋಲ್ ಸಿಂಪಡಿಸಿ',
+  },
+
+  // Weeds & Actions
+  'Pluck/remove manually before seed formation.': {
+    en: 'Pluck/remove manually before seed formation.',
+    te: 'విత్తనాలు రాకముందే చేతులతో పీకివేయండి.',
+    hi: 'बीज बनने से पहले हाथ से उखाड़ कर फेंक दें।',
+    ta: 'விதை உருவாகும் முன் கையால் பிடுங்கி அகற்றவும்.',
+    kn: 'ಬೀಜ ಕಟ್ಟುವು ಮುನ್ನ ಕೈಯಿಂದ ಕಳೆ ಕೀಳಿ.',
+  },
+  'Uproot with tuber intact to prevent regrowth.': {
+    en: 'Uproot with tuber intact to prevent regrowth.',
+    te: 'మళ్లీ మొలవకుండా దుంపలతో సహా వేరుతో పీకండి.',
+    hi: 'दोबारा उगने से रोकने के लिए गांठ सहित जड़ से उखाड़ें।',
+    ta: 'மீண்டும் முளைப்பதைத் தடுக்க கிழங்குடன் பிடுங்கவும்.',
+    kn: 'ಮತ್ತೆ ಬೆಳೆಯದಂತೆ ಗೆಡ್ಡೆಯ ಸಮೇತ ಕೀಳಿ.',
+  },
+  'Remove by hand during second weeding cycle.': {
+    en: 'Remove by hand during second weeding cycle.',
+    te: 'రెండవ దఫా కలుపు తీసే సమయంలో చేతితో తొలగించండి.',
+    hi: 'दूसरे निराई चक्र के दौरान हाथ से निकालें।',
+    ta: 'இரண்டாம் களையெடுப்பின் போது அகற்றவும்.',
+    kn: 'ಎರಡನೇ ಕಳೆ ಕೀಳುವ ಹಂತದಲ್ಲಿ ತೆಗೆಯಿರಿ.',
+  },
+  'Pull out before flowering while wearing protective gloves.': {
+    en: 'Pull out before flowering while wearing protective gloves.',
+    te: 'పూతకు రాకముందే రక్షణ తొడుగులు (గ్లౌజులు) ధరించి పీకివేయండి.',
+    hi: 'सुरक्षात्मक दस्ताने पहनकर फूल आने से पहले उखाड़ें।',
+    ta: 'கையுறைகள் அணிந்து பூக்கும் முன் பிடுங்கவும்.',
+    kn: 'ಕೈಗವಸು ಧರಿಸಿ ಹೂ ಬಿಡುವ ಮೊದಲೇ ಕೀಳಿ.',
+  },
+
+  // Symptoms
+  'Oval brown spots on leaves with yellow halo': {
+    en: 'Oval brown spots on leaves with yellow halo',
+    te: 'పసుపు రంగు వలయంతో ఆకులపై గుండ్రని గోధుమ రంగు మచ్చలు',
+    hi: 'पीले छल्ले के साथ पत्तियों पर अंडाकार भूरे धब्बे',
+    ta: 'மஞ்சள் வளையத்துடன் இலைகளில் நீள்வட்ட பழுப்பு புள்ளிகள்',
+    kn: 'ಹಳದಿ ವೃತ್ತದೊಂದಿಗೆ ಎಲೆಗಳ ಮೇಲೆ ಅಂಡಾಕಾರದ ಕಂದು ಚುಕ್ಕೆಗಳು',
+  },
+  'Dark spots on grains reducing kernel weight': {
+    en: 'Dark spots on grains reducing kernel weight',
+    te: 'గింజలపై నల్లటి మచ్చలు ఏర్పడి బరువు తగ్గడం',
+    hi: 'दानों पर काले धब्बे जिससे वजन कम होता है',
+    ta: 'தானியங்களில் கருப்பு புள்ளிகள் ஏற்பட்டு எடை குறைதல்',
+    kn: 'ಕಾಳುಗಳ ಮೇಲೆ ಕಪ್ಪು ಚುಕ್ಕೆ ಬಿದ್ದು ತೂಕ ಕಡಿಮೆಯಾಗುವುದು',
+  },
+  'Spindle-shaped spots with grey centers': {
+    en: 'Spindle-shaped spots with grey centers',
+    te: 'బూడిద రంగు కేంద్రంతో కంటి ఆకారపు మచ్చలు',
+    hi: 'धूसर केंद्र वाले धुरी के आकार के धब्बे',
+    ta: 'சாம்பல் நிற மையத்துடன் கூடிய கதிர் வடிவ புள்ளிகள்',
+    kn: 'ಬೂದು ಬಣ್ಣದ ಕೇಂದ್ರದೊಂದಿಗೆ ಕಣ್ಣಿನ ಆಕಾರದ ಚುಕ್ಕೆಗಳು',
+  },
+  'Neck rot causing lodging of mature panicles': {
+    en: 'Neck rot causing lodging of mature panicles',
+    te: 'మెడ విరుపు తెగులు వల్ల వెన్నులు విరిగి పడిపోవడం',
+    hi: 'गर्दन सड़न जिससे पकी हुई बालियाँ गिर जाती हैं',
+    ta: 'கழுத்து அழுகல் ஏற்பட்டு கதிர்கள் சாய்ந்துவிடுதல்',
+    kn: 'ಕುತ್ತಿಗೆ ಕೊಳೆ ರೋಗದಿಂದ ತೆನೆ ಮುರಿದು ಬೀಳುವುದು',
+  },
+  'Brownish spots with concentric rings': {
+    en: 'Brownish spots with concentric rings',
+    te: 'వలయాకారపు చారలతో గోధుమ రంగు మచ్చలు',
+    hi: 'सकेंद्री छल्लों वाले भूरे धब्बे',
+    ta: 'வளைய அமைப்பிலான பழுப்பு புள்ளிகள்',
+    kn: 'ವೃತ್ತಾಕಾರದ ಕಂದು ಬಣ್ಣದ ಚುಕ್ಕೆಗಳು',
+  },
+  'Early leaf drop': {
+    en: 'Early leaf drop',
+    te: 'ముందస్తుగా ఆకులు రాలిపోవడం',
+    hi: 'पत्तियों का समय से पहले गिरना',
+    ta: 'முன்கூட்டியே இலைகள் உதிர்தல்',
+    kn: 'ಅಕಾಲಿಕ ಎಲೆ ಉದುರುವಿಕೆ',
+  },
+  'Rosetted flowers failing to open': {
+    en: 'Rosetted flowers failing to open',
+    te: 'పూలు విచ్చుకోకుండా ముడుచుకుపోవడం',
+    hi: 'गुलाब के आकार के फूल जो खुल नहीं पाते',
+    ta: 'மலராமல் கூம்பிப் போகும் பூக்கள்',
+    kn: 'ಅರಳದೆ ಮುದುರಿಕೊಂಡ ಹೂಗಳು',
+  },
+  'Bore holes in developing bolls': {
+    en: 'Bore holes in developing bolls',
+    te: 'ఎదిగే కాయలలో రంధ్రాలు పడటం',
+    hi: 'विकासशील गूलरों में छेद होना',
+    ta: 'வளரும் காய்களில் துளைகள் விழுதல்',
+    kn: 'ಬೆಳೆಯುವ ಕಾಯಿಗಳಲ್ಲಿ ರಂಧ್ರಗಳು ಬೀಳುವುದು',
+  },
+  'Upward leaf curling and puckering': {
+    en: 'Upward leaf curling and puckering',
+    te: 'ఆకులు పైకి ముడుచుకుని బొబ్బలుగా మారడం',
+    hi: 'पत्तियों का ऊपर की ओर मुड़ना और सिकुड़ना',
+    ta: 'இலைகள் மேல்நோக்கி சுருண்டு சுருங்குதல்',
+    kn: 'ಎಲೆಗಳು ಮೇಲ್ಮುಖವಾಗಿ ಮುದುರಿಕೊಳ್ಳುವುದು',
+  },
+  'Stunted plant growth': {
+    en: 'Stunted plant growth',
+    te: 'మొక్కల పెరుగుదల ఆగిపోవడం (గిడసబారడం)',
+    hi: 'पौधे की वृद्धि रुक जाना',
+    ta: 'பயிரின் வளர்ச்சி குன்றுதல்',
+    kn: 'ಗಿಡದ ಬೆಳವಣಿಗೆ ಕುಂಠಿತವಾಗುವುದು',
+  },
+  'Window pane holes in young leaves': {
+    en: 'Window pane holes in young leaves',
+    te: 'లేత ఆకులలో పారదర్శక రంధ్రాలు పడటం',
+    hi: 'युवा पत्तियों में खिड़की के शीशे जैसे छेद',
+    ta: 'இளம் இலைகளில் சன்னல் போன்ற கண்ணாடி துளைகள்',
+    kn: 'ಎಳೆಯ ಎಲೆಗಳಲ್ಲಿ ಕಿಟಕಿಯಂತಹ ರಂಧ್ರಗಳು',
+  },
+  'Ragged feeding marks in whorls': {
+    en: 'Ragged feeding marks in whorls',
+    te: 'సుడులలో పురుగులు కొరికిన ఆనవాళ్ళు',
+    hi: 'पोंगो में पत्तियों के कटे-फटे निशान',
+    ta: 'சுருள் இலைகளில் கடித்து குதறிய அடையாளங்கள்',
+    kn: 'ಸುಳಿಗಳಲ್ಲಿ ಕತ್ತರಿಸಿದ ಎಲೆಗಳ ಗುರುತುಗಳು',
+  },
+  'Dark brown spots on upper leaves': {
+    en: 'Dark brown spots on upper leaves',
+    te: 'పై ఆకులపై ముదురు గోధుమ రంగు మచ్చలు',
+    hi: 'ऊपरी पत्तियों पर गहरे भूरे धब्बे',
+    ta: 'மேல் இலைகளில் அடர் பழுப்பு புள்ளிகள்',
+    kn: 'ಮೇಲಿನ ಎಲೆಗಳ ಮೇಲೆ ಕಡು ಕಂದು ಚುಕ್ಕೆಗಳು',
+  },
+  'Premature leaf shedding': {
+    en: 'Premature leaf shedding',
+    te: 'ఆకులు త్వరగా రాలిపోవడం',
+    hi: 'पत्तियों का समय से पहले गिरना',
+    ta: 'முன்கூட்டியே இலைகள் கொட்டுதல்',
+    kn: 'ಸಮಯಕ್ಕಿಂತ ಮುಂಚಿತವಾಗಿ ಎಲೆ ಉದುರುವುದು',
+  },
+
+  // Causes & Conditions
+  'Fungal infection (Bipolaris oryzae)': {
+    en: 'Fungal infection (Bipolaris oryzae)',
+    te: 'శిలీంధ్ర సంక్రమణం (బైపోలారిస్ ఒరైజే)',
+    hi: 'कवक संक्रमण (बाइपोलारिस ओराइजी)',
+    ta: 'பூஞ்சை தொற்று (பைபோலாரிஸ் ஒரைசே)',
+    kn: 'ಶಿಲೀಂಧ್ರ ಸೋಂಕು (ಬೈಪೋಲಾರಿಸ್ ಒರೈಜೆ)',
+  },
+  'Fungal infection (Pyricularia oryzae)': {
+    en: 'Fungal infection (Pyricularia oryzae)',
+    te: 'శిలీంధ్ర సంక్రమణం (పైరిక్యులేరియా ఒరైజే)',
+    hi: 'कवक संक्रमण (पाइरीकुलरिया ओराइजी)',
+    ta: 'பூஞ்சை தொற்று (பைரிக்குலேரியா ஒரைசே)',
+    kn: 'ಶಿಲೀಂಧ್ರ ಸೋಂಕು (ಪೈರಿಕ್ಯುಲೇರಿಯಾ ಒರೈಜೆ)',
+  },
+  'Fungal pathogen (Alternaria macrospora)': {
+    en: 'Fungal pathogen (Alternaria macrospora)',
+    te: 'శిలీంధ్ర వ్యాధికారకం (ఆల్టర్నేరియా)',
+    hi: 'फंगल रोगज़नक़ (अल्टरनेरिया)',
+    ta: 'பூஞ்சை நோய்க்காரணி (ஆல்டர்னேரியா)',
+    kn: 'ಶಿಲೀಂಧ್ರ ರೋಗಕಾರಕ (ಆಲ್ಟರ್ನೇರಿಯಾ)',
+  },
+  'Insect Pest (Pectinophora gossypiella)': {
+    en: 'Insect Pest (Pectinophora gossypiella)',
+    te: 'కీటక తెగులు (పెక్టినోఫోరా గాసిపియెల్లా)',
+    hi: 'कीट (पेक्टिनोफोरा गॉसिपिएला)',
+    ta: 'பூச்சி தாக்குதல் (பெக்டினோபோரா)',
+    kn: 'ಕೀಟ ಬಾಧೆ (ಪೆಕ್ಟಿನೋಫೊರಾ)',
+  },
+  'Viral infection spread by Whiteflies': {
+    en: 'Viral infection spread by Whiteflies',
+    te: 'తెల్లదోమల ద్వారా వ్యాపించే వైరస్',
+    hi: 'सफेद मक्खियों द्वारा फैलने वाला वायरस',
+    ta: 'வெள்ளை ஈக்கள் மூலம் பரவும் வைரஸ்',
+    kn: 'ಬಿಳಿ ನೊಣಗಳಿಂದ ಹರಡುವ ವೈರಸ್ ಸೋಂಕು',
+  },
+  'Insect Pest (Spodoptera frugiperda)': {
+    en: 'Insect Pest (Spodoptera frugiperda)',
+    te: 'కీటక తెగులు (స్పోడోప్టెరా ఫ్రూగిపెర్డా)',
+    hi: 'कीट (स्पोडोप्टेरा फ्रूगिपरडा)',
+    ta: 'பூச்சி தாக்குதல் (ஸ்போடோப்டெரா)',
+    kn: 'ಕೀಟ ಬಾಧೆ (ಸ್ಪೊಡೊಪ್ಟೆರಾ)',
+  },
+  'Fungal infection (Cercospora)': {
+    en: 'Fungal infection (Cercospora)',
+    te: 'శిలీంధ్ర సంక్రమణం (సెర్కోస్పోరా)',
+    hi: 'कवक संक्रमण (सर्कोस्पोरा)',
+    ta: 'பூஞ்சை தொற்று (செர்கோஸ்போரா)',
+    kn: 'ಶಿಲೀಂಧ್ರ ಸೋಂಕು (ಸರ್ಕೋಸ್ಪೊರಾ)',
+  },
+  'High humidity (>85%), 25°C-30°C temperature, low nitrogen soil': {
+    en: 'High humidity (>85%), 25°C-30°C temperature, low nitrogen soil',
+    te: 'అధిక తేమ (>85%), 25°C-30°C ఉష్ణోగ్రత, తక్కువ నత్రజని నేల',
+    hi: 'उच्च आर्द्रता (>85%), 25°C-30°C तापमान, कम नाइट्रोजन वाली मिट्टी',
+    ta: 'அதிக ஈரப்பதம் (>85%), 25°C-30°C வெப்பம், தழைச்சத்து குறைந்த மண்',
+    kn: 'ಹೆಚ್ಚಿನ ತೇವಾಂಶ (>85%), 25°C-30°C ತಾಪಮಾನ, ಕಡಿಮೆ ಸಾರಜನಕವಿರುವ ಮಣ್ಣು',
+  },
+  'Cool nights (<20°C), heavy morning dew, high humidity (>90%)': {
+    en: 'Cool nights (<20°C), heavy morning dew, high humidity (>90%)',
+    te: 'చల్లని రాత్రులు (<20°C), ఉదయం అధిక మంచు, అధిక తేమ (>90%)',
+    hi: 'ठंडी रातें (<20°C), सुबह भारी ओस, उच्च आर्द्रता (>90%)',
+    ta: 'குளிர்ந்த இரவு (<20°C), அதிக பனி, அதிக ஈரப்பதம் (>90%)',
+    kn: 'ತಂಪಾದ ರಾತ್ರಿಗಳು (<20°C), ಬೆಳಗಿನ ಅಧಿಕ ಇಬ್ಬನಿ, ಹೆಚ್ಚಿನ ತೇವಾಂಶ (>90%)',
+  },
+  'Intermittent rainfall with warm temperature (26-32°C)': {
+    en: 'Intermittent rainfall with warm temperature (26-32°C)',
+    te: 'వెచ్చని ఉష్ణోగ్రతతో (26-32°C) అడపాదడపా వర్షాలు',
+    hi: 'गर्म तापमान (26-32°C) के साथ रुक-रुक कर बारिश',
+    ta: 'மிதமான வெப்பத்துடன் (26-32°C) விட்டுவிட்டு பெய்யும் மழை',
+    kn: 'ಬೆಚ್ಚಗಿನ ತಾಪಮಾನದೊಂದಿಗೆ (26-32°C) ಬಿಟ್ಟು ಬಿಟ್ಟು ಬರುವ ಮಳೆ',
+  },
+  'Warm dry spells with high boll density': {
+    en: 'Warm dry spells with high boll density',
+    te: 'అధిక కాయల సాంద్రతతో వెచ్చని పొడి కాలం',
+    hi: 'अधिक गूलरों के साथ गर्म और शुष्क मौसम',
+    ta: 'அதிக காய்களுடன் கூடிய வறண்ட வெப்ப சூழல்',
+    kn: 'ಹೆಚ್ಚಿನ ಕಾಯಿಗಳೊಂದಿಗೆ ಬೆಚ್ಚಗಿನ ಒಣ ಹವಾಮಾನ',
+  },
+  'Hot dry weather favoring whiteflies': {
+    en: 'Hot dry weather favoring whiteflies',
+    te: 'తెల్లదోమలకు అనుకూలమైన వేడి పొడి వాతావరణం',
+    hi: 'सफेद मक्खियों के अनुकूल गर्म शुष्क मौसम',
+    ta: 'வெள்ளை ஈக்களுக்கு சாதகமான வறண்ட வெப்பம்',
+    kn: 'ಬಿಳಿ ನೊಣಗಳಿಗೆ ಅನುಕೂಲಕರವಾದ ಬಿಸಿ ಒಣ ಹವೆ',
+  },
+  'Warm weather (28-35°C)': {
+    en: 'Warm weather (28-35°C)',
+    te: 'వెచ్చని వాతావరణం (28-35°C)',
+    hi: 'गर्म मौसम (28-35°C)',
+    ta: 'வெப்பமான வானிலை (28-35°C)',
+    kn: 'ಬೆಚ್ಚಗಿನ ಹವಾಮಾನ (28-35°C)',
+  },
+  'High humidity (>80%), rain showers, 25-30°C': {
+    en: 'High humidity (>80%), rain showers, 25-30°C',
+    te: 'అధిక తేమ (>80%), వర్షపు జల్లులు, 25-30°C',
+    hi: 'उच्च आर्द्रता (>80%), बारिश की फुहारें, 25-30°C',
+    ta: 'அதிக ஈரப்பதம் (>80%), மழைச்சாரல், 25-30°C',
+    kn: 'ಹೆಚ್ಚಿನ ತೇವಾಂಶ (>80%), ಮಳೆ ತುಂತುರು, 25-30°C',
+  },
+
+  // Precautions & Treatments
+  'Use certified seeds': {
+    en: 'Use certified seeds',
+    te: 'ధృవీకరించిన నాణ్యమైన విత్తనాలు వాడండి',
+    hi: 'प्रमाणित बीजों का उपयोग करें',
+    ta: 'சான்றளிக்கப்பட்ட விதைகளைப் பயன்படுத்தவும்',
+    kn: 'ಪ್ರಮಾಣೀಕೃತ ಬೀಜಗಳನ್ನು ಬಳಸಿ',
+  },
+  'Apply balanced N-P-K fertilizer': {
+    en: 'Apply balanced N-P-K fertilizer',
+    te: 'సమతుల్య N-P-K ఎరువులు వేయండి',
+    hi: 'संतुलित एन-पी-के उर्वरक का प्रयोग करें',
+    ta: 'சமச்சீர் N-P-K உரங்களைப் பயன்படுத்தவும்',
+    kn: 'ಸಮತೋಲಿತ N-P-K ಗೊಬ್ಬರ ಹಾಕಿ',
+  },
+  'Drain excess water from field': {
+    en: 'Drain excess water from field',
+    te: 'పొలంలో నిలిచిన అదనపు నీటిని బయటకు తీయండి',
+    hi: 'खेत से अतिरिक्त पानी निकालें',
+    ta: 'நிலத்தில் தேங்கிய உபரி நீரை வடிக்கவும்',
+    kn: 'ಜಮೀನಿನಿಂದ ಹೆಚ್ಚುವರಿ ನೀರನ್ನು ಹೊರಹಾಕಿ',
+  },
+  'Seed treatment with Tricyclazole @ 2g/kg seed': {
+    en: 'Seed treatment with Tricyclazole @ 2g/kg seed',
+    te: 'కిలో విత్తనానికి 2 గ్రాముల ట్రైసైక్లజోల్ తో విత్తన శుద్ధి చేయండి',
+    hi: '2 ग्राम ट्राइसाइक्लाजोल प्रति किलो बीज से बीज उपचार करें',
+    ta: 'கிலோ விதைக்கு 2 கிராம் ட்ரைசைக்ளசோல் கொண்டு விதை நேர்த்தி செய்யவும்',
+    kn: 'ಪ್ರತಿ ಕೆಜಿ ಬೀಜಕ್ಕೆ 2 ಗ್ರಾಂ ಟ್ರೈಸೈಕ್ಲಾಜೋಲ್‌ನಿಂದ ಬೀಜೋಪಚಾರ ಮಾಡಿ',
+  },
+  'Avoid high plant crowding for air flow': {
+    en: 'Avoid high plant crowding for air flow',
+    te: 'గాలి వెలుతురు కోసం మొక్కలను మరీ దగ్గరగా నాటకండి',
+    hi: 'हवा के संचार के लिए पौधों को बहुत पास न लगाएं',
+    ta: 'காற்று சீராக செல்ல பயிர்களை நெருக்கமாக நட வேண்டாம்',
+    kn: 'ಗಾಳಿಯಾಡಲು ಗಿಡಗಳನ್ನು ಅತಿಯಾಗಿ ಸಾಂದ್ರವಾಗಿ ನೆಡಬೇಡಿ',
+  },
+  'Clean field residue after harvest': {
+    en: 'Clean field residue after harvest',
+    te: 'కోత తర్వాత పంట వ్యర్థాలను పొలం నుండి తొలగించండి',
+    hi: 'कटाई के बाद खेत के अवशेषों को साफ करें',
+    ta: 'அறுவடைக்கு பின் பயிர் கழிவுகளை அகற்றவும்',
+    kn: 'ಕೊಯ್ಲಿನ ನಂತರ ಜಮೀನಿನ ತ್ಯಾಜ್ಯವನ್ನು ಸ್ವಚ್ಛಗೊಳಿಸಿ',
+  },
+  'Maintain 90x60 cm plant spacing': {
+    en: 'Maintain 90x60 cm plant spacing',
+    te: '90x60 సెం.మీ మొక్కల దూరం పాటించండి',
+    hi: '90x60 सेमी की पौधे की दूरी बनाए रखें',
+    ta: '90x60 செ.மீ பயிர் இடைவெளியை பராமரிக்கவும்',
+    kn: '90x60 ಸೆಂ.ಮೀ ಗಿಡಗಳ ಅಂತರ ಕಾಪಾಡಿ',
+  },
+  'Set Pheromone traps @ 5 traps/acre': {
+    en: 'Set Pheromone traps @ 5 traps/acre',
+    te: 'ఎకరానికి 5 ఫెరమోన్ బుట్టలను ఏర్పాటు చేయండి',
+    hi: 'प्रति एकड़ 5 फेरोमोन ट्रैप लगाएं',
+    ta: 'ஏக்கருக்கு 5 இனக்கவர்ச்சி பொறிகளை அமைக்கவும்',
+    kn: 'ಎಕರೆಗೆ 5 ಮೋಹಕ ಬಲೆಗಳನ್ನು ಇರಿಸಿ',
+  },
+  'Avoid extending crop beyond December': {
+    en: 'Avoid extending crop beyond December',
+    te: 'డిసెంబర్ తర్వాత పంటను ఎక్కువ కాలం పొడిగించవద్దు',
+    hi: 'दिसंबर के बाद फसल को आगे न बढ़ाएं',
+    ta: 'டிசம்பருக்கு மேல் பயிரை நீட்டிக்க வேண்டாம்',
+    kn: 'ಡಿಸೆಂಬರ್ ನಂತರ ಬೆಳೆಯನ್ನು ಮುಂದುವರಿಸಬೇಡಿ',
+  },
+  'Set Yellow Sticky Traps @ 15 traps/acre': {
+    en: 'Set Yellow Sticky Traps @ 15 traps/acre',
+    te: 'ఎకరానికి 15 పసుపు జిగురు అట్టలను అమర్చండి',
+    hi: 'प्रति एकड़ 15 पीले चिपचिपे जाल लगाएं',
+    ta: 'ஏக்கருக்கு 15 மஞ்சள் ஒட்டும் பொறிகளை வைக்கவும்',
+    kn: 'ಎಕರೆಗೆ 15 ಹಳದಿ ಅಂಟು ಬಲೆಗಳನ್ನು ಅಳವಡಿಸಿ',
+  },
+  'Plant border crops like Maize': {
+    en: 'Plant border crops like Maize',
+    te: 'పొలం సరిహద్దుల్లో మొక్కజొన్నను రక్షణ పంటగా వేయండి',
+    hi: 'खेत की मेड़ों पर मक्का जैसी सीमावर्ती फसलें लगाएं',
+    ta: 'வரப்புகளில் மக்காச்சோளம் போன்ற எல்லைப்பயிர்களை நடவும்',
+    kn: 'ಜಮೀನಿನ ಅಂಚಿನಲ್ಲಿ ಮೆಕ್ಕೆಜೋಳದಂತಹ ರಕ್ಷಣಾ ಬೆಳೆ ಬೆಳೆಯಿರಿ',
+  },
+  'Deep summer plowing': {
+    en: 'Deep summer plowing',
+    te: 'వేసవి కాలంలో లోతు దుక్కులు దున్నండి',
+    hi: 'गर्मियों में गहरी जुताई करें',
+    ta: 'கோடை ஆழ உழவு செய்யவும்',
+    kn: 'ಬೇಸಿಗೆಯಲ್ಲಿ ಆಳವಾಗಿ ಉಳುಮೆ ಮಾಡಿ',
+  },
+  'Apply neem cake in whorls @ 20kg/acre': {
+    en: 'Apply neem cake in whorls @ 20kg/acre',
+    te: 'ఎకరానికి 20 కిలోల వేపపిండిని సుడులలో వేయండి',
+    hi: 'प्रति एकड़ 20 किलो नीम की खली पोंगो में डालें',
+    ta: 'ஏக்கருக்கு 20 கிலோ வேப்பம் புண்ணாக்கை சுருளில் இடவும்',
+    kn: 'ಎಕರೆಗೆ 20 ಕೆಜಿ ಬೇವಿನ ಹಿಂಡಿಯನ್ನು ಸುಳಿಗಳಲ್ಲಿ ಹಾಕಿ',
+  },
+  'Rotate crops with Jowar or Bajra': {
+    en: 'Rotate crops with Jowar or Bajra',
+    te: 'జొన్న లేదా సజ్జలతో పంట మార్పిడి చేయండి',
+    hi: 'ज्वार या बाजरा के साथ फसल चक्र अपनाएं',
+    ta: 'சோளம் அல்லது கம்பு உடன் பயிர் சுழற்சி செய்யவும்',
+    kn: 'ಜೋಳ ಅಥವಾ ಸಜ್ಜೆಯೊಂದಿಗೆ ಬೆಳೆ ಪರಿವರ್ತನೆ ಮಾಡಿ',
+  },
+  'Seed treatment with Thiram @ 3g/kg seed': {
+    en: 'Seed treatment with Thiram @ 3g/kg seed',
+    te: 'కిలో విత్తనానికి 3 గ్రాముల థైరమ్‌తో విత్తన శుద్ధి చేయండి',
+    hi: '3 ग्राम थीरम प्रति किलो बीज से बीज उपचार करें',
+    ta: 'கிலோ விதைக்கு 3 கிராம் தைரம் கொண்டு விதை நேர்த்தி செய்யவும்',
+    kn: 'ಪ್ರತಿ ಕೆಜಿ ಬೀಜಕ್ಕೆ 3 ಗ್ರಾಂ ಥೈರಾಮ್‌ನಿಂದ ಬೀಜೋಪಚಾರ ಮಾಡಿ',
+  },
+  'Spray Mancozeb @ 2.5g/L or Carbendazim @ 1g/L of water.': {
+    en: 'Spray Mancozeb @ 2.5g/L or Carbendazim @ 1g/L of water.',
+    te: 'లీటరు నీటికి 2.5 గ్రాముల మాంకోజెబ్ లేదా 1 గ్రాము కార్బండజిమ్ పిచికారీ చేయండి.',
+    hi: 'मैन्कोजेब 2.5 ग्राम/लीटर या कार्बेन्डाजिम 1 ग्राम/लीटर पानी में मिलाकर छिड़कें।',
+    ta: 'ஒரு லிட்டர் தண்ணீருக்கு 2.5 கிராம் மான்கோசெப் அல்லது 1 கிராம் கார்பென்டாசிம் தெளிக்கவும்.',
+    kn: 'ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 2.5 ಗ್ರಾಂ ಮ್ಯಾಂಕೋಜೆಬ್ ಅಥವಾ 1 ಗ್ರಾಂ ಕಾರ್ಬೆಂಡಾಜಿಮ್ ಸಿಂಪಡಿಸಿ.',
+  },
+  'Spray Tricyclazole 75% WP @ 0.6g/L or Isoprothiolane @ 1.5ml/L.': {
+    en: 'Spray Tricyclazole 75% WP @ 0.6g/L or Isoprothiolane @ 1.5ml/L.',
+    te: 'లీటరు నీటికి 0.6 గ్రాముల ట్రైసైక్లజోల్ 75% WP లేదా 1.5 మి.లీ ఐసోప్రోథియోలేన్ పిచికారీ చేయండి.',
+    hi: 'ट्राइसाइक्लाजोल 75% WP 0.6 ग्राम/लीटर या आइसोप्रोपियोलेन 1.5 मिली/लीटर छिड़कें।',
+    ta: 'லிட்டருக்கு 0.6 கிராம் ட்ரைசைக்ளசோல் 75% WP அல்லது 1.5 மி.லி ஐசோப்ரோதியோலேன் தெளிக்கவும்.',
+    kn: 'ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 0.6 ಗ್ರಾಂ ಟ್ರೈಸೈಕ್ಲಾಜೋಲ್ 75% WP ಅಥವಾ 1.5 ಮಿ.ಲೀ ಐಸೊಪ್ರೊಥಿಯೊಲೇನ್ ಸಿಂಪಡಿಸಿ.',
+  },
+  'Spray Copper Oxychloride @ 3g/L or Propiconazole @ 1ml/L.': {
+    en: 'Spray Copper Oxychloride @ 3g/L or Propiconazole @ 1ml/L.',
+    te: 'లీటరు నీటికి 3 గ్రాముల కాపర్ ఆక్సిక్లోరైడ్ లేదా 1 మి.లీ ప్రొపికోనజోల్ పిచికారీ చేయండి.',
+    hi: 'कॉपर ऑक्सीक्लोराइड 3 ग्राम/लीटर या प्रोपिकोनाजोल 1 मिली/लीटर पानी में मिलाकर छिड़कें।',
+    ta: 'லிட்டருக்கு 3 கிராம் காப்பர் ஆக்ஸிகுளோரைடு அல்லது 1 மி.லி புரோபிகோனசோல் தெளிக்கவும்.',
+    kn: 'ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 3 ಗ್ರಾಂ ತಾಮ್ರದ ಆಕ್ಸಿಕ್ಲೋರೈಡ್ ಅಥವಾ 1 ಮಿ.ಲೀ ಪ್ರೊಪಿಕೊನಜೋಲ್ ಸಿಂಪಡಿಸಿ.',
+  },
+  'Spray Chlorantraniliprole 18.5 SC @ 0.3ml/L.': {
+    en: 'Spray Chlorantraniliprole 18.5 SC @ 0.3ml/L.',
+    te: 'లీటరు నీటికి 0.3 మి.లీ క్లోరాంట్రానిలిప్రోల్ 18.5 SC పిచికారీ చేయండి.',
+    hi: 'क्लोरैंट्रानिलीप्रोल 18.5 SC 0.3 मिली/लीटर पानी में मिलाकर छिड़कें।',
+    ta: 'லிட்டருக்கு 0.3 மி.லி குளோரான்ட்ரனிலிப்ரோல் 18.5 SC தெளிக்கவும்.',
+    kn: 'ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 0.3 ಮಿ.ಲೀ ಕ್ಲೋರಾಂಟ್ರಾನಿಲಿಪ್ರೋಲ್ 18.5 SC ಸಿಂಪಡಿಸಿ.',
+  },
+  'Spray Imidacloprid 17.8 SL @ 0.3ml/L.': {
+    en: 'Spray Imidacloprid 17.8 SL @ 0.3ml/L.',
+    te: 'లీటరు నీటికి 0.3 మి.లీ ఇమిడాక్లోప్రిడ్ 17.8 SL పిచికారీ చేయండి.',
+    hi: 'इमिडाक्लोप्रिड 17.8 SL 0.3 मिली/लीटर पानी में मिलाकर छिड़कें।',
+    ta: 'லிட்டருக்கு 0.3 மி.லி இமிடாக்ளோப்ரிட் 17.8 SL தெளிக்கவும்.',
+    kn: 'ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 0.3 ಮಿ.ಲೀ ಇಮಿಡಾಕ್ಲೋಪ್ರಿಡ್ 17.8 SL ಸಿಂಪಡಿಸಿ.',
+  },
+  'Apply Emamectin Benzoate 5% SG @ 0.4g/L in whorls.': {
+    en: 'Apply Emamectin Benzoate 5% SG @ 0.4g/L in whorls.',
+    te: 'సుడులలో లీటరు నీటికి 0.4 గ్రాముల ఇమామెక్టిన్ బెంజోయేట్ 5% SG వేయండి.',
+    hi: 'पोंगो में इमामेक्टिन बेंजोएट 5% SG 0.4 ग्राम/लीटर पानी में डालें।',
+    ta: 'இலைச்சுருளில் லிட்டருக்கு 0.4 கிராம் எமாமெக்டின் பென்சோயேட் இடவும்.',
+    kn: 'ಸುಳಿಗಳಲ್ಲಿ ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 0.4 ಗ್ರಾಂ ಇಮಾಮೆಕ್ಟಿನ್ ಬೆಂಜೊಯೆಟ್ ಹಾಕಿ.',
+  },
+  'Spray Tebuconazole @ 1ml/L of water.': {
+    en: 'Spray Tebuconazole @ 1ml/L of water.',
+    te: 'లీటరు నీటికి 1 మి.లీ టెబుకోనజోల్ కలిపి పిచికారీ చేయండి.',
+    hi: 'टेबुकोनाजोल 1 मिली/लीटर पानी में मिलाकर छिड़कें।',
+    ta: 'ஒரு லிட்டர் தண்ணீருக்கு 1 மி.லி டெபுகோனசோல் தெளிக்கவும்.',
+    kn: 'ಪ್ರತಿ ಲೀಟರ್ ನೀರಿಗೆ 1 ಮಿ.ಲೀ ಟೆಬುಕೊನಜೋಲ್ ಸಿಂಪಡಿಸಿ.',
+  },
+
+  // Risk Predictions
+  'Moderate Risk (64% likelihood based on 61% humidity).': {
+    en: 'Moderate Risk (64% likelihood based on 61% humidity).',
+    te: 'మధ్యస్థ ప్రమాదం (61% తేమ ఆధారంగా 64% సంభావ్యత).',
+    hi: 'मध्यम जोखिम (61% आर्द्रता के आधार पर 64% संभावना)।',
+    ta: 'மிதமான ஆபத்து (61% ஈரப்பதம் அடிப்படையில் 64% வாய்ப்பு).',
+    kn: 'ಮಧ್ಯಮ ಅಪಾಯ (61% ತೇವಾಂಶದ ಆಧಾರದ ಮೇಲೆ 64% ಸಂಭವನೀಯತೆ).',
+  },
+  'High Risk if night temperature drops below 22°C with dew.': {
+    en: 'High Risk if night temperature drops below 22°C with dew.',
+    te: 'మంచుతో రాత్రి ఉష్ణోగ్రత 22°C కంటే తగ్గితే అధిక ప్రమాదం.',
+    hi: 'ओस के साथ रात का तापमान 22°C से नीचे जाने पर उच्च जोखिम।',
+    ta: 'பனியுடன் இரவு வெப்பநிலை 22°C க்கு கீழே குறைந்தால் அதிக ஆபத்து.',
+    kn: 'ಇಬ್ಬನಿಯೊಂದಿಗೆ ರಾತ್ರಿಯ ತಾಪಮಾನ 22°C ಗಿಂತ ಕಡಿಮೆಯಾದರೆ ಹೆಚ್ಚಿನ ಅಪಾಯ.',
+  },
+  'Moderate risk due to high day temperature (34°C).': {
+    en: 'Moderate risk due to high day temperature (34°C).',
+    te: 'పగటి అధిక ఉష్ణోగ్రత (34°C) కారణంగా మధ్యస్థ ప్రమాదం.',
+    hi: 'दिन के उच्च तापमान (34°C) के कारण मध्यम जोखिम।',
+    ta: 'பகலின் அதிக வெப்பநிலை (34°C) காரணமாக மிதமான ஆபத்து.',
+    kn: 'ಹಗಲಿನ ಹೆಚ್ಚಿನ ತಾಪಮಾನದಿಂದಾಗಿ (34°C) ಮಧ್ಯಮ ಅಪಾಯ.',
+  },
+  'High risk during flowering and boll formation.': {
+    en: 'High risk during flowering and boll formation.',
+    te: 'పూత మరియు కాయ ఏర్పడే దశలో అధిక ప్రమాదం.',
+    hi: 'फूल आने और गूलर बनने के दौरान उच्च जोखिम।',
+    ta: 'பூக்கும் மற்றும் காய் பிடிக்கும் பருவத்தில் அதிக ஆபத்து.',
+    kn: 'ಹೂಬಿಡುವ ಮತ್ತು ಕಾಯಿ ಕಟ್ಟುವ ಹಂತದಲ್ಲಿ ಹೆಚ್ಚಿನ ಅಪಾಯ.',
+  },
+  'Critical risk in dry zones if whiteflies increase.': {
+    en: 'Critical risk in dry zones if whiteflies increase.',
+    te: 'తెల్లదోమలు పెరిగితే పొడి ప్రాంతాల్లో తీవ్ర ప్రమాదం.',
+    hi: 'सफेद मक्खियाँ बढ़ने पर शुष्क क्षेत्रों में गंभीर जोखिम।',
+    ta: 'வெள்ளை ஈக்கள் அதிகரித்தால் வறண்ட பகுதிகளில் தீவிர ஆபத்து.',
+    kn: 'ಬಿಳಿ ನೊಣಗಳು ಹೆಚ್ಚಾದರೆ ಒಣ ಪ್ರದೇಶಗಳಲ್ಲಿ ತೀವ್ರ ಅಪಾಯ.',
+  },
+  'High Risk during 15-45 days after sowing.': {
+    en: 'High Risk during 15-45 days after sowing.',
+    te: 'విత్తిన 15-45 రోజుల సమయంలో అధిక ప్రమాదం.',
+    hi: 'बुआई के 15-45 दिनों के दौरान उच्च जोखिम।',
+    ta: 'விதைத்த 15-45 நாட்களில் அதிக ஆபத்து.',
+    kn: 'ಬಿತ್ತನೆಯ 15-45 ದಿನಗಳಲ್ಲಿ ಹೆಚ್ಚಿನ ಅಪಾಯ.',
+  },
+  'Moderate Risk in red soil zones.': {
+    en: 'Moderate Risk in red soil zones.',
+    te: 'ఎర్ర నేల ప్రాంతాల్లో మధ్యస్థ ప్రమాదం.',
+    hi: 'लाल मिट्टी वाले क्षेत्रों में मध्यम जोखिम।',
+    ta: 'செம்மண் பகுதிகளில் மிதமான ஆபத்து.',
+    kn: 'ಕೆಂಪು ಮಣ್ಣಿನ ಪ್ರದೇಶಗಳಲ್ಲಿ ಮಧ್ಯಮ ಅಪಾಯ.',
+  },
+};
+
+// Smart string translator
+export function translateText(text: string, lang: LanguageCode = 'en'): string {
+  if (!text || lang === 'en') return text;
+  
+  // Exact dictionary match
+  if (DYNAMIC_DICTIONARY[text]?.[lang]) {
+    return DYNAMIC_DICTIONARY[text][lang];
+  }
+
+  // Trimmed match
+  const trimmed = text.trim();
+  if (DYNAMIC_DICTIONARY[trimmed]?.[lang]) {
+    return DYNAMIC_DICTIONARY[trimmed][lang];
+  }
+
+  // Dynamic parameterized string replacement for notifications & messages
+  if (trimmed.includes('Paddy is currently Day') && trimmed.includes('Common weed expected')) {
+    if (lang === 'te') return 'వరి ప్రస్తుతం 42వ రోజులో ఉంది. ఆశించే కలుపు: ఊద గడ్డి. చర్య: పొలాన్ని పరిశీలించి విత్తనాలు రాకముందే కలుపు తీయండి.';
+    if (lang === 'hi') return 'धान वर्तमान में दिन 42 पर है। संभावित खरपतवार: सांवा घास। कार्रवाई: खेत का निरीक्षण करें और बीज बनने से पहले निकालें।';
+    if (lang === 'ta') return 'நெல் தற்போது நாள் 42 இல் உள்ளது. எதிர்பார்க்கப்படும் களை: காடைக்கண்ணி புல். நடவடிக்கை: நிலத்தை ஆய்வு செய்து களையெடுக்கவும்.';
+    if (lang === 'kn') return 'ಭತ್ತ ಪ್ರಸ್ತುತ 42ನೇ ದಿನದಲ್ಲಿದೆ. ನಿರೀಕ್ಷಿತ ಕಳೆ: ಕಾಡು ಹುಲ್ಲು. ಕ್ರಮ: ಜಮೀನನ್ನು ಪರಿಶೀಲಿಸಿ ಕಳೆ ತೆಗೆಯಿರಿ.';
+  }
+
+  if (trimmed.startsWith('Today,')) {
+    const timePart = trimmed.replace('Today,', '').trim();
+    if (lang === 'te') return `ఈరోజు, ${timePart}`;
+    if (lang === 'hi') return `आज, ${timePart}`;
+    if (lang === 'ta') return `இன்று, ${timePart}`;
+    if (lang === 'kn') return `ಇಂದು, ${timePart}`;
+  }
+
+  return text;
 }

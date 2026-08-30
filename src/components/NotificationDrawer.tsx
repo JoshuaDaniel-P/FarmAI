@@ -1,5 +1,7 @@
 import React from 'react';
 import { AppNotification } from '../types/farm';
+import { useFarm } from '../context/FarmContext';
+import { t, translateText } from '../services/i18n';
 
 interface Props {
   isOpen: boolean;
@@ -18,6 +20,7 @@ export const NotificationDrawer: React.FC<Props> = ({
   onDismiss,
   onActionClick,
 }) => {
+  const { selectedLanguage } = useFarm();
   if (!isOpen) return null;
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
@@ -29,10 +32,10 @@ export const NotificationDrawer: React.FC<Props> = ({
         <div className="p-md border-b border-surface-variant flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-2xl">notifications</span>
-            <h3 className="font-headline-sm text-headline-sm text-on-surface">Notifications</h3>
+            <h3 className="font-headline-sm text-headline-sm text-on-surface">{t('notifications', selectedLanguage)}</h3>
             {unreadCount > 0 && (
               <span className="bg-error text-on-error font-label-sm px-2 py-0.5 rounded-full">
-                {unreadCount} new
+                {unreadCount} {t('newAlerts', selectedLanguage)}
               </span>
             )}
           </div>
@@ -42,7 +45,7 @@ export const NotificationDrawer: React.FC<Props> = ({
                 onClick={onMarkAllRead}
                 className="text-label-sm text-primary hover:underline"
               >
-                Mark all read
+                {t('markAllRead', selectedLanguage)}
               </button>
             )}
             <button
@@ -58,7 +61,7 @@ export const NotificationDrawer: React.FC<Props> = ({
         <div className="flex-1 overflow-y-auto p-md space-y-md">
           {notifications.length === 0 ? (
             <div className="text-center py-xl text-on-surface-variant font-body-md">
-              No active alerts. Your field is running smoothly!
+              {t('noAlerts', selectedLanguage)}
             </div>
           ) : (
             notifications.map((n) => (
@@ -80,7 +83,7 @@ export const NotificationDrawer: React.FC<Props> = ({
                       {n.category === 'drone' && <span className="material-symbols-outlined text-primary text-xl">flight_takeoff</span>}
                       {n.category === 'weather' && <span className="material-symbols-outlined text-tertiary text-xl">thermostat</span>}
                     </span>
-                    <h4 className="font-headline-sm text-headline-sm text-on-surface">{n.title}</h4>
+                    <h4 className="font-headline-sm text-headline-sm text-on-surface">{translateText(n.title, selectedLanguage)}</h4>
                   </div>
                   <button
                     onClick={() => onDismiss(n.id)}
@@ -90,8 +93,8 @@ export const NotificationDrawer: React.FC<Props> = ({
                   </button>
                 </div>
 
-                <p className="font-body-md text-on-surface-variant leading-normal">{n.message}</p>
-                <span className="font-label-sm text-on-surface-variant text-[11px] mt-1">{n.timestamp}</span>
+                <p className="font-body-md text-on-surface-variant leading-normal">{translateText(n.message, selectedLanguage)}</p>
+                <span className="font-label-sm text-on-surface-variant text-[11px] mt-1">{translateText(n.timestamp, selectedLanguage)}</span>
 
                 {n.actionLabel && (
                   <div className="mt-2 pt-2 border-t border-surface-variant/50 flex justify-end">
@@ -99,7 +102,7 @@ export const NotificationDrawer: React.FC<Props> = ({
                       onClick={() => onActionClick(n)}
                       className="px-3 py-1.5 bg-primary text-on-primary font-label-lg text-label-lg rounded-lg hover:bg-primary-fixed transition-colors shadow-sm"
                     >
-                      {n.actionLabel}
+                      {translateText(n.actionLabel, selectedLanguage)}
                     </button>
                   </div>
                 )}
@@ -111,3 +114,4 @@ export const NotificationDrawer: React.FC<Props> = ({
     </div>
   );
 };
+

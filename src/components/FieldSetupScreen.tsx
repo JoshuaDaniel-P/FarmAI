@@ -17,11 +17,13 @@ export const FieldSetupScreen: React.FC = () => {
   const [isMapping, setIsMapping] = useState<boolean>(false);
   const [points, setPoints] = useState<Point[]>(fieldBoundary.points);
   const [acres, setAcres] = useState<number>(fieldBoundary.acres);
-  const [stepText, setStepText] = useState<string>('Walk around your field to record the boundary.');
+  const [stepText, setStepText] = useState<string>('');
+
+  const currentStepText = stepText || (isMapping ? t('recordingGps', selectedLanguage) : t('walkAroundPrompt', selectedLanguage));
 
   const handleWalkAndMap = () => {
     setIsMapping(true);
-    setStepText('Recording GPS boundary points...');
+    setStepText(t('recordingGps', selectedLanguage));
 
     setTimeout(() => {
       const simulatedPoints: Point[] = [
@@ -34,7 +36,7 @@ export const FieldSetupScreen: React.FC = () => {
       setPoints(simulatedPoints);
       setAcres(2.4);
       setIsMapping(false);
-      setStepText('Field boundary recorded! 2.4 Acres calculated.');
+      setStepText(t('fieldRecorded', selectedLanguage));
     }, 2000);
   };
 
@@ -125,7 +127,7 @@ export const FieldSetupScreen: React.FC = () => {
               >
                 directions_walk
               </span>
-              <p className="font-body-md text-body-md text-on-surface leading-tight">{stepText}</p>
+              <p className="font-body-md text-body-md text-on-surface leading-tight">{currentStepText}</p>
             </div>
           </div>
 
@@ -133,7 +135,7 @@ export const FieldSetupScreen: React.FC = () => {
             <div className="bg-surface-container/95 backdrop-blur-md rounded-lg px-6 py-4 flex flex-col items-center justify-center border-2 border-primary/30 shadow-xl">
               <span className="font-headline-lg text-headline-lg text-primary mb-1">{acres}</span>
               <span className="font-label-lg text-label-lg text-on-surface-variant uppercase tracking-widest">
-                Acres
+                {t('acres', selectedLanguage)}
               </span>
             </div>
           </div>
@@ -142,9 +144,9 @@ export const FieldSetupScreen: React.FC = () => {
         <div className="w-full bg-surface-container rounded-t-[24px] shadow-[0_-8px_30px_rgba(0,0,0,0.4)] z-30 pt-sm pb-margin-mobile px-margin-mobile flex flex-col gap-md">
           <div className="w-12 h-1.5 bg-surface-variant rounded-full mx-auto mb-2"></div>
           <div className="flex flex-col gap-xs text-center md:text-left">
-            <h2 className="font-headline-sm text-headline-sm text-on-surface">Step 1: Record Field Boundary</h2>
+            <h2 className="font-headline-sm text-headline-sm text-on-surface">{t('step1RecordBoundary', selectedLanguage)}</h2>
             <p className="font-body-md text-body-md text-on-surface-variant">
-              Accurate boundaries ensure precise crop scheduling and market estimates.
+              {t('boundaryDesc', selectedLanguage)}
             </p>
           </div>
 
@@ -157,7 +159,7 @@ export const FieldSetupScreen: React.FC = () => {
               <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1, 'wght' 600" }}>
                 satellite_alt
               </span>
-              <span className="font-label-lg text-label-lg">{isMapping ? 'Recording GPS...' : 'Walk & Map'}</span>
+              <span className="font-label-lg text-label-lg">{isMapping ? t('recordingGps', selectedLanguage) : t('walkAndMap', selectedLanguage)}</span>
             </button>
 
             <button
@@ -167,7 +169,7 @@ export const FieldSetupScreen: React.FC = () => {
               <span className="material-symbols-outlined text-primary" style={{ fontVariationSettings: "'FILL' 1, 'wght' 400" }}>
                 check_circle
               </span>
-              <span className="font-label-lg text-label-lg">Save Field 01</span>
+              <span className="font-label-lg text-label-lg">{t('saveField', selectedLanguage)}</span>
             </button>
           </div>
         </div>

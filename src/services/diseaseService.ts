@@ -8,6 +8,7 @@ export const DISEASE_DATABASE: DiseaseInfo[] = [
     diseaseName: 'Paddy Brown Spot',
     riskLevel: 'Moderate',
     riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
+    imageUrl: '/images/diseases/paddy_brown_spot.jpg',
     symptoms: [
       'Oval brown spots on leaves with yellow halo',
       'Dark spots on grains reducing kernel weight',
@@ -32,6 +33,7 @@ export const DISEASE_DATABASE: DiseaseInfo[] = [
     diseaseName: 'Paddy Blast',
     riskLevel: 'High',
     riskBadgeColor: 'bg-error-container border-error text-error',
+    imageUrl: '/images/diseases/paddy_blast.jpg',
     symptoms: [
       'Spindle-shaped spots with grey centers',
       'Neck rot causing lodging of mature panicles',
@@ -56,6 +58,7 @@ export const DISEASE_DATABASE: DiseaseInfo[] = [
     diseaseName: 'Cotton Alternaria Leaf Spot',
     riskLevel: 'Moderate',
     riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
+    imageUrl: '/images/diseases/cotton_alternaria.jpg',
     symptoms: [
       'Brownish spots with concentric rings',
       'Early leaf drop',
@@ -79,6 +82,7 @@ export const DISEASE_DATABASE: DiseaseInfo[] = [
     diseaseName: 'Cotton Pink Bollworm',
     riskLevel: 'High',
     riskBadgeColor: 'bg-error-container border-error text-error',
+    imageUrl: '/images/diseases/cotton_bollworm.jpg',
     symptoms: [
       'Rosetted flowers failing to open',
       'Bore holes in developing bolls',
@@ -103,6 +107,7 @@ export const DISEASE_DATABASE: DiseaseInfo[] = [
     diseaseName: 'Chilli Leaf Curl Virus',
     riskLevel: 'Critical',
     riskBadgeColor: 'bg-error-container border-error text-error',
+    imageUrl: '/images/diseases/chilli_leaf_curl.jpg',
     symptoms: [
       'Upward leaf curling and puckering',
       'Stunted plant growth',
@@ -127,6 +132,7 @@ export const DISEASE_DATABASE: DiseaseInfo[] = [
     diseaseName: 'Maize Fall Armyworm',
     riskLevel: 'High',
     riskBadgeColor: 'bg-error-container border-error text-error',
+    imageUrl: '/images/diseases/maize_armyworm.jpg',
     symptoms: [
       'Window pane holes in young leaves',
       'Ragged feeding marks in whorls',
@@ -151,6 +157,7 @@ export const DISEASE_DATABASE: DiseaseInfo[] = [
     diseaseName: 'Groundnut Tikka Leaf Spot',
     riskLevel: 'Moderate',
     riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
+    imageUrl: '/images/diseases/groundnut_tikka.jpg',
     symptoms: [
       'Dark brown spots on upper leaves',
       'Premature leaf shedding',

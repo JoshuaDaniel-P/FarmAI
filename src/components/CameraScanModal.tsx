@@ -19,21 +19,22 @@ export const CameraScanModal: React.FC<Props> = ({
   const { selectedLanguage } = useFarm();
   const [step, setStep] = useState<'capture' | 'analyzing' | 'result'>('capture');
   const [selectedImage, setSelectedImage] = useState<string>(
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuCY-DB6DLLYHjzTuiWTiUTrmWWtM5BcdIs-ve8yyTH7agJi6hRPKOMn1_9kYaNX_pLCWiJ46Z4WS-GweBou4PrGCEPTOLMNw-piKleeazUb8Ct70cGaNqGWORK8GMzA3Wwn9InOPava82TNdiYdvvCv_wji8-6bI2pT2MdOaVTjEosgMZZZQihZ4oKXfGCUVf-mu8V2Tk1RVUU2viidRM3jk-1SClt6cxiHwhIoMNfI8hQg5c74oWj7'
+    '/images/diseases/paddy_blast.jpg'
   );
   const [analysisResult, setAnalysisResult] = useState<DiseaseAnalysisResult | null>(null);
+  const [testLowConfidence, setTestLowConfidence] = useState<boolean>(false);
 
   if (!isOpen) return null;
 
   const handleCaptureSubmit = async () => {
     setStep('analyzing');
-    const result = await imageAnalysisService.analyzeCropImage(cropName, selectedImage);
+    const result = await imageAnalysisService.analyzeCropImage(cropName, selectedImage, testLowConfidence);
     setAnalysisResult(result);
     setStep('result');
   };
 
   const handleRegister = () => {
-    if (analysisResult) {
+    if (analysisResult && analysisResult.isConfident) {
       onRegisterDisease(analysisResult, selectedImage);
       onClose();
       setStep('capture');
@@ -74,6 +75,20 @@ export const CameraScanModal: React.FC<Props> = ({
               </div>
             </div>
 
+            {/* Test Toggle to simulate low confidence vs clear leaf image */}
+            <div className="flex items-center justify-between p-2 rounded-xl bg-surface-variant/40 border border-outline-variant/30 text-xs">
+              <span className="text-on-surface-variant">Simulate blurred / low-confidence leaf:</span>
+              <button
+                type="button"
+                onClick={() => setTestLowConfidence(!testLowConfidence)}
+                className={`px-2.5 py-1 rounded-lg font-bold text-[11px] transition-colors ${
+                  testLowConfidence ? 'bg-error text-on-error' : 'bg-surface-container text-on-surface-variant'
+                }`}
+              >
+                {testLowConfidence ? 'Low Confidence (ON)' : 'Clear Image (Default)'}
+              </button>
+            </div>
+
             <div className="flex gap-2">
               <label className="flex-1 bg-surface-variant hover:bg-surface-bright text-on-surface py-3 rounded-xl font-label-lg text-center cursor-pointer border border-outline-variant flex items-center justify-center gap-2">
                 <span className="material-symbols-outlined">upload_file</span>
@@ -112,56 +127,88 @@ export const CameraScanModal: React.FC<Props> = ({
 
         {step === 'result' && analysisResult && (
           <div className="space-y-md animate-in fade-in duration-300">
-            <div className="bg-primary-container/40 border border-primary/30 p-md rounded-xl flex items-center justify-between">
-              <div>
-                <span className="font-label-sm text-primary uppercase tracking-widest">{t('diseaseDetected', selectedLanguage)}</span>
-                <h4 className="font-headline-md text-headline-md text-primary-fixed">{translateText(analysisResult.diseaseName, selectedLanguage)}</h4>
-              </div>
-              <div className="bg-primary text-on-primary font-headline-sm px-3 py-1 rounded-lg">
-                {analysisResult.confidencePercent}% <span className="text-xs">{t('match', selectedLanguage)}</span>
-              </div>
-            </div>
+            {analysisResult.isConfident ? (
+              <>
+                <div className="bg-primary-container/40 border border-primary/30 p-md rounded-xl flex items-center justify-between">
+                  <div>
+                    <span className="font-label-sm text-primary uppercase tracking-widest">{t('diseaseDetected', selectedLanguage)}</span>
+                    <h4 className="font-headline-md text-headline-md text-primary-fixed">{translateText(analysisResult.diseaseName, selectedLanguage)}</h4>
+                  </div>
+                  <div className="bg-primary text-on-primary font-headline-sm px-3 py-1 rounded-lg">
+                    {analysisResult.confidencePercent}% <span className="text-xs">{t('match', selectedLanguage)}</span>
+                  </div>
+                </div>
 
-            <div className="space-y-sm">
-              <div className="bg-surface-variant p-sm rounded-lg border border-outline-variant/30">
-                <span className="font-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">{t('symptoms', selectedLanguage)}</span>
-                <p className="font-body-md text-on-surface">{analysisResult.symptoms}</p>
-              </div>
+                <div className="space-y-sm">
+                  <div className="bg-surface-variant p-sm rounded-lg border border-outline-variant/30">
+                    <span className="font-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">{t('symptoms', selectedLanguage)}</span>
+                    <p className="font-body-md text-on-surface">{analysisResult.symptoms}</p>
+                  </div>
 
-              <div className="bg-surface-variant p-sm rounded-lg border border-outline-variant/30">
-                <span className="font-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">{t('likelyCause', selectedLanguage)}</span>
-                <p className="font-body-md text-on-surface">{analysisResult.cause}</p>
-              </div>
+                  <div className="bg-surface-variant p-sm rounded-lg border border-outline-variant/30">
+                    <span className="font-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">{t('likelyCause', selectedLanguage)}</span>
+                    <p className="font-body-md text-on-surface">{analysisResult.cause}</p>
+                  </div>
 
-              <div className="bg-surface-variant p-sm rounded-lg border border-outline-variant/30">
-                <span className="font-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">{t('precaution', selectedLanguage)}</span>
-                <p className="font-body-md text-on-surface">{analysisResult.precaution}</p>
-              </div>
+                  <div className="bg-surface-variant p-sm rounded-lg border border-outline-variant/30">
+                    <span className="font-label-sm text-on-surface-variant uppercase tracking-wider block mb-1">{t('precaution', selectedLanguage)}</span>
+                    <p className="font-body-md text-on-surface">{analysisResult.precaution}</p>
+                  </div>
 
-              <div className="bg-primary-container/30 p-sm rounded-lg border border-primary/30">
-                <span className="font-label-sm text-primary uppercase tracking-wider block mb-1">{t('cure', selectedLanguage)}</span>
-                <p className="font-body-md text-on-surface font-semibold">{analysisResult.cure}</p>
-              </div>
-            </div>
+                  <div className="bg-primary-container/30 p-sm rounded-lg border border-primary/30">
+                    <span className="font-label-sm text-primary uppercase tracking-wider block mb-1">{t('cure', selectedLanguage)}</span>
+                    <p className="font-body-md text-on-surface font-semibold">{analysisResult.cure}</p>
+                  </div>
+                </div>
 
-            <div className="flex gap-sm pt-sm border-t border-surface-variant">
-              <button
-                onClick={() => setStep('capture')}
-                className="flex-1 bg-surface-variant text-on-surface py-3 rounded-xl font-label-lg"
-              >
-                {t('scanAnother', selectedLanguage)}
-              </button>
-              <button
-                onClick={handleRegister}
-                className="flex-1 bg-primary text-on-primary font-bold py-3 rounded-xl font-label-lg shadow-md hover:bg-primary-fixed"
-              >
-                {t('registerDisease', selectedLanguage)}
-              </button>
-            </div>
+                <div className="flex gap-sm pt-sm border-t border-surface-variant">
+                  <button
+                    onClick={() => setStep('capture')}
+                    className="flex-1 bg-surface-variant text-on-surface py-3 rounded-xl font-label-lg"
+                  >
+                    {t('scanAnother', selectedLanguage)}
+                  </button>
+                  <button
+                    onClick={handleRegister}
+                    className="flex-1 bg-primary text-on-primary font-bold py-3 rounded-xl font-label-lg shadow-md hover:bg-primary-fixed"
+                  >
+                    {t('registerDisease', selectedLanguage)}
+                  </button>
+                </div>
+              </>
+            ) : (
+              /* Low Confidence / Inconclusive Case */
+              <div className="space-y-md">
+                <div className="bg-error-container/20 border border-error/40 p-md rounded-xl flex items-center gap-3">
+                  <span className="material-symbols-outlined text-3xl text-error">warning</span>
+                  <div>
+                    <h4 className="font-bold text-sm text-error">Inconclusive Leaf Diagnosis ({analysisResult.confidencePercent}%)</h4>
+                    <p className="text-xs text-on-surface-variant mt-0.5">{analysisResult.statusMessage}</p>
+                  </div>
+                </div>
+
+                <div className="p-sm rounded-xl bg-surface-variant text-xs text-on-surface-variant space-y-1">
+                  <div className="font-bold text-on-surface">Tips for accurate diagnosis:</div>
+                  <ul className="list-disc list-inside space-y-0.5">
+                    <li>Hold the phone 15-20cm from the diseased leaf.</li>
+                    <li>Avoid direct harsh shadows or blurry hand movements.</li>
+                    <li>Capture leaf spots with natural bright daylight.</li>
+                  </ul>
+                </div>
+
+                <div className="flex gap-sm pt-sm border-t border-surface-variant">
+                  <button
+                    onClick={() => setStep('capture')}
+                    className="w-full bg-primary text-on-primary font-bold py-3 rounded-xl font-label-lg shadow-md hover:bg-primary-fixed"
+                  >
+                    Take Another Photo
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>
     </div>
   );
 };
-

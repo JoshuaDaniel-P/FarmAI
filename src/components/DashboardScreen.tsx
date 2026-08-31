@@ -3,10 +3,15 @@ import { useFarm } from '../context/FarmContext';
 import { t, translateCrop, translateName, translateSector, translateText } from '../services/i18n';
 import { NotificationDrawer } from './NotificationDrawer';
 import { LanguageSelectorModal } from './LanguageSelectorModal';
+import { FieldSwitcher } from './FieldSwitcher';
+import { WeatherWidget } from './WeatherWidget';
+import { SoilProfileCard } from './SoilProfileCard';
+import { MotorControlWidget } from './MotorControlWidget';
 
 export const DashboardScreen: React.FC = () => {
   const {
     farmer,
+    activeField,
     sensors,
     setCurrentScreen,
     triggerIrrigation,
@@ -29,6 +34,8 @@ export const DashboardScreen: React.FC = () => {
       triggerIrrigation();
     } else if (notification.actionType === 'view_disease' || notification.actionType === 'view_weed') {
       setCurrentScreen('disease-weed');
+    } else if (notification.actionType === 'view_weather') {
+      // scroll to weather widget or stay in dashboard
     }
   };
 
@@ -37,7 +44,7 @@ export const DashboardScreen: React.FC = () => {
       {/* Top App Bar */}
       <header className="bg-background text-primary-fixed flex flex-col justify-between px-margin-mobile pt-sm pb-xs w-full max-w-screen-xl mx-auto md:px-margin-desktop sticky top-0 z-40 border-b border-surface-container-highest/40">
         <div className="flex items-center justify-between w-full h-16">
-          <div className="flex items-center gap-sm">
+          <div className="flex items-center gap-sm min-w-0">
             <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container shrink-0">
               <img
                 alt="Farmer Portrait"
@@ -45,17 +52,20 @@ export const DashboardScreen: React.FC = () => {
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIApBsvQSGN9pM5oS-4TKErfdj9Zewzc89JjDs7Fa8ww9U1-hpCxmZpQOMs-XdyG07nPb0Ekcw9Z9DpoHeBfCqKfcjfWW3GLf5hmLJds8gnOxpzBNFk4n_eKPcEANmY5eRKFN8keelEkvj_UV8GqF9ryhezcYq70Uqs380nlb6Sa6Z2cC0-kCJRvtGVuA36WmPcrb1Ox-QIrJvlFtnmD1L6BtJCTE0vnimzaqhLctl7CpNtmqwzi9h"
               />
             </div>
-            <div>
-              <h1 className="font-headline-sm text-headline-sm text-on-surface">
+            <div className="min-w-0">
+              <h1 className="font-headline-sm text-headline-sm text-on-surface truncate">
                 {t('goodMorning', selectedLanguage)}, {translateName(farmer.name, selectedLanguage)}
               </h1>
-              <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">
-                {translateCrop(farmer.activeCrop, selectedLanguage)} • {translateText(farmer.fieldName, selectedLanguage)} • {t('day', selectedLanguage)} {farmer.cropDay}
+              <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider truncate">
+                {translateCrop(activeField.activeCrop, selectedLanguage)} • {translateText(activeField.name, selectedLanguage)} • {t('day', selectedLanguage)} {activeField.cropAgeDays}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Field Quick Switcher */}
+            <FieldSwitcher className="hidden sm:block" />
+
             {/* TOP-RIGHT TRANSLATE PIN BUTTON */}
             <button
               onClick={() => setIsLanguageModalOpen(true)}
@@ -80,6 +90,11 @@ export const DashboardScreen: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {/* Mobile Field Switcher Row */}
+        <div className="sm:hidden pt-2 pb-1">
+          <FieldSwitcher className="w-full" />
+        </div>
       </header>
 
       {/* Main Content Canvas */}
@@ -100,10 +115,11 @@ export const DashboardScreen: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-center py-sm">
-              <div className="relative w-40 h-40 flex items-center justify-center">
+            {/* Enlarged Crop Health Gauge */}
+            <div className="flex items-center justify-center py-md">
+              <div className="relative w-56 h-56 sm:w-60 sm:h-60 md:w-64 md:h-64 flex items-center justify-center">
                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" fill="none" r="40" stroke="#3e322f" strokeWidth="8"></circle>
+                  <circle cx="50" cy="50" fill="none" r="40" stroke="#3e322f" strokeWidth="7"></circle>
                   <circle
                     className="gauge-ring"
                     cx="50"
@@ -111,23 +127,26 @@ export const DashboardScreen: React.FC = () => {
                     fill="none"
                     r="40"
                     stroke={sensors.cropHealthPercent >= 80 ? '#90d792' : '#f2cc81'}
+                    strokeDasharray={251.2}
                     strokeDashoffset={251.2 * (1 - sensors.cropHealthPercent / 100)}
                     strokeLinecap="round"
-                    strokeWidth="8"
+                    strokeWidth="7"
                   ></circle>
                 </svg>
-                <div className="absolute flex flex-col items-center">
-                  <span className="font-headline-lg-mobile md:font-headline-lg text-headline-lg text-primary">
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center pointer-events-none">
+                  <span className="font-headline-lg text-[38px] sm:text-[44px] md:text-[48px] leading-none text-primary font-bold tracking-tight">
                     {sensors.cropHealthPercent}%
                   </span>
-                  <span className="font-label-sm text-label-sm text-on-surface-variant tracking-widest uppercase">
+                  <span className="font-label-sm text-[11px] sm:text-[12px] md:text-[13px] text-on-surface-variant tracking-wider uppercase font-semibold mt-1.5 max-w-[150px] sm:max-w-[170px] leading-snug">
                     {sensors.cropHealthStatus === 'GOOD' ? t('good', selectedLanguage) : t('attentionNeeded', selectedLanguage)}
                   </span>
                 </div>
               </div>
             </div>
             <p className="font-body-md text-body-md text-center text-on-surface-variant mt-sm">
-              {t('buddingStage', selectedLanguage)} • {t('day', selectedLanguage)} {farmer.cropDay} {translateCrop(farmer.activeCrop, selectedLanguage)}.
+
+              {translateText(activeField.growthStage.stageName, selectedLanguage)} • {t('day', selectedLanguage)} {activeField.cropAgeDays} {translateCrop(activeField.activeCrop, selectedLanguage)} ({activeField.acres} acres).
+
             </p>
           </div>
 
@@ -140,6 +159,9 @@ export const DashboardScreen: React.FC = () => {
             </div>
             <span className="font-headline-sm text-headline-sm text-on-primary-container z-10 mt-xs">
               {t('askAssistant', selectedLanguage)}
+            </span>
+            <span className="text-xs text-on-surface-variant text-center px-4">
+              Ask about {activeField.name} soil, weather, diseases or start pump
             </span>
           </button>
         </div>
@@ -188,6 +210,15 @@ export const DashboardScreen: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* WEATHER FORECAST & RECOMMENDATIONS WIDGET */}
+        <WeatherWidget />
+
+        {/* MOTOR & IRRIGATION CONTROL WIDGET */}
+        <MotorControlWidget />
+
+        {/* SOIL HEALTH PROFILE CARD */}
+        <SoilProfileCard />
 
         {/* DEDICATED VERTICAL FOUR FIELD SECTORS SECTION */}
         <div className="bg-surface-container border border-surface-variant rounded-2xl p-md shadow-md flex flex-col gap-md">
@@ -288,21 +319,21 @@ export const DashboardScreen: React.FC = () => {
 
               <g transform="translate(35, 30)">
                 <circle cx="0" cy="0" fill="#90d792" r="3"></circle>
-                <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">{translateSector('Sector 01', selectedLanguage)} ({sensors.nodes[0].moisture}%)</text>
+                <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">{translateSector('Sector 01', selectedLanguage)} ({sensors.nodes[0]?.moisture || 42}%)</text>
               </g>
               <g transform="translate(70, 40)">
                 <circle cx="0" cy="0" fill="#90d792" r="3"></circle>
-                <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">{translateSector('Sector 02', selectedLanguage)} ({sensors.nodes[1].moisture}%)</text>
+                <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">{translateSector('Sector 02', selectedLanguage)} ({sensors.nodes[1]?.moisture || 36}%)</text>
               </g>
               <g transform="translate(65, 65)">
-                <circle className="animate-pulse" cx="0" cy="0" fill={sensors.nodes[2].status === 'critical' ? '#ffb4ab' : '#90d792'} r="4"></circle>
-                <text fill={sensors.nodes[2].status === 'critical' ? '#ffb4ab' : '#90d792'} fontFamily="Sora" fontSize="4" fontWeight="bold" x="7" y="1.5">
-                  {translateSector('Sector 03', selectedLanguage)} ({sensors.nodes[2].moisture}%)
+                <circle className="animate-pulse" cx="0" cy="0" fill={sensors.nodes[2]?.status === 'critical' ? '#ffb4ab' : '#90d792'} r="4"></circle>
+                <text fill={sensors.nodes[2]?.status === 'critical' ? '#ffb4ab' : '#90d792'} fontFamily="Sora" fontSize="4" fontWeight="bold" x="7" y="1.5">
+                  {translateSector('Sector 03', selectedLanguage)} ({sensors.nodes[2]?.moisture || 21}%)
                 </text>
               </g>
               <g transform="translate(42, 58)">
                 <circle cx="0" cy="0" fill="#90d792" r="3"></circle>
-                <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">{translateSector('Sector 04', selectedLanguage)} ({sensors.nodes[3].moisture}%)</text>
+                <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">{translateSector('Sector 04', selectedLanguage)} ({sensors.nodes[3]?.moisture || 39}%)</text>
               </g>
             </svg>
           </div>

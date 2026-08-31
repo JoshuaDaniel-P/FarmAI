@@ -1,3 +1,32 @@
+
+export interface Farmer {
+  name: string;
+  phone: string;
+  district: string;
+  village: string;
+  fieldName: string;
+  activeCrop: string;
+  sowingDate: string;
+  cropStage: string;
+  cropDay: number;
+  totalCropDays?: number;
+}
+
+export interface DayCropUpdate {
+  day: number;
+  date: string;
+  stage: string;
+  title: string;
+  summary: string;
+  tasks: string[];
+  inputsApplied?: string;
+  category?: 'irrigation' | 'fertilizer' | 'pest_control' | 'weeding' | 'soil_check' | 'inspection' | 'transplantation' | 'sowing';
+  status: 'optimal' | 'attention' | 'action_taken';
+  icon: string;
+  healthPercent: number;
+}
+
+
 export interface Point {
   x: number;
   y: number;

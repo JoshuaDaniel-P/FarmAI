@@ -25,7 +25,7 @@ import { weatherService, weatherRecommendationService } from '../services/weathe
 import { irrigationService } from '../services/irrigationService';
 import { calculateCropAgeDays, getGrowthStageForCrop } from '../services/cropStageService';
 
-export type ScreenType = 'login' | 'field-setup' | 'dashboard' | 'disease-weed' | 'assistant' | 'analytics';
+export type ScreenType = 'login' | 'field-setup' | 'day-wise-track' | 'dashboard' | 'disease-weed' | 'assistant' | 'analytics';
 
 interface FarmContextType {
   isLoggedIn: boolean;

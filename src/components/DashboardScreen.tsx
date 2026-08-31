@@ -144,7 +144,9 @@ export const DashboardScreen: React.FC = () => {
               </div>
             </div>
             <p className="font-body-md text-body-md text-center text-on-surface-variant mt-sm">
+
               {translateText(activeField.growthStage.stageName, selectedLanguage)} • {t('day', selectedLanguage)} {activeField.cropAgeDays} {translateCrop(activeField.activeCrop, selectedLanguage)} ({activeField.acres} acres).
+
             </p>
           </div>
 
@@ -334,6 +336,72 @@ export const DashboardScreen: React.FC = () => {
                 <text fill="#d3c3c0" fontFamily="Sora" fontSize="3.5" x="5" y="1">{translateSector('Sector 04', selectedLanguage)} ({sensors.nodes[3]?.moisture || 39}%)</text>
               </g>
             </svg>
+          </div>
+        </div>
+
+        {/* FIELD TOOLS & SETUP MODULES ON HOME PAGE */}
+        <div className="bg-surface-container border border-surface-variant rounded-2xl p-md shadow-md flex flex-col gap-md">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-xs">
+              <span className="material-symbols-outlined text-primary">apps</span>
+              <h2 className="font-headline-sm text-headline-sm text-on-surface">Field Management & Modules</h2>
+            </div>
+            <span className="font-label-sm text-on-surface-variant">Quick Actions</span>
+          </div>
+
+          <div className="flex flex-col gap-sm">
+            {/* Field Boundary Setup Option */}
+            <button
+              onClick={() => setCurrentScreen('field-setup')}
+              className="p-md rounded-xl bg-surface-variant/40 border border-outline-variant/30 hover:border-primary/40 hover:bg-surface-variant/70 transition-all flex items-center justify-between group text-left"
+            >
+              <div className="flex items-center gap-md">
+                <div className="w-12 h-12 rounded-xl bg-surface-container-high text-primary flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform shadow-sm">
+                  <span className="material-symbols-outlined text-[26px]">map</span>
+                </div>
+                <div>
+                  <h3 className="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">
+                    {t('navFieldSetup', selectedLanguage)}
+                  </h3>
+                  <p className="font-body-md text-on-surface-variant text-[13px]">
+                    {t('boundaryDesc', selectedLanguage)}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 text-primary font-label-sm text-[13px] shrink-0">
+                <span className="hidden sm:inline">Setup</span>
+                <span className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">chevron_right</span>
+              </div>
+            </button>
+
+            {/* Day Wise Track Option (Below Field Boundary Setup) */}
+            <button
+              onClick={() => setCurrentScreen('day-wise-track')}
+              className="p-md rounded-xl bg-[#2a1d1b] border border-primary/50 hover:border-primary hover:bg-[#332522] transition-all flex items-center justify-between group text-left shadow-sm"
+            >
+              <div className="flex items-center gap-md">
+                <div className="w-12 h-12 rounded-xl bg-primary text-[#003911] flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                  <span className="material-symbols-outlined text-[26px]">timeline</span>
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="font-headline-sm text-headline-sm text-primary group-hover:text-primary-fixed transition-colors">
+                      {t('navDayWiseTrack', selectedLanguage)}
+                    </h3>
+                    <span className="px-2.5 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30 text-[11px] font-bold">
+                      {t('buddingStage', selectedLanguage).split('(')[0].trim()}
+                    </span>
+                  </div>
+                  <p className="font-body-md text-on-surface-variant text-[13px]">
+                    {t('day', selectedLanguage)} {farmer.cropDay} / {farmer.totalCropDays || 120} {t('days', selectedLanguage)} • {t('totalDaysToHarvest', selectedLanguage)} ({farmer.totalCropDays ? farmer.totalCropDays - farmer.cropDay : 73} {t('daysRemaining', selectedLanguage).toLowerCase()})
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 text-primary font-label-sm text-[13px] font-bold shrink-0">
+                <span className="hidden sm:inline">View Track</span>
+                <span className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </div>
+            </button>
           </div>
         </div>
       </main>

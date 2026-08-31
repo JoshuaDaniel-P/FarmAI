@@ -154,6 +154,18 @@ export const Navigation: React.FC = () => {
           </button>
 
           <button
+            onClick={() => setCurrentScreen('day-wise-track')}
+            className={`flex items-center gap-4 py-3 px-4 rounded-full min-h-[48px] transition-all text-left w-full ${
+              currentScreen === 'day-wise-track'
+                ? 'bg-secondary-container text-on-secondary-container font-bold translate-x-1'
+                : 'text-on-surface-variant hover:bg-surface-container-highest'
+            }`}
+          >
+            <span className="material-symbols-outlined">timeline</span>
+            <span className="font-label-lg text-label-lg">{t('navDayWiseTrack', selectedLanguage)}</span>
+          </button>
+
+          <button
             onClick={() => setCurrentScreen('disease-weed')}
             className={`flex items-center gap-4 py-3 px-4 rounded-full min-h-[48px] transition-all text-left w-full ${
               currentScreen === 'disease-weed'

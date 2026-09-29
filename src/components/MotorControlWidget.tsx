@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFarm } from '../context/FarmContext';
-import { t, translateSector } from '../services/i18n';
+import { t, translateSector, translateText } from '../services/i18n';
 
 export const MotorControlWidget: React.FC = () => {
   const { motorStatus, startMotor, stopMotor, activeField, selectedLanguage } = useFarm();
@@ -19,7 +19,7 @@ export const MotorControlWidget: React.FC = () => {
               {t('irrigationMotorControl', selectedLanguage) || 'Field Irrigation Pump'}
             </h2>
             <p className="text-[11px] text-on-surface-variant">
-              {activeField.name} • {motorStatus.isRunning ? `Running in ${motorStatus.activeSectorId}` : 'Pump is Standby'}
+              {translateText(activeField.name, selectedLanguage)} • {motorStatus.isRunning ? `${t('runningIn', selectedLanguage)} ${translateSector(motorStatus.activeSectorId || '', selectedLanguage)}` : (t('pumpStandby', selectedLanguage) || 'Pump is Standby')}
             </p>
           </div>
         </div>
@@ -27,7 +27,7 @@ export const MotorControlWidget: React.FC = () => {
         <div className="flex items-center gap-2">
           {/* Simulation Indicator */}
           <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-tertiary/10 border border-tertiary/30 text-tertiary">
-            Simulation (ESP32 Ready)
+            {t('simulationEsp32Ready', selectedLanguage) || 'SIMULATION (ESP32 READY)'}
           </span>
 
           <span
@@ -53,12 +53,14 @@ export const MotorControlWidget: React.FC = () => {
 
           <div>
             <div className="text-xs text-on-surface-variant font-bold uppercase tracking-wider">
-              {motorStatus.isRunning ? 'Motor Status: ACTIVE' : 'Motor Status: OFF'}
+              {motorStatus.isRunning
+                ? `${t('motorStatus', selectedLanguage)}: ${t('active', selectedLanguage)}`
+                : `${t('motorStatus', selectedLanguage)}: ${t('off', selectedLanguage)}`}
             </div>
             <div className="text-sm font-bold text-on-surface">
               {motorStatus.isRunning
-                ? `Irrigating ${motorStatus.activeSectorId} (Started: ${motorStatus.startedAt})`
-                : 'Select sector and activate pump'}
+                ? `${t('irrigating', selectedLanguage)} ${translateSector(motorStatus.activeSectorId || '', selectedLanguage)} (${t('startedAt', selectedLanguage)}: ${motorStatus.startedAt})`
+                : (t('selectSectorActivatePump', selectedLanguage) || 'Select sector and activate pump')}
             </div>
           </div>
         </div>
@@ -71,11 +73,11 @@ export const MotorControlWidget: React.FC = () => {
                 onChange={(e) => setSelectedSector(e.target.value)}
                 className="bg-surface-container text-on-surface text-xs font-bold px-3 py-2 rounded-xl border border-surface-variant focus:outline-none focus:ring-1 focus:ring-primary"
               >
-                <option value="Sector 03">Sector 03 (Dry - 21%)</option>
-                <option value="Sector 01">Sector 01 (42%)</option>
-                <option value="Sector 02">Sector 02 (36%)</option>
-                <option value="Sector 04">Sector 04 (39%)</option>
-                <option value="All Sectors (Main Valve)">All Sectors</option>
+                <option value="Sector 03">{translateSector('Sector 03', selectedLanguage)} ({t('dry', selectedLanguage) || 'Dry'} - 21%)</option>
+                <option value="Sector 01">{translateSector('Sector 01', selectedLanguage)} (42%)</option>
+                <option value="Sector 02">{translateSector('Sector 02', selectedLanguage)} (36%)</option>
+                <option value="Sector 04">{translateSector('Sector 04', selectedLanguage)} (39%)</option>
+                <option value="All Sectors (Main Valve)">{t('allSectors', selectedLanguage) || 'All Sectors'}</option>
               </select>
 
               <button

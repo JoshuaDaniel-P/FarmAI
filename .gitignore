@@ -141,3 +141,13 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+.DS_Store
+.idea/
+
+server/node_modules/
+server/serviceAccountKey.json.json
+.env
+.env.*
+.DS_Store
+.idea/

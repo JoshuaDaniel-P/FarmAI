@@ -160,7 +160,7 @@ export const FieldSetupScreen: React.FC = () => {
               className="px-3 py-1.5 bg-primary text-on-primary font-bold text-xs rounded-full flex items-center gap-1 shadow-sm hover:bg-primary-fixed"
             >
               <span className="material-symbols-outlined text-base">add_location_alt</span>
-              <span className="hidden sm:inline">Add Field</span>
+              <span className="hidden sm:inline">{t('addField', selectedLanguage)}</span>
             </button>
 
             {/* Language Translate Button */}
@@ -188,7 +188,7 @@ export const FieldSetupScreen: React.FC = () => {
             }`}
           >
             <span className="material-symbols-outlined text-lg">polyline</span>
-            <span>{t('navFieldSetup', selectedLanguage) || 'GPS Boundary'}</span>
+            <span>{t('gpsBoundary', selectedLanguage)}</span>
           </button>
 
           <button
@@ -200,7 +200,7 @@ export const FieldSetupScreen: React.FC = () => {
             }`}
           >
             <span className="material-symbols-outlined text-lg">psychology_alt</span>
-            <span>{t('cropSuggestions', selectedLanguage) || 'Crop Suggester'}</span>
+            <span>{t('cropSuggester', selectedLanguage)}</span>
           </button>
 
           <button
@@ -212,7 +212,7 @@ export const FieldSetupScreen: React.FC = () => {
             }`}
           >
             <span className="material-symbols-outlined text-lg">biotech</span>
-            <span>{t('soilProfile', selectedLanguage) || 'Soil Profile'}</span>
+            <span>{t('soilProfile', selectedLanguage)}</span>
           </button>
 
           <button
@@ -224,7 +224,7 @@ export const FieldSetupScreen: React.FC = () => {
             }`}
           >
             <span className="material-symbols-outlined text-lg">history_edu</span>
-            <span>{t('previousCrop', selectedLanguage) || 'Previous Crop'}</span>
+            <span>{t('previousCrop', selectedLanguage)}</span>
           </button>
         </div>
 
@@ -270,7 +270,7 @@ export const FieldSetupScreen: React.FC = () => {
               <div className="absolute top-4 left-4 z-20 glass-panel px-3 py-1.5 rounded-xl flex items-center gap-2 border border-outline-variant/40">
                 <span className="material-symbols-outlined text-primary text-base">pin_drop</span>
                 <span className="text-xs font-bold text-on-surface">
-                  {translateText(activeField.name, selectedLanguage)} ({acres} Acres)
+                  {translateText(activeField.name, selectedLanguage)} ({acres} {t('acres', selectedLanguage)})
                 </span>
               </div>
             </div>
@@ -280,7 +280,7 @@ export const FieldSetupScreen: React.FC = () => {
               <div>
                 <h3 className="font-headline-sm text-sm font-bold text-on-surface">{currentStepText}</h3>
                 <p className="text-xs text-on-surface-variant mt-0.5">
-                  Walk around field boundary to record GPS markers. Area is automatically calculated in acres.
+                  {t('boundaryInstructions', selectedLanguage)}
                 </p>
               </div>
 
@@ -297,14 +297,14 @@ export const FieldSetupScreen: React.FC = () => {
                   <span className={`material-symbols-outlined text-lg ${isMapping ? 'animate-spin' : ''}`}>
                     {isMapping ? 'sync' : 'directions_walk'}
                   </span>
-                  <span>{isMapping ? 'Recording GPS...' : 'Walk & Map Field'}</span>
+                  <span>{isMapping ? t('recordingGps', selectedLanguage) : t('walkAndMapField', selectedLanguage)}</span>
                 </button>
 
                 <button
                   onClick={handleSaveField}
                   className="px-5 py-3 rounded-xl font-bold text-xs bg-surface-container-high border border-primary/50 text-primary hover:bg-surface-variant transition-all shadow-sm"
                 >
-                  Save Boundary
+                  {t('saveBoundary', selectedLanguage)}
                 </button>
               </div>
             </div>
@@ -317,10 +317,10 @@ export const FieldSetupScreen: React.FC = () => {
             <div className="p-md rounded-2xl bg-primary-container/20 border border-primary/40 flex flex-col gap-1">
               <div className="flex items-center gap-2 text-primary font-bold text-sm">
                 <span className="material-symbols-outlined text-lg">psychology</span>
-                <span>Crop Suitability Engine</span>
+                <span>{translateText('Crop Suitability Engine', selectedLanguage)}</span>
               </div>
               <p className="text-xs text-on-surface leading-relaxed">
-                "These crops can be grown under your field conditions." Based on your {activeField.soilProfile.soilType}, climate, and regional market trends. Select a crop to cultivate:
+                {translateText('"These crops can be grown under your field conditions." Based on your soil profile, climate, and regional market trends. Select a crop to cultivate:', selectedLanguage)}
               </p>
             </div>
 
@@ -343,9 +343,9 @@ export const FieldSetupScreen: React.FC = () => {
                             <span className="material-symbols-outlined text-xl">{crop.icon}</span>
                           </div>
                           <div>
-                            <h4 className="font-bold text-sm text-on-surface">{crop.cropName}</h4>
+                            <h4 className="font-bold text-sm text-on-surface">{translateText(crop.cropName, selectedLanguage)}</h4>
                             <span className="text-[11px] text-on-surface-variant">
-                              Duration: {crop.cropDurationDays} days • Water: {crop.waterRequirement}
+                              {t('duration', selectedLanguage) || 'Duration'}: {crop.cropDurationDays} {t('days', selectedLanguage)} • {t('water', selectedLanguage) || 'Water'}: {translateText(crop.waterRequirement, selectedLanguage)}
                             </span>
                           </div>
                         </div>
@@ -357,31 +357,31 @@ export const FieldSetupScreen: React.FC = () => {
                               : 'bg-[#a67b27]/20 text-[#f2cc81] border border-[#a67b27]/40'
                           }`}
                         >
-                          {crop.suitabilityScore} Suitability
+                          {translateText(crop.suitabilityScore, selectedLanguage)} {translateText('Suitability', selectedLanguage)}
                         </span>
                       </div>
 
-                      <p className="text-xs text-on-surface-variant">{crop.suitabilityReason}</p>
+                      <p className="text-xs text-on-surface-variant">{translateText(crop.suitabilityReason, selectedLanguage)}</p>
 
                       {/* Economics Box */}
                       <div className="grid grid-cols-3 gap-2 p-2.5 rounded-xl bg-surface-container-low border border-surface-variant/40 text-center">
                         <div>
-                          <div className="text-[10px] text-on-surface-variant">Expenditure/ac</div>
+                          <div className="text-[10px] text-on-surface-variant">{t('expenditurePerAcre', selectedLanguage)}</div>
                           <div className="text-xs font-bold text-on-surface">₹{crop.expectedExpenditurePerAcre.toLocaleString()}</div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-on-surface-variant">Exp. Yield/ac</div>
+                          <div className="text-[10px] text-on-surface-variant">{t('expYieldPerAcre', selectedLanguage)}</div>
                           <div className="text-xs font-bold text-primary">{crop.expectedYieldPerAcre}</div>
                         </div>
                         <div>
-                          <div className="text-[10px] text-on-surface-variant">Exp. Profit/ac</div>
+                          <div className="text-[10px] text-on-surface-variant">{t('expProfitPerAcre', selectedLanguage)}</div>
                           <div className="text-xs font-bold text-primary-fixed">₹{crop.expectedProfitPerAcre.toLocaleString()}</div>
                         </div>
                       </div>
 
                       {/* Risks */}
                       <div className="text-[11px] text-on-surface-variant">
-                        <span className="font-bold text-on-surface">Major Risks:</span> {crop.majorDiseaseRisks.slice(0, 2).join(', ')}
+                        <span className="font-bold text-on-surface">{translateText('Major Risks', selectedLanguage)}:</span> {crop.majorDiseaseRisks.map(r => translateText(r, selectedLanguage)).slice(0, 2).join(', ')}
                       </div>
                     </div>
 
@@ -396,7 +396,7 @@ export const FieldSetupScreen: React.FC = () => {
                       <span className="material-symbols-outlined text-sm">
                         {isSelected ? 'check_circle' : 'agriculture'}
                       </span>
-                      <span>{isSelected ? 'Currently Selected Crop' : 'Select Crop For Field'}</span>
+                      <span>{isSelected ? t('currentlySelectedCrop', selectedLanguage) : t('selectCropForField', selectedLanguage)}</span>
                     </button>
                   </div>
                 );
@@ -411,49 +411,49 @@ export const FieldSetupScreen: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-headline-sm text-base text-on-surface">
-                  Soil Health Report: {translateText(activeField.name, selectedLanguage)}
+                  {t('soilTestDetails', selectedLanguage)}: {translateText(activeField.name, selectedLanguage)}
                 </h3>
                 <p className="text-xs text-on-surface-variant mt-0.5">
-                  Type: {activeField.soilProfile.soilType} • Lab Tested: {activeField.soilProfile.testedAt}
+                  {translateText('Type', selectedLanguage)}: {translateText(activeField.soilProfile.soilType, selectedLanguage)} • {t('testingLab', selectedLanguage)}: {translateText(activeField.soilProfile.testedAt, selectedLanguage)}
                 </p>
               </div>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-md">
               <div className="p-3 rounded-xl bg-surface-variant border border-outline-variant/30">
-                <span className="text-xs text-on-surface-variant font-bold uppercase">pH Reaction</span>
+                <span className="text-xs text-on-surface-variant font-bold uppercase">{t('phLevel', selectedLanguage)}</span>
                 <div className="text-2xl font-bold text-primary my-1">{activeField.soilProfile.ph}</div>
-                <div className="text-xs text-primary font-semibold">{activeField.soilProfile.phInterpretation}</div>
+                <div className="text-xs text-primary font-semibold">{translateText(activeField.soilProfile.phInterpretation, selectedLanguage)}</div>
               </div>
 
               <div className="p-3 rounded-xl bg-surface-variant border border-outline-variant/30">
-                <span className="text-xs text-on-surface-variant font-bold uppercase">Available Nitrogen (N)</span>
+                <span className="text-xs text-on-surface-variant font-bold uppercase">{t('nitrogenN', selectedLanguage)}</span>
                 <div className="text-2xl font-bold text-on-surface my-1">{activeField.soilProfile.nitrogenKgHa} kg/ha</div>
-                <div className="text-xs text-on-surface-variant font-semibold">{activeField.soilProfile.nitrogenInterpretation}</div>
+                <div className="text-xs text-on-surface-variant font-semibold">{translateText(activeField.soilProfile.nitrogenInterpretation, selectedLanguage)}</div>
               </div>
 
               <div className="p-3 rounded-xl bg-surface-variant border border-outline-variant/30">
-                <span className="text-xs text-on-surface-variant font-bold uppercase">Available Phosphorus (P)</span>
+                <span className="text-xs text-on-surface-variant font-bold uppercase">{t('phosphorusP', selectedLanguage)}</span>
                 <div className="text-2xl font-bold text-primary my-1">{activeField.soilProfile.phosphorusKgHa} kg/ha</div>
-                <div className="text-xs text-primary font-semibold">{activeField.soilProfile.phosphorusInterpretation}</div>
+                <div className="text-xs text-primary font-semibold">{translateText(activeField.soilProfile.phosphorusInterpretation, selectedLanguage)}</div>
               </div>
 
               <div className="p-3 rounded-xl bg-surface-variant border border-outline-variant/30">
-                <span className="text-xs text-on-surface-variant font-bold uppercase">Available Potassium (K)</span>
+                <span className="text-xs text-on-surface-variant font-bold uppercase">{t('potassiumK', selectedLanguage)}</span>
                 <div className="text-2xl font-bold text-on-surface my-1">{activeField.soilProfile.potassiumKgHa} kg/ha</div>
-                <div className="text-xs text-on-surface-variant font-semibold">{activeField.soilProfile.potassiumInterpretation}</div>
+                <div className="text-xs text-on-surface-variant font-semibold">{translateText(activeField.soilProfile.potassiumInterpretation, selectedLanguage)}</div>
               </div>
 
               <div className="p-3 rounded-xl bg-surface-variant border border-outline-variant/30">
-                <span className="text-xs text-on-surface-variant font-bold uppercase">Organic Carbon (OC)</span>
+                <span className="text-xs text-on-surface-variant font-bold uppercase">{t('organicCarbon', selectedLanguage)}</span>
                 <div className="text-2xl font-bold text-primary my-1">{activeField.soilProfile.organicCarbonPercent}%</div>
-                <div className="text-xs text-primary font-semibold">{activeField.soilProfile.organicCarbonInterpretation}</div>
+                <div className="text-xs text-primary font-semibold">{translateText(activeField.soilProfile.organicCarbonInterpretation, selectedLanguage)}</div>
               </div>
 
               <div className="p-3 rounded-xl bg-surface-variant border border-outline-variant/30">
-                <span className="text-xs text-on-surface-variant font-bold uppercase">Electrical Conductivity</span>
+                <span className="text-xs text-on-surface-variant font-bold uppercase">{t('electricalConductivity', selectedLanguage)}</span>
                 <div className="text-2xl font-bold text-on-surface my-1">{activeField.soilProfile.electricalConductivityDsM} dS/m</div>
-                <div className="text-xs text-on-surface-variant font-semibold">{activeField.soilProfile.ecInterpretation}</div>
+                <div className="text-xs text-on-surface-variant font-semibold">{translateText(activeField.soilProfile.ecInterpretation, selectedLanguage)}</div>
               </div>
             </div>
           </div>
@@ -464,7 +464,7 @@ export const FieldSetupScreen: React.FC = () => {
           <div className="flex flex-col gap-md">
             <div className="p-md rounded-2xl bg-surface-container border border-surface-variant flex flex-col gap-md">
               <h3 className="font-headline-sm text-base text-on-surface">
-                Historical Harvests on {translateText(activeField.name, selectedLanguage)}
+                {translateText('Historical Harvests on', selectedLanguage)} {translateText(activeField.name, selectedLanguage)}
               </h3>
 
               {activeField.previousCropHistory.length > 0 ? (
@@ -474,38 +474,38 @@ export const FieldSetupScreen: React.FC = () => {
                       <div className="flex items-center justify-between">
                         <div>
                           <h4 className="font-bold text-sm text-on-surface">
-                            {rec.cropName} {rec.cropVariety ? `(${rec.cropVariety})` : ''}
+                            {translateCrop(rec.cropName, selectedLanguage)} {rec.cropVariety ? `(${rec.cropVariety})` : ''}
                           </h4>
                           <span className="text-xs text-on-surface-variant">
                             Sown: {rec.sowingDate} • Harvested: {rec.harvestDate}
                           </span>
                         </div>
                         <span className="px-3 py-1 rounded-full bg-primary/20 text-primary font-bold text-xs">
-                          {rec.efficiencyPercent}% Efficiency
+                          {rec.efficiencyPercent}% {t('efficiency', selectedLanguage) || 'Efficiency'}
                         </span>
                       </div>
 
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 p-2.5 rounded-lg bg-surface-container text-center text-xs">
                         <div>
-                          <span className="text-on-surface-variant">Expected Yield:</span>
+                          <span className="text-on-surface-variant">{t('expected', selectedLanguage) || 'Expected Yield'}:</span>
                           <div className="font-bold text-on-surface">{rec.expectedYieldTons} Tons</div>
                         </div>
                         <div>
-                          <span className="text-on-surface-variant">Actual Yield:</span>
+                          <span className="text-on-surface-variant">{t('actual', selectedLanguage) || 'Actual Yield'}:</span>
                           <div className="font-bold text-primary">{rec.actualYieldTons} Tons</div>
                         </div>
                         <div>
-                          <span className="text-on-surface-variant">Main Factor:</span>
-                          <div className="font-bold text-error truncate">{rec.mainLossFactor || 'None'}</div>
+                          <span className="text-on-surface-variant">{translateText('Main Factor', selectedLanguage)}:</span>
+                          <div className="font-bold text-error truncate">{translateText(rec.mainLossFactor || 'None', selectedLanguage)}</div>
                         </div>
                       </div>
 
                       {rec.problemsEncountered.length > 0 && (
                         <div className="flex flex-col gap-1 text-xs">
-                          <span className="font-bold text-on-surface-variant uppercase text-[10px]">Problems Encountered:</span>
+                          <span className="font-bold text-on-surface-variant uppercase text-[10px]">{translateText('Problems Encountered', selectedLanguage)}:</span>
                           <ul className="list-disc list-inside text-on-surface-variant space-y-0.5">
                             {rec.problemsEncountered.map((p, i) => (
-                              <li key={i}>{p.description} {p.impactTons ? `(-${p.impactTons}T)` : ''}</li>
+                              <li key={i}>{translateText(p.description, selectedLanguage)} {p.impactTons ? `(-${p.impactTons}T)` : ''}</li>
                             ))}
                           </ul>
                         </div>
@@ -514,7 +514,7 @@ export const FieldSetupScreen: React.FC = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-on-surface-variant">No previous crop history logged for this field yet.</p>
+                <p className="text-xs text-on-surface-variant">{translateText('No previous crop history logged for this field yet.', selectedLanguage)}</p>
               )}
             </div>
           </div>
@@ -526,7 +526,7 @@ export const FieldSetupScreen: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
           <div className="bg-surface-container-high border border-surface-variant rounded-2xl p-md w-full max-w-md shadow-2xl flex flex-col gap-md">
             <div className="flex items-center justify-between border-b border-surface-variant/40 pb-2">
-              <h3 className="font-bold text-sm text-on-surface">Add New Farm Field</h3>
+              <h3 className="font-bold text-sm text-on-surface">{t('addField', selectedLanguage)}</h3>
               <button onClick={() => setShowAddFieldModal(false)} className="text-on-surface-variant hover:text-on-surface">
                 <span className="material-symbols-outlined text-xl">close</span>
               </button>
@@ -534,7 +534,7 @@ export const FieldSetupScreen: React.FC = () => {
 
             <form onSubmit={handleCreateNewField} className="flex flex-col gap-sm text-xs">
               <div>
-                <label className="text-on-surface-variant font-semibold">Field Name</label>
+                <label className="text-on-surface-variant font-semibold">{translateText('Field Name', selectedLanguage)}</label>
                 <input
                   type="text"
                   required
@@ -547,7 +547,7 @@ export const FieldSetupScreen: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="text-on-surface-variant font-semibold">Area (Acres)</label>
+                  <label className="text-on-surface-variant font-semibold">{translateText('Area', selectedLanguage)} ({t('acres', selectedLanguage)})</label>
                   <input
                     type="number"
                     step="0.1"
@@ -559,24 +559,24 @@ export const FieldSetupScreen: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="text-on-surface-variant font-semibold">Active Crop</label>
+                  <label className="text-on-surface-variant font-semibold">{translateText('Active Crop', selectedLanguage)}</label>
                   <select
                     value={newFieldCrop}
                     onChange={(e) => setNewFieldCrop(e.target.value)}
                     className="w-full mt-1 p-2.5 rounded-xl bg-surface-container border border-surface-variant text-on-surface focus:outline-none focus:ring-1 focus:ring-primary"
                   >
-                    <option value="Paddy">Paddy</option>
-                    <option value="Cotton">Cotton</option>
-                    <option value="Chilli">Chilli</option>
-                    <option value="Groundnut">Groundnut</option>
-                    <option value="Maize">Maize</option>
-                    <option value="Red Gram">Red Gram</option>
+                    <option value="Paddy">{translateCrop('Paddy', selectedLanguage)}</option>
+                    <option value="Cotton">{translateCrop('Cotton', selectedLanguage)}</option>
+                    <option value="Chilli">{translateCrop('Chilli', selectedLanguage)}</option>
+                    <option value="Groundnut">{translateCrop('Groundnut', selectedLanguage)}</option>
+                    <option value="Maize">{translateCrop('Maize', selectedLanguage)}</option>
+                    <option value="Red Gram">{translateCrop('Red Gram', selectedLanguage)}</option>
                   </select>
                 </div>
               </div>
 
               <div>
-                <label className="text-on-surface-variant font-semibold">Village / Mandal</label>
+                <label className="text-on-surface-variant font-semibold">{translateText('Village / Mandal', selectedLanguage)}</label>
                 <input
                   type="text"
                   value={newFieldVillage}
@@ -591,13 +591,13 @@ export const FieldSetupScreen: React.FC = () => {
                   onClick={() => setShowAddFieldModal(false)}
                   className="px-4 py-2 rounded-xl bg-surface-variant text-on-surface font-bold text-xs"
                 >
-                  Cancel
+                  {t('cancel', selectedLanguage)}
                 </button>
                 <button
                   type="submit"
                   className="px-4 py-2 rounded-xl bg-primary text-on-primary font-bold text-xs shadow hover:bg-primary-fixed"
                 >
-                  Create Field
+                  {t('addField', selectedLanguage)}
                 </button>
               </div>
             </form>

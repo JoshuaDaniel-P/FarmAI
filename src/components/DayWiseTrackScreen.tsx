@@ -172,7 +172,7 @@ export const DayWiseTrackScreen: React.FC = () => {
               className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-primary text-[#003911] font-label-sm text-[13px] font-bold hover:bg-primary-fixed transition-colors shadow-sm"
             >
               <span className="material-symbols-outlined text-[18px]">add_circle</span>
-              <span>Log Day Task</span>
+              <span>{t('logDayTask', selectedLanguage)}</span>
             </button>
 
             <button
@@ -209,7 +209,7 @@ export const DayWiseTrackScreen: React.FC = () => {
               </span>
             </div>
             <p className="text-[12px] text-primary font-semibold mt-1">
-              {percentCompleted}% of growth cycle finished
+              {percentCompleted}% {translateText('completed', selectedLanguage)}
             </p>
           </div>
 
@@ -229,7 +229,7 @@ export const DayWiseTrackScreen: React.FC = () => {
               </span>
             </div>
             <p className="text-[12px] text-on-surface-variant mt-1">
-              Active Window: Days 41–65 ({currentDay - 40} days in stage)
+              {translateText('Active Stage Window: Days 41 to 65', selectedLanguage)} ({currentDay - 40} {t('days', selectedLanguage)})
             </p>
           </div>
 
@@ -252,7 +252,7 @@ export const DayWiseTrackScreen: React.FC = () => {
               </span>
             </div>
             <p className="text-[12px] text-on-surface-variant mt-1">
-              Ready for harvest around Day {totalDays}
+              {translateText(`Ready for harvest around Day ${totalDays}`, selectedLanguage)}
             </p>
           </div>
 
@@ -272,7 +272,7 @@ export const DayWiseTrackScreen: React.FC = () => {
               </span>
             </div>
             <p className="text-[12px] text-primary font-semibold mt-1">
-              Field Vigor: 88% (Optimal Growth)
+              {translateText('Field Vigor: 88% (Optimal Growth)', selectedLanguage)}
             </p>
           </div>
         </div>
@@ -294,7 +294,7 @@ export const DayWiseTrackScreen: React.FC = () => {
 
             <div className="px-3.5 py-1.5 rounded-full bg-[#1b110f] border border-primary/40 text-primary font-label-sm text-[13px] font-bold self-start sm:self-auto flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-              <span>{percentCompleted}% Completed</span>
+              <span>{percentCompleted}% {translateText('completed', selectedLanguage)}</span>
             </div>
           </div>
 
@@ -340,9 +340,9 @@ export const DayWiseTrackScreen: React.FC = () => {
 
             {/* Milestone Footnote */}
             <div className="flex justify-between items-center text-[11px] text-on-surface-variant/80 px-1 pt-0.5">
-              <span>Transplantation Established</span>
-              <span className="text-primary font-semibold">Active Panicle Budding Window</span>
-              <span>Estimated Harvest Window (~73 days)</span>
+              <span>{translateText('Transplantation Established', selectedLanguage)}</span>
+              <span className="text-primary font-semibold">{translateText('Active Panicle Budding Window', selectedLanguage)}</span>
+              <span>{translateText('Estimated Harvest Window (~73 days)', selectedLanguage)}</span>
             </div>
           </div>
         </div>
@@ -370,7 +370,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                   {t('buddingStage', selectedLanguage)}
                 </h3>
                 <p className="font-body-md text-body-md text-on-surface-variant mt-1 max-w-2xl">
-                  {t('buddingStageDesc', selectedLanguage)}. Shoot apical meristem transformation is actively underway. Maintain consistent soil hydration (40-45%) and apply scheduled potassium-nitrogen top-dress.
+                  {t('buddingStageDesc', selectedLanguage)}. {translateText('Shoot apical meristem transformation is actively underway. Maintain consistent soil hydration (40-45%) and apply scheduled potassium-nitrogen top-dress.', selectedLanguage)}
                 </p>
               </div>
             </div>
@@ -378,10 +378,10 @@ export const DayWiseTrackScreen: React.FC = () => {
             <div className="flex flex-col sm:flex-row lg:flex-col items-start lg:items-end gap-2 z-10 shrink-0 bg-[#1b110f]/90 p-4 rounded-xl border border-primary/30">
               <div className="flex items-center gap-1.5 text-primary text-[14px] font-bold">
                 <span className="material-symbols-outlined text-[20px]">verified</span>
-                <span>Vigor Index: 88% (Optimal)</span>
+                <span>{translateText('Vigor Index: 88% (Optimal)', selectedLanguage)}</span>
               </div>
               <div className="text-[12px] text-on-surface-variant">
-                Active Stage Window: Days 41 to 65
+                {translateText('Active Stage Window: Days 41 to 65', selectedLanguage)}
               </div>
             </div>
           </div>
@@ -393,7 +393,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                 {t('growthStages', selectedLanguage)}
               </h3>
               <span className="text-[12px] text-primary font-label-sm">
-                Stage 3 of 5 In Progress
+                {translateText('Stage 3 of 5 In Progress', selectedLanguage)}
               </span>
             </div>
 
@@ -434,7 +434,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                             : 'bg-surface-variant text-on-surface-variant'
                         }`}
                       >
-                        {stg.isCurrent ? 'Current' : stg.isCompleted ? 'Done' : 'Upcoming'}
+                        {stg.isCurrent ? t('current', selectedLanguage) : stg.isCompleted ? t('done', selectedLanguage) : t('upcoming', selectedLanguage)}
                       </span>
                     </div>
 
@@ -467,10 +467,10 @@ export const DayWiseTrackScreen: React.FC = () => {
               <span className="material-symbols-outlined text-primary text-[26px]">task_alt</span>
               <div>
                 <h2 className="font-headline-sm text-headline-sm text-on-surface">
-                  {t('dayWiseActivityLog', selectedLanguage)} (Day 1 to Day {currentDay})
+                  {t('dayWiseActivityLog', selectedLanguage)} ({t('day', selectedLanguage)} 1 {translateText('to', selectedLanguage)} {t('day', selectedLanguage)} {currentDay})
                 </h2>
                 <p className="font-label-sm text-label-sm text-on-surface-variant">
-                  Showing {Math.min(visibleCount, filteredUpdates.length)} of {filteredUpdates.length} total recorded days since sowing
+                  {translateText('Showing', selectedLanguage)} {Math.min(visibleCount, filteredUpdates.length)} {translateText('of', selectedLanguage)} {filteredUpdates.length} {translateText('total recorded days since sowing', selectedLanguage)}
                 </p>
               </div>
             </div>
@@ -480,7 +480,7 @@ export const DayWiseTrackScreen: React.FC = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search Day # or activity..."
+                  placeholder={translateText('Search Day # or activity...', selectedLanguage)}
                   value={searchDayQuery}
                   onChange={(e) => {
                     setSearchDayQuery(e.target.value);
@@ -509,7 +509,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                     selectedFilter === 'all' ? 'bg-primary text-[#003911] font-bold' : 'text-on-surface-variant hover:text-on-surface'
                   }`}
                 >
-                  All ({allUpdates.length})
+                  {translateText('All', selectedLanguage)} ({allUpdates.length})
                 </button>
                 <button
                   onClick={() => setSelectedFilter('budding')}
@@ -517,7 +517,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                     selectedFilter === 'budding' ? 'bg-primary text-[#003911] font-bold' : 'text-on-surface-variant hover:text-on-surface'
                   }`}
                 >
-                  Budding (7)
+                  {translateText('Budding', selectedLanguage)} (7)
                 </button>
                 <button
                   onClick={() => setSelectedFilter('vegetative')}
@@ -525,7 +525,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                     selectedFilter === 'vegetative' ? 'bg-primary text-[#003911] font-bold' : 'text-on-surface-variant hover:text-on-surface'
                   }`}
                 >
-                  Vegetative (25)
+                  {translateText('Vegetative', selectedLanguage)} (25)
                 </button>
                 <button
                   onClick={() => setSelectedFilter('germination')}
@@ -533,7 +533,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                     selectedFilter === 'germination' ? 'bg-primary text-[#003911] font-bold' : 'text-on-surface-variant hover:text-on-surface'
                   }`}
                 >
-                  Seedling (15)
+                  {translateText('Seedling', selectedLanguage)} (15)
                 </button>
               </div>
             </div>
@@ -562,7 +562,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                             : 'bg-surface-container-high text-on-surface'
                         }`}
                       >
-                        <span className="text-[10px] uppercase font-bold leading-none">Day</span>
+                        <span className="text-[10px] uppercase font-bold leading-none">{t('day', selectedLanguage)}</span>
                         <span className="text-[16px] font-extrabold leading-none">{item.day}</span>
                       </div>
 
@@ -580,16 +580,16 @@ export const DayWiseTrackScreen: React.FC = () => {
                                 : 'bg-surface-variant text-on-surface-variant'
                             }`}
                           >
-                            {item.stage}
+                            {translateText(item.stage, selectedLanguage)}
                           </span>
                           {isToday && (
                             <span className="px-2.5 py-0.5 rounded-full bg-primary text-[#003911] text-[10px] font-extrabold shadow-sm animate-pulse">
-                              TODAY
+                              {t('today', selectedLanguage).toUpperCase()}
                             </span>
                           )}
                         </div>
                         <span className="text-[12px] text-on-surface-variant font-label-sm">
-                          {item.date} • Field Sector East
+                          {item.date} • {translateText('Field Sector East', selectedLanguage)}
                         </span>
                       </div>
                     </div>
@@ -597,7 +597,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                     <div className="flex items-center gap-2 self-start sm:self-auto">
                       <div className="flex items-center gap-1 text-primary text-[12px] font-bold bg-primary/10 px-2.5 py-1 rounded-lg border border-primary/20">
                         <span className="material-symbols-outlined text-[15px]">eco</span>
-                        <span>{item.healthPercent}% Vigor</span>
+                        <span>{item.healthPercent}% {translateText('Vigor', selectedLanguage)}</span>
                       </div>
                     </div>
                   </div>
@@ -611,7 +611,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                   <div className="bg-[#1b110f] border border-outline-variant/30 rounded-lg p-3 flex flex-col gap-1.5">
                     <span className="text-[11px] font-label-sm uppercase tracking-wider text-primary font-bold flex items-center gap-1">
                       <span className="material-symbols-outlined text-[15px]">checklist</span>
-                      <span>Tasks & Activities Done on Day {item.day}:</span>
+                      <span>{t('tasksDoneOnDay', selectedLanguage)} {t('day', selectedLanguage)} {item.day}:</span>
                     </span>
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 pt-0.5">
                       {item.tasks.map((task, idx) => (
@@ -619,7 +619,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                           <span className="material-symbols-outlined text-primary text-[16px] shrink-0 mt-0.5">
                             check_circle
                           </span>
-                          <span>{task}</span>
+                          <span>{translateText(task, selectedLanguage)}</span>
                         </li>
                       ))}
                     </ul>
@@ -630,13 +630,13 @@ export const DayWiseTrackScreen: React.FC = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[12px] text-on-surface-variant pt-1 border-t border-surface-variant/40">
                       <div className="flex items-center gap-1.5">
                         <span className="material-symbols-outlined text-[16px] text-primary">inventory_2</span>
-                        <span><strong>Inputs Applied:</strong> {item.inputsApplied}</span>
+                        <span><strong>{t('inputsApplied', selectedLanguage)}:</strong> {translateText(item.inputsApplied, selectedLanguage)}</span>
                       </div>
                       <button
                         onClick={() => setSelectedDayDetail(selectedDayDetail?.day === item.day ? null : item)}
                         className="text-primary hover:text-primary-fixed font-label-sm text-[12px] flex items-center gap-1 self-start sm:self-auto"
                       >
-                        <span>{selectedDayDetail?.day === item.day ? 'Hide Details' : 'View Full Day Specs'}</span>
+                        <span>{selectedDayDetail?.day === item.day ? t('hideDetails', selectedLanguage) : t('viewFullDaySpecs', selectedLanguage)}</span>
                         <span className="material-symbols-outlined text-[16px]">
                           {selectedDayDetail?.day === item.day ? 'expand_less' : 'expand_more'}
                         </span>
@@ -649,15 +649,15 @@ export const DayWiseTrackScreen: React.FC = () => {
                     <div className="p-3.5 rounded-lg bg-surface-container border border-primary/40 flex flex-col gap-2 animate-fadeIn text-[13px]">
                       <div className="flex items-center justify-between border-b border-surface-variant/50 pb-1.5">
                         <span className="font-headline-sm text-primary font-bold text-[14px]">
-                          Day {item.day} Full Telemetry & Agronomic Record
+                          {t('day', selectedLanguage)} {item.day} {translateText('Full Telemetry & Agronomic Record', selectedLanguage)}
                         </span>
                         <span className="text-[12px] text-on-surface-variant">{item.date}</span>
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] text-on-surface-variant">
-                        <div>Stage: <strong className="text-on-surface">{item.stage}</strong></div>
-                        <div>Category: <strong className="text-on-surface capitalize">{item.category || 'Inspection'}</strong></div>
-                        <div>Health: <strong className="text-primary">{item.healthPercent}%</strong></div>
-                        <div>Action Status: <strong className="text-on-surface capitalize">{item.status.replace('_', ' ')}</strong></div>
+                        <div>{t('growthStages', selectedLanguage)}: <strong className="text-on-surface">{translateText(item.stage, selectedLanguage)}</strong></div>
+                        <div>{translateText('Category', selectedLanguage)}: <strong className="text-on-surface capitalize">{translateText(item.category || 'Inspection', selectedLanguage)}</strong></div>
+                        <div>{translateText('Health', selectedLanguage)}: <strong className="text-primary">{item.healthPercent}%</strong></div>
+                        <div>{translateText('Action Status', selectedLanguage)}: <strong className="text-on-surface capitalize">{translateText(item.status.replace('_', ' '), selectedLanguage)}</strong></div>
                       </div>
                     </div>
                   )}
@@ -669,7 +669,7 @@ export const DayWiseTrackScreen: React.FC = () => {
           {/* READ MORE / PAGINATION / EXPAND OPTIONS BELOW RECENT 5 DAYS */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-md pt-md border-t border-surface-variant">
             <div className="text-[13px] font-label-sm text-on-surface-variant">
-              Showing {Math.min(visibleCount, filteredUpdates.length)} of {filteredUpdates.length} recorded days
+              {translateText('Showing', selectedLanguage)} {Math.min(visibleCount, filteredUpdates.length)} {translateText('of', selectedLanguage)} {filteredUpdates.length} {translateText('recorded days', selectedLanguage)}
             </div>
 
             <div className="flex items-center gap-2 flex-wrap">
@@ -678,7 +678,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                   onClick={handleReadMore}
                   className="px-5 py-2.5 rounded-xl bg-primary text-[#003911] font-label-sm text-[13px] font-bold hover:bg-primary-fixed transition-all shadow-md flex items-center gap-1.5"
                 >
-                  <span>Read More (+10 Days)</span>
+                  <span>{t('readMore', selectedLanguage)}</span>
                   <span className="material-symbols-outlined text-[18px]">expand_more</span>
                 </button>
               )}
@@ -688,7 +688,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                   onClick={handleShowAll}
                   className="px-4 py-2.5 rounded-xl bg-surface-variant text-on-surface font-label-sm text-[13px] hover:bg-surface-bright transition-colors"
                 >
-                  View All ({filteredUpdates.length} Days)
+                  {t('viewAll', selectedLanguage)} ({filteredUpdates.length} {t('days', selectedLanguage)})
                 </button>
               )}
 
@@ -698,7 +698,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                   className="px-4 py-2.5 rounded-xl bg-[#1b110f] border border-outline-variant text-on-surface-variant hover:text-on-surface font-label-sm text-[13px] transition-colors flex items-center gap-1"
                 >
                   <span className="material-symbols-outlined text-[16px]">expand_less</span>
-                  <span>Show Recent 5 Days Only</span>
+                  <span>{translateText('Show Recent 5 Days Only', selectedLanguage)}</span>
                 </button>
               )}
             </div>
@@ -714,7 +714,7 @@ export const DayWiseTrackScreen: React.FC = () => {
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">edit_note</span>
                 <h3 className="font-headline-sm text-headline-sm text-on-surface">
-                  Log Day Crop Task & Activity
+                  {translateText('Log Day Crop Task & Activity', selectedLanguage)}
                 </h3>
               </div>
               <button
@@ -729,7 +729,7 @@ export const DayWiseTrackScreen: React.FC = () => {
               <div className="grid grid-cols-2 gap-sm">
                 <div>
                   <label className="block text-[12px] font-label-sm uppercase tracking-wider text-on-surface-variant mb-1">
-                    Crop Day #
+                    {translateText('Crop Day #', selectedLanguage)}
                   </label>
                   <input
                     type="number"
@@ -744,11 +744,11 @@ export const DayWiseTrackScreen: React.FC = () => {
 
                 <div>
                   <label className="block text-[12px] font-label-sm uppercase tracking-wider text-on-surface-variant mb-1">
-                    Current Stage
+                    {t('currentCropStage', selectedLanguage)}
                   </label>
                   <input
                     type="text"
-                    value="Budding Stage"
+                    value={t('buddingStage', selectedLanguage).split('(')[0].trim()}
                     disabled
                     className="w-full bg-[#1b110f]/60 border border-outline-variant/40 rounded-xl px-3 py-2 text-primary font-bold text-[14px] cursor-not-allowed"
                   />
@@ -757,11 +757,11 @@ export const DayWiseTrackScreen: React.FC = () => {
 
               <div>
                 <label className="block text-[12px] font-label-sm uppercase tracking-wider text-on-surface-variant mb-1">
-                  Activity Title
+                  {translateText('Activity Title', selectedLanguage)}
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Apical bud inspection & foliar spray"
+                  placeholder={translateText('e.g. Apical bud inspection & foliar spray', selectedLanguage)}
                   value={newNoteTitle}
                   onChange={(e) => setNewNoteTitle(e.target.value)}
                   className="w-full bg-[#1b110f] border border-outline-variant rounded-xl px-3 py-2 text-on-surface font-body-md text-[14px]"
@@ -771,11 +771,11 @@ export const DayWiseTrackScreen: React.FC = () => {
 
               <div>
                 <label className="block text-[12px] font-label-sm uppercase tracking-wider text-on-surface-variant mb-1">
-                  Task / Activity Done (Checklist item)
+                  {translateText('Task / Activity Done (Checklist item)', selectedLanguage)}
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Checked water level (4cm) and sprayed zinc booster"
+                  placeholder={translateText('e.g. Checked water level (4cm) and sprayed zinc booster', selectedLanguage)}
                   value={newNoteTask}
                   onChange={(e) => setNewNoteTask(e.target.value)}
                   className="w-full bg-[#1b110f] border border-outline-variant rounded-xl px-3 py-2 text-on-surface font-body-md text-[14px]"
@@ -784,10 +784,10 @@ export const DayWiseTrackScreen: React.FC = () => {
 
               <div>
                 <label className="block text-[12px] font-label-sm uppercase tracking-wider text-on-surface-variant mb-1">
-                  Detailed Observation Notes
+                  {translateText('Detailed Observation Notes', selectedLanguage)}
                 </label>
                 <textarea
-                  placeholder="Add observations about shoot growth, tiller vigor, pest status..."
+                  placeholder={translateText('Add observations about shoot growth, tiller vigor, pest status...', selectedLanguage)}
                   value={newNoteSummary}
                   onChange={(e) => setNewNoteSummary(e.target.value)}
                   rows={3}
@@ -807,7 +807,7 @@ export const DayWiseTrackScreen: React.FC = () => {
                   type="submit"
                   className="px-5 py-2 rounded-xl bg-primary text-[#003911] font-label-sm font-bold hover:bg-primary-fixed transition-colors shadow-md"
                 >
-                  {t('save', selectedLanguage)} Task Log
+                  {t('save', selectedLanguage)} {translateText('Task Log', selectedLanguage)}
                 </button>
               </div>
             </form>

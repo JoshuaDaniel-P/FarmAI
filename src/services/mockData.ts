@@ -1,6 +1,4 @@
 
-import { Farmer, FieldBoundary, CropHistoryRecord, MarketRate, CropSuggestion, DayCropUpdate } from '../types/farm';
-
 import {
   Farmer,
   Field,
@@ -12,6 +10,7 @@ import {
   PreviousCropRecord,
   LiveSensors,
   MotorStatus,
+  DayCropUpdate,
 } from '../types/farm';
 import { calculateCropAgeDays, getGrowthStageForCrop } from './cropStageService';
 
@@ -1250,9 +1249,6 @@ export const INITIAL_FIELD_BOUNDARY: FieldBoundary = {
     { x: 60, y: 90, lat: 14.4995, lng: 79.9850 },
   ],
 };
-
-export const INITIAL_FIELD_BOUNDARY: FieldBoundary = INITIAL_FIELDS[0].boundary;
-
 
 export const INITIAL_CROP_HISTORY: CropHistoryRecord[] = [
   {

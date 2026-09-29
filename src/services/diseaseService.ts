@@ -89,7 +89,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 45 - 85 (Maximum tillering to heading)',
     riskLevel: 'Moderate',
     riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
-    imageUrl: '/images/diseases/paddy_blast.jpg',
+    imageUrl: '/images/diseases/paddy_sheath_blight.jpg',
     icon: 'eco',
 
     whatYouMaySee: [
@@ -247,7 +247,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 65 - 130 (Fruit setting to ripening)',
     riskLevel: 'Moderate',
     riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
-    imageUrl: '/images/diseases/chilli_leaf_curl.jpg',
+    imageUrl: '/images/diseases/chilli_anthracnose.jpg',
     icon: 'warning',
 
     whatYouMaySee: [
@@ -326,7 +326,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 10 - 35 (Emergence and young seedling stage)',
     riskLevel: 'High',
     riskBadgeColor: 'bg-error-container border-error text-error',
-    imageUrl: '/images/diseases/groundnut_tikka.jpg',
+    imageUrl: '/images/diseases/groundnut_collar_rot.jpg',
     icon: 'warning',
 
     whatYouMaySee: [
@@ -405,7 +405,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 35 - 80 (Vegetative grand growth to cob filling)',
     riskLevel: 'Moderate',
     riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
-    imageUrl: '/images/diseases/maize_armyworm.jpg',
+    imageUrl: '/images/diseases/maize_turcicum_blight.jpg',
     icon: 'eco',
 
     whatYouMaySee: [

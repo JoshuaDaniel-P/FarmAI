@@ -81,15 +81,15 @@ export const WeatherWidget: React.FC = () => {
                     {rec.type === 'irrigation' ? 'water' : rec.type === 'disease_risk' ? 'coronavirus' : 'thermostat'}
                   </span>
                   <div>
-                    <h4 className="text-xs font-bold text-on-surface">{rec.title}</h4>
-                    <p className="text-[12px] text-on-surface-variant leading-snug mt-0.5">{rec.message}</p>
+                    <h4 className="text-xs font-bold text-on-surface">{translateText(rec.title, selectedLanguage)}</h4>
+                    <p className="text-[12px] text-on-surface-variant leading-snug mt-0.5">{translateText(rec.message, selectedLanguage)}</p>
                   </div>
                 </div>
 
                 {rec.actionableTip && (
                   <div className="mt-1 pt-1.5 border-t border-outline-variant/20 flex items-center gap-1 text-[11px] text-primary font-medium">
                     <span className="material-symbols-outlined text-xs">task_alt</span>
-                    <span>{rec.actionableTip}</span>
+                    <span>{translateText(rec.actionableTip, selectedLanguage)}</span>
                   </div>
                 )}
               </div>

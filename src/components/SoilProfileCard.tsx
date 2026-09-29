@@ -26,7 +26,7 @@ export const SoilProfileCard: React.FC = () => {
           onClick={() => setShowTechnicalDetails(!showTechnicalDetails)}
           className="text-xs text-primary font-bold hover:underline flex items-center gap-0.5 px-2.5 py-1 rounded-full bg-surface-variant"
         >
-          <span>{showTechnicalDetails ? 'Simple View' : 'Raw Lab Values'}</span>
+          <span>{showTechnicalDetails ? (t('simpleView', selectedLanguage) || 'Simple View') : (t('rawLabValues', selectedLanguage) || 'Raw Lab Values')}</span>
           <span className="material-symbols-outlined text-sm">
             {showTechnicalDetails ? 'expand_less' : 'expand_more'}
           </span>
@@ -37,51 +37,51 @@ export const SoilProfileCard: React.FC = () => {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
         {/* pH */}
         <div className="p-3 rounded-xl bg-surface-variant/70 border border-outline-variant/30 flex flex-col justify-between">
-          <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">pH Level</span>
+          <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">{t('phLevel', selectedLanguage) || 'pH Level'}</span>
           <div className="flex items-baseline gap-1.5 my-1">
             <span className="text-xl font-bold text-primary">{soilProfile.ph}</span>
           </div>
           <span className="text-[11px] font-semibold text-primary px-2 py-0.5 rounded bg-primary/10 w-fit">
-            {soilProfile.phInterpretation}
+            {translateText(soilProfile.phInterpretation, selectedLanguage)}
           </span>
         </div>
 
         {/* Nitrogen */}
         <div className="p-3 rounded-xl bg-surface-variant/70 border border-outline-variant/30 flex flex-col justify-between">
-          <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Nitrogen (N)</span>
+          <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">{t('nitrogenN', selectedLanguage) || 'Nitrogen (N)'}</span>
           <div className="flex items-baseline gap-1.5 my-1">
             <span className="text-xl font-bold text-on-surface">
-              {showTechnicalDetails ? `${soilProfile.nitrogenKgHa} kg/ha` : soilProfile.nitrogenInterpretation.split(' ')[0]}
+              {showTechnicalDetails ? `${soilProfile.nitrogenKgHa} kg/ha` : translateText(soilProfile.nitrogenInterpretation.split(' ')[0], selectedLanguage)}
             </span>
           </div>
           <span className="text-[11px] font-semibold text-on-surface-variant px-2 py-0.5 rounded bg-surface-container w-fit">
-            {soilProfile.nitrogenInterpretation}
+            {translateText(soilProfile.nitrogenInterpretation, selectedLanguage)}
           </span>
         </div>
 
         {/* Phosphorus */}
         <div className="p-3 rounded-xl bg-surface-variant/70 border border-outline-variant/30 flex flex-col justify-between">
-          <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Phosphorus (P)</span>
+          <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">{t('phosphorusP', selectedLanguage) || 'Phosphorus (P)'}</span>
           <div className="flex items-baseline gap-1.5 my-1">
             <span className="text-xl font-bold text-primary">
-              {showTechnicalDetails ? `${soilProfile.phosphorusKgHa} kg/ha` : soilProfile.phosphorusInterpretation.split(' ')[0]}
+              {showTechnicalDetails ? `${soilProfile.phosphorusKgHa} kg/ha` : translateText(soilProfile.phosphorusInterpretation.split(' ')[0], selectedLanguage)}
             </span>
           </div>
           <span className="text-[11px] font-semibold text-primary px-2 py-0.5 rounded bg-primary/10 w-fit">
-            {soilProfile.phosphorusInterpretation}
+            {translateText(soilProfile.phosphorusInterpretation, selectedLanguage)}
           </span>
         </div>
 
         {/* Potassium */}
         <div className="p-3 rounded-xl bg-surface-variant/70 border border-outline-variant/30 flex flex-col justify-between">
-          <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Potassium (K)</span>
+          <span className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">{t('potassiumK', selectedLanguage) || 'Potassium (K)'}</span>
           <div className="flex items-baseline gap-1.5 my-1">
             <span className="text-xl font-bold text-on-surface">
-              {showTechnicalDetails ? `${soilProfile.potassiumKgHa} kg/ha` : soilProfile.potassiumInterpretation.split(' ')[0]}
+              {showTechnicalDetails ? `${soilProfile.potassiumKgHa} kg/ha` : translateText(soilProfile.potassiumInterpretation.split(' ')[0], selectedLanguage)}
             </span>
           </div>
           <span className="text-[11px] font-semibold text-on-surface-variant px-2 py-0.5 rounded bg-surface-container w-fit">
-            {soilProfile.potassiumInterpretation}
+            {translateText(soilProfile.potassiumInterpretation, selectedLanguage)}
           </span>
         </div>
       </div>
@@ -90,16 +90,16 @@ export const SoilProfileCard: React.FC = () => {
       {showTechnicalDetails && (
         <div className="p-3 rounded-xl bg-surface-container-low border border-surface-variant/40 grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
           <div>
-            <span className="text-on-surface-variant">Organic Carbon (OC):</span>
-            <div className="font-bold text-on-surface mt-0.5">{soilProfile.organicCarbonPercent}% ({soilProfile.organicCarbonInterpretation})</div>
+            <span className="text-on-surface-variant">{t('organicCarbon', selectedLanguage) || 'Organic Carbon (OC)'}:</span>
+            <div className="font-bold text-on-surface mt-0.5">{soilProfile.organicCarbonPercent}% ({translateText(soilProfile.organicCarbonInterpretation, selectedLanguage)})</div>
           </div>
           <div>
-            <span className="text-on-surface-variant">Electrical Conductivity (EC):</span>
-            <div className="font-bold text-on-surface mt-0.5">{soilProfile.electricalConductivityDsM} dS/m ({soilProfile.ecInterpretation})</div>
+            <span className="text-on-surface-variant">{t('electricalConductivity', selectedLanguage) || 'Electrical Conductivity (EC)'}:</span>
+            <div className="font-bold text-on-surface mt-0.5">{soilProfile.electricalConductivityDsM} dS/m ({translateText(soilProfile.ecInterpretation, selectedLanguage)})</div>
           </div>
           <div>
-            <span className="text-on-surface-variant">Testing Lab:</span>
-            <div className="font-bold text-on-surface mt-0.5 truncate">{soilProfile.labName || 'Government Soil Testing Lab'}</div>
+            <span className="text-on-surface-variant">{t('testingLab', selectedLanguage) || 'Testing Lab'}:</span>
+            <div className="font-bold text-on-surface mt-0.5 truncate">{translateText(soilProfile.labName || 'Government Soil Testing Lab', selectedLanguage)}</div>
           </div>
         </div>
       )}

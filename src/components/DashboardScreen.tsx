@@ -144,9 +144,7 @@ export const DashboardScreen: React.FC = () => {
               </div>
             </div>
             <p className="font-body-md text-body-md text-center text-on-surface-variant mt-sm">
-
-              {translateText(activeField.growthStage.stageName, selectedLanguage)} • {t('day', selectedLanguage)} {activeField.cropAgeDays} {translateCrop(activeField.activeCrop, selectedLanguage)} ({activeField.acres} acres).
-
+              {translateText(activeField.growthStage.stageName, selectedLanguage)} • {t('day', selectedLanguage)} {activeField.cropAgeDays} {translateCrop(activeField.activeCrop, selectedLanguage)} ({activeField.acres} {t('acres', selectedLanguage)}).
             </p>
           </div>
 
@@ -161,7 +159,7 @@ export const DashboardScreen: React.FC = () => {
               {t('askAssistant', selectedLanguage)}
             </span>
             <span className="text-xs text-on-surface-variant text-center px-4">
-              Ask about {activeField.name} soil, weather, diseases or start pump
+              {t('askAboutField', selectedLanguage) || 'Ask about soil, weather, diseases or start pump'}
             </span>
           </button>
         </div>
@@ -344,9 +342,9 @@ export const DashboardScreen: React.FC = () => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-xs">
               <span className="material-symbols-outlined text-primary">apps</span>
-              <h2 className="font-headline-sm text-headline-sm text-on-surface">Field Management & Modules</h2>
+              <h2 className="font-headline-sm text-headline-sm text-on-surface">{t('fieldManagement', selectedLanguage)}</h2>
             </div>
-            <span className="font-label-sm text-on-surface-variant">Quick Actions</span>
+            <span className="font-label-sm text-on-surface-variant">{t('quickActions', selectedLanguage)}</span>
           </div>
 
           <div className="flex flex-col gap-sm">
@@ -369,7 +367,7 @@ export const DashboardScreen: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-center gap-1 text-primary font-label-sm text-[13px] shrink-0">
-                <span className="hidden sm:inline">Setup</span>
+                <span className="hidden sm:inline">{t('setup', selectedLanguage)}</span>
                 <span className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">chevron_right</span>
               </div>
             </button>
@@ -398,7 +396,7 @@ export const DashboardScreen: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-center gap-1 text-primary font-label-sm text-[13px] font-bold shrink-0">
-                <span className="hidden sm:inline">View Track</span>
+                <span className="hidden sm:inline">{t('viewTrack', selectedLanguage)}</span>
                 <span className="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
               </div>
             </button>

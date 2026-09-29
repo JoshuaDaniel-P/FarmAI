@@ -27,7 +27,7 @@ export const FieldSwitcher: React.FC<FieldSwitcherProps> = ({ onAddNewField, cla
               {translateText(activeField.name, selectedLanguage)}
             </span>
             <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 shrink-0">
-              {activeField.acres} ac
+              {activeField.acres} {t('ac', selectedLanguage)}
             </span>
           </div>
           <p className="text-[11px] text-on-surface-variant truncate">
@@ -92,7 +92,7 @@ export const FieldSwitcher: React.FC<FieldSwitcherProps> = ({ onAddNewField, cla
                           {translateText(field.name, selectedLanguage)}
                         </div>
                         <div className="text-[10px] opacity-80 truncate">
-                          {field.acres} acres • {translateCrop(field.activeCrop, selectedLanguage)} (Day {field.cropAgeDays})
+                          {field.acres} {t('acres', selectedLanguage)} • {translateCrop(field.activeCrop, selectedLanguage)} ({t('day', selectedLanguage)} {field.cropAgeDays})
                         </div>
                       </div>
                     </div>

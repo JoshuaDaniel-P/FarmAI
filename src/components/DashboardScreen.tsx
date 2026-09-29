@@ -41,9 +41,9 @@ export const DashboardScreen: React.FC = () => {
 
   return (
     <div className="bg-background text-on-surface antialiased pb-[90px] md:pb-8 font-body-md text-body-md selection:bg-primary-container selection:text-on-primary-container min-h-screen">
-      {/* Top App Bar */}
-      <header className="bg-background text-primary-fixed flex flex-col justify-between px-margin-mobile pt-sm pb-xs w-full max-w-screen-xl mx-auto md:px-margin-desktop sticky top-0 z-40 border-b border-surface-container-highest/40">
-        <div className="flex items-center justify-between w-full h-16">
+      {/* Farmer Greeting & Quick Actions Bar with comfortable vertical spacing below AGROAURA header */}
+      <div className="w-full max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop pt-4 md:pt-6 pb-2">
+        <div className="flex items-center justify-between w-full min-h-[56px] gap-2">
           <div className="flex items-center gap-sm min-w-0">
             <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container shrink-0">
               <img
@@ -66,15 +66,6 @@ export const DashboardScreen: React.FC = () => {
             {/* Field Quick Switcher */}
             <FieldSwitcher className="hidden sm:block" />
 
-            {/* TOP-RIGHT TRANSLATE PIN BUTTON */}
-            <button
-              onClick={() => setIsLanguageModalOpen(true)}
-              className="w-11 h-11 rounded-full bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center border border-primary/30 transition-all shadow-sm"
-              title={t('selectLanguage', selectedLanguage)}
-            >
-              <span className="material-symbols-outlined text-[24px]">translate</span>
-            </button>
-
             {/* Header Notification Bell Icon */}
             <button
               onClick={() => setIsNotificationDrawerOpen(true)}
@@ -92,10 +83,10 @@ export const DashboardScreen: React.FC = () => {
         </div>
 
         {/* Mobile Field Switcher Row */}
-        <div className="sm:hidden pt-2 pb-1">
+        <div className="sm:hidden pt-3 pb-1">
           <FieldSwitcher className="w-full" />
         </div>
-      </header>
+      </div>
 
       {/* Main Content Canvas */}
       <main className="w-full max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop pt-md pb-xl flex flex-col gap-md">

@@ -138,42 +138,35 @@ export const FieldSetupScreen: React.FC = () => {
 
   return (
     <div className="bg-background text-on-background antialiased font-body-md min-h-screen flex flex-col pb-[90px] md:pb-8">
-      {/* TopAppBar */}
-      <header className="sticky top-0 bg-background z-40 border-b border-surface-container-highest">
-        <div className="flex items-center justify-between px-margin-mobile pt-sm pb-xs w-full max-w-screen-xl mx-auto h-[72px]">
+      {/* Field Setup Actions Bar with comfortable vertical spacing below AGROAURA header */}
+      <div className="w-full max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop pt-4 md:pt-6 pb-2">
+        <div className="flex items-center justify-between w-full min-h-[56px] gap-2">
           {/* Back Action */}
           <button
             onClick={() => setCurrentScreen('dashboard')}
-            className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high transition-colors text-primary"
+            className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high transition-colors text-primary shrink-0"
+            title={t('back', selectedLanguage)}
+            aria-label={t('back', selectedLanguage)}
           >
             <span className="material-symbols-outlined text-2xl">arrow_back</span>
           </button>
 
           {/* Field Quick Switcher & Headline */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
             <FieldSwitcher onAddNewField={() => setShowAddFieldModal(true)} />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setShowAddFieldModal(true)}
-              className="px-3 py-1.5 bg-primary text-on-primary font-bold text-xs rounded-full flex items-center gap-1 shadow-sm hover:bg-primary-fixed"
+              className="px-3.5 py-2 bg-primary text-on-primary font-bold text-xs rounded-full flex items-center gap-1 shadow-sm hover:bg-primary-fixed transition-all"
             >
               <span className="material-symbols-outlined text-base">add_location_alt</span>
               <span className="hidden sm:inline">{t('addField', selectedLanguage)}</span>
             </button>
-
-            {/* Language Translate Button */}
-            <button
-              onClick={() => setIsLanguageModalOpen(true)}
-              className="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center border border-primary/30 transition-all shadow-sm"
-              title={t('selectLanguage', selectedLanguage)}
-            >
-              <span className="material-symbols-outlined text-[22px]">translate</span>
-            </button>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Main Canvas with 4 Functional Tabs */}
       <main className="flex-1 w-full max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop py-md flex flex-col gap-md">

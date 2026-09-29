@@ -49,34 +49,25 @@ export const DiseaseWeedScreen: React.FC = () => {
 
   return (
     <div className="bg-background text-on-surface min-h-screen flex flex-col font-body-md overflow-x-hidden pb-[90px] md:pb-8">
-      {/* TopAppBar */}
-      <header className="bg-background text-primary flex flex-col justify-between px-margin-mobile pt-sm pb-xs w-full max-w-screen-xl mx-auto z-40 sticky top-0 border-b border-surface-container-highest/40">
-        <div className="flex items-center justify-between w-full h-16">
-          <div className="flex items-center gap-sm min-w-0">
+      {/* Field Selector & Actions Bar with comfortable vertical spacing below AGROAURA header */}
+      <div className="w-full max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop pt-4 md:pt-6 pb-2">
+        <div className="flex items-center justify-between w-full min-h-[48px] gap-2">
+          <div className="flex items-center gap-sm min-w-0 flex-1">
             <FieldSwitcher />
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
-            {/* Language Selector */}
-            <button
-              onClick={() => setIsLanguageModalOpen(true)}
-              className="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center border border-primary/30 transition-all shadow-sm"
-              title={t('selectLanguage', selectedLanguage)}
-            >
-              <span className="material-symbols-outlined text-[22px]">translate</span>
-            </button>
-
             {/* Camera Scan Button */}
             <button
               onClick={() => setIsCameraOpen(true)}
-              className="px-3 py-1.5 bg-primary text-on-primary font-bold text-xs rounded-full flex items-center gap-1 shadow-md hover:bg-primary-fixed"
+              className="px-3.5 py-2 bg-primary text-on-primary font-bold text-xs rounded-full flex items-center gap-1.5 shadow-md hover:bg-primary-fixed transition-all"
             >
               <span className="material-symbols-outlined text-lg">photo_camera</span>
               <span className="hidden sm:inline">{t('scanCropLeaf', selectedLanguage)}</span>
             </button>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Main Canvas */}
       <main className="flex-grow w-full max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop py-md flex flex-col gap-md">

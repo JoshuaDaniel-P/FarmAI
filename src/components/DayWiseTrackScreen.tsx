@@ -143,48 +143,40 @@ export const DayWiseTrackScreen: React.FC = () => {
 
   return (
     <div className="bg-background text-on-surface antialiased pb-[90px] md:pb-8 font-body-md text-body-md selection:bg-primary-container selection:text-on-primary-container min-h-screen">
-      {/* Top Navigation Bar */}
-      <header className="bg-background text-primary-fixed flex flex-col justify-between px-margin-mobile pt-sm pb-xs w-full max-w-screen-xl mx-auto md:px-margin-desktop sticky top-0 z-40 border-b border-surface-container-highest/40 backdrop-blur-md bg-background/90">
-        <div className="flex items-center justify-between w-full h-16">
-          <div className="flex items-center gap-3">
+      {/* Top Navigation Bar with comfortable vertical spacing below AGROAURA header */}
+      <div className="w-full max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop pt-4 md:pt-6 pb-2">
+        <div className="flex items-center justify-between w-full min-h-[56px] gap-2">
+          <div className="flex items-center gap-3 min-w-0">
             <button
               onClick={() => setCurrentScreen('dashboard')}
-              className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors"
+              className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors shrink-0"
               title={t('back', selectedLanguage)}
               aria-label={t('back', selectedLanguage)}
             >
               <span className="material-symbols-outlined text-[24px]">arrow_back</span>
             </button>
-            <div>
-              <h1 className="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+            <div className="min-w-0">
+              <h1 className="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2 truncate">
                 <span className="material-symbols-outlined text-primary text-[24px]">timeline</span>
-                <span>{t('navDayWiseTrack', selectedLanguage)}</span>
+                <span className="truncate">{t('navDayWiseTrack', selectedLanguage)}</span>
               </h1>
-              <p className="font-label-sm text-label-sm text-on-surface-variant">
+              <p className="font-label-sm text-label-sm text-on-surface-variant truncate">
                 {translateCrop(farmer.activeCrop, selectedLanguage)} • {translateText(farmer.fieldName, selectedLanguage)} • {translateName(farmer.name, selectedLanguage)}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => setIsAddNoteModalOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-primary text-[#003911] font-label-sm text-[13px] font-bold hover:bg-primary-fixed transition-colors shadow-sm"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-primary text-[#003911] font-label-sm text-[13px] font-bold hover:bg-primary-fixed transition-colors shadow-sm"
             >
               <span className="material-symbols-outlined text-[18px]">add_circle</span>
-              <span>{t('logDayTask', selectedLanguage)}</span>
-            </button>
-
-            <button
-              onClick={() => setIsLanguageModalOpen(true)}
-              className="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center border border-primary/30 transition-all shadow-sm"
-              title={t('selectLanguage', selectedLanguage)}
-            >
-              <span className="material-symbols-outlined text-[22px]">translate</span>
+              <span className="hidden sm:inline">{t('logDayTask', selectedLanguage)}</span>
             </button>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Main Content Area */}
       <main className="w-full max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop pt-md pb-xl flex flex-col gap-md">

@@ -1,6 +1,7 @@
 import React from 'react';
 import { FarmProvider, useFarm } from './context/FarmContext';
 import { Navigation } from './components/Navigation';
+import { GlobalHeader } from './components/GlobalHeader';
 import { LoginScreen } from './components/LoginScreen';
 import { FieldSetupScreen } from './components/FieldSetupScreen';
 import { DashboardScreen } from './components/DashboardScreen';
@@ -34,8 +35,11 @@ const MainContainer: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-on-surface md:pl-80">
-      {renderScreen()}
+    <div className="min-h-screen bg-background text-on-surface md:pl-80 flex flex-col">
+      {currentScreen !== 'login' && <GlobalHeader />}
+      <div className="flex-1 flex flex-col">
+        {renderScreen()}
+      </div>
       <Navigation />
     </div>
   );

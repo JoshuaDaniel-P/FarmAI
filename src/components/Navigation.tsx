@@ -96,6 +96,30 @@ export const Navigation: React.FC = () => {
 
       {/* Desktop Sidebar Navigation */}
       <aside className="hidden md:flex flex-col w-80 h-screen fixed left-0 top-0 bg-surface-container border-r border-surface-variant z-40 p-4 overflow-y-auto">
+        {/* Desktop Sidebar Agroaura Branding */}
+        <button
+          onClick={() => setCurrentScreen('dashboard')}
+          className="flex items-center gap-3 px-3.5 py-3 mb-4 bg-surface-container-low/90 rounded-2xl border border-surface-variant hover:border-primary/40 text-left transition-all group"
+          title="Agroaura Home"
+          aria-label="Agroaura Home"
+        >
+          <div className="h-10 w-10 rounded-xl bg-white flex items-center justify-center p-1 shadow-sm border border-white/20 shrink-0 group-hover:scale-105 transition-transform overflow-hidden">
+            <img
+              src={`${import.meta.env.BASE_URL}images/agroaura-logo.png`}
+              alt="Agroaura Logo"
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <div className="flex flex-col min-w-0">
+            <span className="font-headline-md text-[18px] font-bold tracking-wider text-primary leading-tight truncate">
+              AGROAURA
+            </span>
+            <span className="text-[11px] text-on-surface-variant font-medium truncate">
+              Precision Farming
+            </span>
+          </div>
+        </button>
+
         <div className="flex flex-col gap-1 p-4 mb-4 bg-surface-container-low rounded-2xl border border-surface-variant">
           <div className="flex items-center justify-between mb-2">
             <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-primary-container">

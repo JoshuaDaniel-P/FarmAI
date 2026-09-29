@@ -38,17 +38,15 @@ export const LoginScreen: React.FC = () => {
       <div className="w-full max-w-md px-margin-mobile md:px-margin-desktop z-10 flex flex-col items-center">
         {/* Brand Logo Area */}
         <div className="mb-lg flex flex-col items-center">
-          <div className="w-24 h-24 bg-surface-container rounded-full flex items-center justify-center shadow-lg border border-surface-variant mb-md">
-            <span
-              className="material-symbols-outlined text-primary text-5xl"
-              data-icon="energy_savings_leaf"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              energy_savings_leaf
-            </span>
+          <div className="w-24 h-24 bg-white rounded-2xl flex items-center justify-center p-2 shadow-xl border border-white/20 mb-md overflow-hidden">
+            <img
+              src={`${import.meta.env.BASE_URL}images/agroaura-logo.png`}
+              alt="Agroaura Logo"
+              className="w-full h-full object-contain"
+            />
           </div>
-          <h1 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary text-center">
-            {t('appName', selectedLanguage)}
+          <h1 className="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary text-center tracking-wider font-bold">
+            AGROAURA
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant mt-sm text-center">
             {t('farmerSubtitle', selectedLanguage)}

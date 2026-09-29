@@ -196,15 +196,15 @@ export const AIAssistantScreen: React.FC = () => {
 
   return (
     <div className="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-hidden pb-[90px] md:pb-8">
-      {/* TopAppBar */}
-      <header className="docked full-width top-0 bg-background flex flex-col justify-between px-margin-mobile pt-sm pb-xs w-full max-w-screen-xl mx-auto flat no shadows z-50 border-b border-surface-container-highest/40">
-        <div className="flex items-center justify-between w-full h-16">
+      {/* Assistant Header Bar with comfortable vertical spacing below AGROAURA header */}
+      <div className="w-full max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop pt-4 md:pt-6 pb-2">
+        <div className="flex items-center justify-between w-full min-h-[56px] gap-2">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setCurrentScreen('dashboard')}
               title={t('back', selectedLanguage)}
               aria-label={t('back', selectedLanguage)}
-              className="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant flex items-center justify-center"
+              className="p-2 rounded-full hover:bg-surface-container-high transition-colors text-on-surface-variant flex items-center justify-center shrink-0"
             >
               <span className="material-symbols-outlined" style={{ fontVariationSettings: "'wght' 400, 'FILL' 0" }}>
                 arrow_back
@@ -217,22 +217,10 @@ export const AIAssistantScreen: React.FC = () => {
               </span>
             </div>
           </div>
-
-          <div className="flex items-center gap-2">
-            {/* TOP-RIGHT TRANSLATE PIN BUTTON */}
-            <button
-              onClick={() => setIsLanguageModalOpen(true)}
-              className="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center border border-primary/30 transition-all shadow-sm"
-              title={t('selectLanguage', selectedLanguage)}
-              aria-label={t('selectLanguage', selectedLanguage)}
-            >
-              <span className="material-symbols-outlined text-[24px]">translate</span>
-            </button>
-          </div>
         </div>
 
         {/* INLINE LANGUAGE SELECTOR CHIPS */}
-        <div className="flex gap-2 overflow-x-auto pb-2 pt-1 scrollbar-none">
+        <div className="flex gap-2 overflow-x-auto pb-2 pt-2 scrollbar-none">
           {SUPPORTED_LANGUAGES.map((lang) => (
             <button
               key={lang.code}
@@ -251,7 +239,7 @@ export const AIAssistantScreen: React.FC = () => {
             </button>
           ))}
         </div>
-      </header>
+      </div>
 
       {/* Main Content Canvas */}
       <main className="flex-1 flex flex-col items-center justify-between w-full max-w-screen-md mx-auto px-margin-mobile py-md">

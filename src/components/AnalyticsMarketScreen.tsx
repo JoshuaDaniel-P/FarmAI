@@ -59,27 +59,18 @@ export const AnalyticsMarketScreen: React.FC = () => {
 
   return (
     <div className="bg-background text-on-surface font-body-md min-h-screen antialiased flex flex-col pb-[90px] md:pb-8">
-      {/* TopAppBar */}
-      <header className="sticky top-0 w-full z-40 bg-background border-b border-surface-container-highest/40">
-        <div className="flex items-center justify-between px-margin-mobile pt-sm pb-xs w-full max-w-screen-xl mx-auto h-16">
-          <div className="flex items-center gap-2 min-w-0">
+      {/* Analytics & Markets Actions Bar with comfortable vertical spacing below AGROAURA header */}
+      <div className="w-full max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop pt-4 md:pt-6 pb-2">
+        <div className="flex items-center justify-between w-full min-h-[48px] gap-2">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
             <FieldSwitcher />
           </div>
 
-          <div className="flex items-center gap-2">
-            {/* Translate Button */}
-            <button
-              onClick={() => setIsLanguageModalOpen(true)}
-              className="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center border border-primary/30 transition-all shadow-sm"
-              title={t('selectLanguage', selectedLanguage)}
-            >
-              <span className="material-symbols-outlined text-[22px]">translate</span>
-            </button>
-
+          <div className="flex items-center gap-2 shrink-0">
             {activeSubTab === 'history' && (
               <button
                 onClick={() => setShowLogModal(true)}
-                className="px-3 py-1.5 bg-primary text-on-primary font-bold text-xs rounded-full flex items-center gap-1 shadow-sm hover:bg-primary-fixed"
+                className="px-3.5 py-2 bg-primary text-on-primary font-bold text-xs rounded-full flex items-center gap-1 shadow-sm hover:bg-primary-fixed transition-all"
               >
                 <span className="material-symbols-outlined text-sm">add</span>
                 <span>{t('logHarvest', selectedLanguage) || 'Log Harvest'}</span>
@@ -87,7 +78,7 @@ export const AnalyticsMarketScreen: React.FC = () => {
             )}
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Main Content Canvas */}
       <main className="flex-1 w-full max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop py-md flex flex-col gap-md">

@@ -84,8 +84,28 @@ interface FarmContextType {
 const FarmContext = createContext<FarmContextType | undefined>(undefined);
 
 export const FarmProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const getInitialScreen = (): ScreenType => {
+    try {
+      const hash = window.location.hash.replace('#', '') as ScreenType;
+      const validScreens: ScreenType[] = ['dashboard', 'field-setup', 'disease-weed', 'analytics', 'assistant', 'day-wise-track', 'login'];
+      if (validScreens.includes(hash)) return hash;
+    } catch {
+      // ignore
+    }
+    return 'dashboard';
+  };
+
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
-  const [currentScreen, setCurrentScreen] = useState<ScreenType>('dashboard');
+  const [currentScreen, setCurrentScreenState] = useState<ScreenType>(getInitialScreen);
+
+  const setCurrentScreen = (screen: ScreenType) => {
+    setCurrentScreenState(screen);
+    try {
+      window.location.hash = screen;
+    } catch {
+      // ignore
+    }
+  };
   const [selectedLanguage, setSelectedLanguage] = useState<LanguageCode>('en');
   const [isLanguageModalOpen, setIsLanguageModalOpen] = useState<boolean>(false);
   const [isNotificationDrawerOpen, setIsNotificationDrawerOpen] = useState<boolean>(false);

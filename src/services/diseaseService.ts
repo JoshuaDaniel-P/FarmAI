@@ -1,5 +1,34 @@
 import { DiseaseInfo, GrowthStageName } from '../types/farm';
 
+/**
+ * Resolves a disease image path with the Vite base URL for correct local & GitHub Pages asset loading.
+ */
+export function getDiseaseImageUrl(path?: string): string {
+  if (!path) return '';
+  if (
+    path.startsWith('http://') ||
+    path.startsWith('https://') ||
+    path.startsWith('blob:') ||
+    path.startsWith('data:')
+  ) {
+    return path;
+  }
+  const base = import.meta.env.BASE_URL;
+  if (path.startsWith(base)) {
+    return path;
+  }
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  return `${base}${cleanPath}`;
+}
+
+/**
+ * Constructs a disease image URL using Vite's base URL for deployment under subpaths like /FarmAI/.
+ */
+export const diseaseImage = (filename: string): string => {
+  const cleanFilename = filename.replace(/^\/?(images\/diseases\/)?/, '');
+  return `${import.meta.env.BASE_URL}images/diseases/${cleanFilename}`;
+};
+
 export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
   // ================= PADDY =================
   {
@@ -10,7 +39,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 20 - 75 (Seedling & Vegetative stage, especially cool humid nights)',
     riskLevel: 'High',
     riskBadgeColor: 'bg-error-container border-error text-error',
-    imageUrl: '/images/diseases/paddy_blast.jpg',
+    imageUrl: diseaseImage('paddy_blast.jpg'),
     icon: 'warning',
 
     whatYouMaySee: [
@@ -50,7 +79,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 35 - 90 (Active tillering to grain filling)',
     riskLevel: 'Moderate',
     riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
-    imageUrl: '/images/diseases/paddy_brown_spot.jpg',
+    imageUrl: diseaseImage('paddy_brown_spot.jpg'),
     icon: 'coronavirus',
 
     whatYouMaySee: [
@@ -89,7 +118,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 45 - 85 (Maximum tillering to heading)',
     riskLevel: 'Moderate',
     riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
-    imageUrl: '/images/diseases/paddy_sheath_blight.jpg',
+    imageUrl: diseaseImage('paddy_sheath_blight.jpg'),
     icon: 'eco',
 
     whatYouMaySee: [
@@ -129,7 +158,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 60 - 130 (Square formation, flowering, and green boll stages)',
     riskLevel: 'High',
     riskBadgeColor: 'bg-error-container border-error text-error',
-    imageUrl: '/images/diseases/cotton_bollworm.jpg',
+    imageUrl: diseaseImage('cotton_bollworm.jpg'),
     icon: 'bug_report',
 
     whatYouMaySee: [
@@ -168,7 +197,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 40 - 110 (Canopy development to boll opening)',
     riskLevel: 'Moderate',
     riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
-    imageUrl: '/images/diseases/cotton_alternaria.jpg',
+    imageUrl: diseaseImage('cotton_alternaria.jpg'),
     icon: 'eco',
 
     whatYouMaySee: [
@@ -208,7 +237,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 20 - 70 (Seedling establishment to early flowering)',
     riskLevel: 'High',
     riskBadgeColor: 'bg-error-container border-error text-error',
-    imageUrl: '/images/diseases/chilli_leaf_curl.jpg',
+    imageUrl: diseaseImage('chilli_leaf_curl.jpg'),
     icon: 'coronavirus',
 
     whatYouMaySee: [
@@ -247,7 +276,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 65 - 130 (Fruit setting to ripening)',
     riskLevel: 'Moderate',
     riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
-    imageUrl: '/images/diseases/chilli_anthracnose.jpg',
+    imageUrl: diseaseImage('chilli_anthracnose.jpg'),
     icon: 'warning',
 
     whatYouMaySee: [
@@ -287,7 +316,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 30 - 85 (Vegetative canopy to pod development)',
     riskLevel: 'Moderate',
     riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
-    imageUrl: '/images/diseases/groundnut_tikka.jpg',
+    imageUrl: diseaseImage('groundnut_tikka.jpg'),
     icon: 'eco',
 
     whatYouMaySee: [
@@ -326,7 +355,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 10 - 35 (Emergence and young seedling stage)',
     riskLevel: 'High',
     riskBadgeColor: 'bg-error-container border-error text-error',
-    imageUrl: '/images/diseases/groundnut_collar_rot.jpg',
+    imageUrl: diseaseImage('groundnut_collar_rot.jpg'),
     icon: 'warning',
 
     whatYouMaySee: [
@@ -366,7 +395,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 10 - 60 (Knee-high to tasseling stage)',
     riskLevel: 'High',
     riskBadgeColor: 'bg-error-container border-error text-error',
-    imageUrl: '/images/diseases/maize_armyworm.jpg',
+    imageUrl: diseaseImage('maize_armyworm.jpg'),
     icon: 'bug_report',
 
     whatYouMaySee: [
@@ -405,7 +434,7 @@ export const EXPANDED_DISEASE_DATABASE: DiseaseInfo[] = [
     typicalRiskPeriod: 'Day 35 - 80 (Vegetative grand growth to cob filling)',
     riskLevel: 'Moderate',
     riskBadgeColor: 'bg-[#a67b27]/20 border-[#a67b27] text-[#f2cc81]',
-    imageUrl: '/images/diseases/maize_turcicum_blight.jpg',
+    imageUrl: diseaseImage('maize_turcicum_blight.jpg'),
     icon: 'eco',
 
     whatYouMaySee: [

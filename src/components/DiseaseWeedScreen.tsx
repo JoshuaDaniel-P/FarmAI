@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFarm } from '../context/FarmContext';
-import { getDiseasesByCrop, getDiseasesForStage, assessStageDiseaseRisk } from '../services/diseaseService';
+import { getDiseasesByCrop, getDiseasesForStage, assessStageDiseaseRisk, getDiseaseImageUrl } from '../services/diseaseService';
 import { WEED_DATABASE, getActiveWeedAlerts, getAllWeedsForCrop } from '../services/weedService';
 import { droneService } from '../services/droneService';
 import { t, translateCrop, translateRisk, translateText } from '../services/i18n';
@@ -195,7 +195,7 @@ export const DiseaseWeedScreen: React.FC = () => {
                     {disease.imageUrl && (
                       <div className="w-full h-40 rounded-xl overflow-hidden relative bg-surface-container-high">
                         <img
-                          src={disease.imageUrl}
+                          src={getDiseaseImageUrl(disease.imageUrl)}
                           alt={translateText(disease.diseaseName, selectedLanguage)}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />

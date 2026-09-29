@@ -1,4 +1,5 @@
 import { GrowthStageName, WeedInfo } from '../types/farm';
+import { diseaseImage } from './diseaseService';
 
 export const EXPANDED_WEED_DATABASE: WeedInfo[] = [
   // ================= PADDY =================
@@ -15,7 +16,7 @@ export const EXPANDED_WEED_DATABASE: WeedInfo[] = [
     managementMethod: 'Spray Bispyribac-sodium 10% SC @ 80ml/acre in 150L water when weed has 2-3 leaves.',
     action: 'Inspect field and pluck out manually before seed formation.',
     icon: 'grass',
-    imageUrl: '/images/diseases/paddy_brown_spot.jpg',
+    imageUrl: diseaseImage('paddy_brown_spot.jpg'),
     learnMoreText: 'Produces over 2,000 seeds per plant; seeds shatter into mud if not weeded early.',
   },
   {
@@ -31,7 +32,7 @@ export const EXPANDED_WEED_DATABASE: WeedInfo[] = [
     managementMethod: 'Spray Metsulfuron-methyl + Chlorimuron-ethyl (Almix) @ 8g/acre at 20-25 days after transplanting.',
     action: 'Apply recommended post-emergence herbicide with thin water layer.',
     icon: 'spa',
-    imageUrl: '/images/diseases/paddy_blast.jpg',
+    imageUrl: diseaseImage('paddy_blast.jpg'),
     learnMoreText: 'Dominant sedge in standing water; competes vigorously for nitrogen and root space.',
   },
   {
@@ -47,7 +48,7 @@ export const EXPANDED_WEED_DATABASE: WeedInfo[] = [
     managementMethod: 'Spray 2,4-D Ethyl Ester @ 1.0 kg/acre on field bunds and drainage paths.',
     action: 'Clear bunds and water inlets to block seed dispersal.',
     icon: 'filter_vintage',
-    imageUrl: '/images/diseases/paddy_brown_spot.jpg',
+    imageUrl: diseaseImage('paddy_brown_spot.jpg'),
     learnMoreText: 'Common broadleaf weed that harbors insect pests and restricts drainage flow.',
   },
 
@@ -65,7 +66,7 @@ export const EXPANDED_WEED_DATABASE: WeedInfo[] = [
     managementMethod: 'Spray Quizalofop-ethyl 5% EC @ 300-400ml/acre for mixed grass and broadleaf control.',
     action: 'Inter-cultivate between rows before the canopy closes.',
     icon: 'grass',
-    imageUrl: '/images/diseases/cotton_alternaria.jpg',
+    imageUrl: diseaseImage('cotton_alternaria.jpg'),
     learnMoreText: 'Fast-spreading broadleaf weed that smothers young cotton seedlings within 3 weeks.',
   },
   {
@@ -81,7 +82,7 @@ export const EXPANDED_WEED_DATABASE: WeedInfo[] = [
     managementMethod: 'Spot application of Glyphosate 41% SL using protective hood between rows.',
     action: 'Dig out underground tubers during dry weeding.',
     icon: 'grass',
-    imageUrl: '/images/diseases/cotton_bollworm.jpg',
+    imageUrl: diseaseImage('cotton_bollworm.jpg'),
     learnMoreText: 'Tubers remain dormant underground for years; requires persistent deep summer cultivation.',
   },
 
@@ -99,7 +100,7 @@ export const EXPANDED_WEED_DATABASE: WeedInfo[] = [
     managementMethod: 'Pre-emergence application of Pendimethalin 30% EC @ 1.0 L/acre within 3 days of transplanting.',
     action: 'Hand weed around chilli roots before fertilizer application.',
     icon: 'eco',
-    imageUrl: '/images/diseases/chilli_leaf_curl.jpg',
+    imageUrl: diseaseImage('chilli_leaf_curl.jpg'),
     learnMoreText: 'Rapid consumer of applied nitrogen and host for thrips and aphids.',
   },
 
@@ -117,7 +118,7 @@ export const EXPANDED_WEED_DATABASE: WeedInfo[] = [
     managementMethod: 'Spray Imazethapyr 10% SL @ 300ml/acre at 15-20 days after sowing.',
     action: 'Complete all weeding before pegging stage to avoid damaging underground pods.',
     icon: 'grass',
-    imageUrl: '/images/diseases/groundnut_tikka.jpg',
+    imageUrl: diseaseImage('groundnut_tikka.jpg'),
     learnMoreText: 'Must be controlled before Day 40, as weeding after pegging severely tears developing pods.',
   },
 
@@ -135,7 +136,7 @@ export const EXPANDED_WEED_DATABASE: WeedInfo[] = [
     managementMethod: 'Spray Atrazine 50% WP @ 500g/acre within 2 days of sowing (Pre-emergence).',
     action: 'Apply pre-emergence herbicide or hand weed before tassel emergence.',
     icon: 'local_florist',
-    imageUrl: '/images/diseases/maize_armyworm.jpg',
+    imageUrl: diseaseImage('maize_armyworm.jpg'),
     learnMoreText: 'Invasive allelopathic weed that inhibits maize root development and pollen fertility.',
   },
 ];

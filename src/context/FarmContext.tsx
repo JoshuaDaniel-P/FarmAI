@@ -18,6 +18,7 @@ import {
 } from '../types/farm';
 import { LanguageCode, t } from '../services/i18n';
 import { INITIAL_FARMER, INITIAL_CROP_HISTORY } from '../services/mockData';
+import { diseaseImage } from '../services/diseaseService';
 import { sensorService } from '../services/sensorService';
 import { voiceAssistantService } from '../services/voiceAssistantService';
 import { DiseaseAnalysisResult } from '../services/imageAnalysisService';
@@ -316,7 +317,7 @@ export const FarmProvider: React.FC<{ children: React.ReactNode }> = ({ children
       growthStage: activeField.growthStage.stageName,
       confidencePercent: analysis.confidencePercent,
       detectedAt: new Date().toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' }),
-      imageUri: imageUri || '/images/diseases/paddy_blast.jpg',
+      imageUri: imageUri || diseaseImage('paddy_blast.jpg'),
       symptoms: analysis.symptoms,
       cause: analysis.cause,
       precaution: analysis.precaution,

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { imageAnalysisService, DiseaseAnalysisResult } from '../services/imageAnalysisService';
 import { useFarm } from '../context/FarmContext';
 import { t, translateCrop, translateText } from '../services/i18n';
+import { diseaseImage } from '../services/diseaseService';
 
 interface Props {
   isOpen: boolean;
@@ -19,7 +20,7 @@ export const CameraScanModal: React.FC<Props> = ({
   const { selectedLanguage } = useFarm();
   const [step, setStep] = useState<'capture' | 'analyzing' | 'result'>('capture');
   const [selectedImage, setSelectedImage] = useState<string>(
-    '/images/diseases/paddy_blast.jpg'
+    diseaseImage('paddy_blast.jpg')
   );
   const [analysisResult, setAnalysisResult] = useState<DiseaseAnalysisResult | null>(null);
   const [testLowConfidence, setTestLowConfidence] = useState<boolean>(false);

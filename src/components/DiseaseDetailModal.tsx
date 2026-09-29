@@ -2,6 +2,7 @@ import React from 'react';
 import { DiseaseInfo } from '../types/farm';
 import { useFarm } from '../context/FarmContext';
 import { t, translateCrop, translateRisk, translateText } from '../services/i18n';
+import { getDiseaseImageUrl } from '../services/diseaseService';
 
 interface Props {
   disease: DiseaseInfo | null;
@@ -25,7 +26,7 @@ export const DiseaseDetailModal: React.FC<Props> = ({ disease, onClose }) => {
         {disease.imageUrl && (
           <div className="w-full h-52 rounded-xl overflow-hidden mb-4 border border-surface-variant relative bg-surface-container-high">
             <img
-              src={disease.imageUrl}
+              src={getDiseaseImageUrl(disease.imageUrl)}
               alt={translateText(disease.diseaseName, selectedLanguage)}
               className="w-full h-full object-cover"
             />

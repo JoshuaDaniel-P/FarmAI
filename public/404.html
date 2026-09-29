@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting to Agroaura...</title>
+    <script>
+      (function() {
+        var path = window.location.pathname;
+        var search = window.location.search || '';
+        var hash = window.location.hash || '';
+        // If visiting /FarmAI, /agroaura, or root, redirect to /Agroaura/
+        if (/^\/(farmai|agroaura)(\/.*)?$/i.test(path)) {
+          var target = path.replace(/^\/(farmai|agroaura)/i, '/Agroaura');
+          if (!target.endsWith('/') && !target.includes('.')) target += '/';
+          window.location.replace(target + search + hash);
+        } else if (path === '/' || path === '') {
+          window.location.replace('/Agroaura/' + search + hash);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to <a href="/Agroaura/">Agroaura</a>...</p>
+  </body>
+</html>
